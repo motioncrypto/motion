@@ -16,8 +16,8 @@
 #include "utilstrencodings.h"
 
 #include <assert.h>
-
 #include <boost/assign/list_of.hpp>
+#include <limits>
 
 #include "chainparamsseeds.h"
 
@@ -98,11 +98,9 @@ public:
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x000007d91d1254d60e2dd1ae580383070a4ddffa4c64c2eeb4a2f9ecc0414343");
         consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        
-        consensus.nDigishieldAveragingWindow = 30;
-        assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nDigishieldAveragingWindow);
-        consensus.nDigishieldMaxAdjustDown = 32;
-        consensus.nDigishieldMaxAdjustUp = 16;
+
+        consensus.nZawyLwmaAveragingWindow = 65;
+        consensus.nZawyLwmaAjustedWeight = 3927;
 
         consensus.nPowTargetTimespan = 30 * 60 * 60; // Motion: 1 day
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
@@ -153,7 +151,7 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000fa43a87286840b93955cd88909ce2b4f758d68433436b1f94f2788f58ee"));
         assert(genesis.hashMerkleRoot == uint256S("0xc6392660069fae2937d5680f2cc48fe76f34e201c7c86d94224d555ce566aa40"));
 
-
+        // vSeeds.push_back(CDNSSeedData("motionproject.org", "seed.motionproject.org"));
         vFixedSeeds.clear();
         vSeeds.clear();
 
@@ -226,10 +224,8 @@ public:
         consensus.BIP34Hash = uint256S("0x0000047d24635e347be3aaaeb66c26be94901a2f962feccd4f95090191f208c1");
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
 
-        consensus.nDigishieldAveragingWindow = 30;
-        assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nDigishieldAveragingWindow);
-        consensus.nDigishieldMaxAdjustDown = 32;
-        consensus.nDigishieldMaxAdjustUp = 16;
+        consensus.nZawyLwmaAveragingWindow = 65;
+        consensus.nZawyLwmaAjustedWeight = 3927;
 
         consensus.nPowTargetTimespan = 30 * 60 * 60; // Motion: 1 day
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
@@ -346,9 +342,8 @@ public:
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 
-        consensus.nDigishieldAveragingWindow = 30;
-        consensus.nDigishieldMaxAdjustDown = 32;
-        consensus.nDigishieldMaxAdjustUp = 16;
+        consensus.nZawyLwmaAveragingWindow = 65;
+        consensus.nZawyLwmaAjustedWeight = 3927;
 
         consensus.nPowTargetTimespan = 30 * 60 * 60; // Motion: 1 day
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2.5 minutes
