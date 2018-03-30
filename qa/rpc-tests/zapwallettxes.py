@@ -3,11 +3,11 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 
 
-class ZapWalletTXesTest (BitcoinTestFramework):
+class ZapWalletTXesTest (MotionTestFramework):
 
     def setup_chain(self):
         print("Initializing test directory "+self.options.tmpdir)
@@ -51,18 +51,18 @@ class ZapWalletTXesTest (BitcoinTestFramework):
         tx3 = self.nodes[0].gettransaction(txid3)
         assert_equal(tx3['txid'], txid3) #tx3 must be available (unconfirmed)
         
-        #restart bitcoind
+        #restart motiond
         self.nodes[0].stop()
-        bitcoind_processes[0].wait()
+        motiond_processes[0].wait()
         self.nodes[0] = start_node(0,self.options.tmpdir)
         
         tx3 = self.nodes[0].gettransaction(txid3)
         assert_equal(tx3['txid'], txid3) #tx must be available (unconfirmed)
         
         self.nodes[0].stop()
-        bitcoind_processes[0].wait()
+        motiond_processes[0].wait()
         
-        #restart bitcoind with zapwallettxes
+        #restart motiond with zapwallettxes
         self.nodes[0] = start_node(0,self.options.tmpdir, ["-zapwallettxes=1"])
         
         assert_raises(JSONRPCException, self.nodes[0].gettransaction, [txid3])

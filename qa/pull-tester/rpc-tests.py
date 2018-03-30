@@ -17,7 +17,7 @@ than:
       interface.
 
 For a description of arguments recognized by test scripts, see
-`qa/pull-tester/test_framework/test_framework.py:BitcoinTestFramework.main`.
+`qa/pull-tester/test_framework/test_framework.py:MotionTestFramework.main`.
 
 """
 
@@ -34,8 +34,8 @@ from tests_config import *
 #If imported values are not defined then set to zero (or disabled)
 if 'ENABLE_WALLET' not in vars():
     ENABLE_WALLET=0
-if 'ENABLE_BITCOIND' not in vars():
-    ENABLE_BITCOIND=0
+if 'ENABLE_MOTIOND' not in vars():
+    ENABLE_MOTIOND=0
 if 'ENABLE_UTILS' not in vars():
     ENABLE_UTILS=0
 if 'ENABLE_ZMQ' not in vars():
@@ -62,19 +62,19 @@ for arg in sys.argv[1:]:
 
 #Set env vars
 buildDir = BUILDDIR
-if "DASHD" not in os.environ:
-    os.environ["DASHD"] = buildDir + '/src/dashd' + EXEEXT
-if "DASHCLI" not in os.environ:
-    os.environ["DASHCLI"] = buildDir + '/src/dash-cli' + EXEEXT
+if "MOTIOND" not in os.environ:
+    os.environ["MOTIOND"] = buildDir + '/src/motiond' + EXEEXT
+if "MOTIONCLI" not in os.environ:
+    os.environ["MOTIONCLI"] = buildDir + '/src/motion-cli' + EXEEXT
 
 if EXEEXT == ".exe" and "-win" not in opts:
-    # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
-    # https://github.com/bitcoin/bitcoin/pull/5677#issuecomment-136646964
+    # https://github.com/motion/motion/commit/d52802551752140cf41f0d9a225a43e84404d3e9
+    # https://github.com/motion/motion/pull/5677#issuecomment-136646964
     print "Win tests currently disabled by default.  Use -win option to enable"
     sys.exit(0)
 
-if not (ENABLE_WALLET == 1 and ENABLE_UTILS == 1 and ENABLE_BITCOIND == 1):
-    print "No rpc tests to run. Wallet, utils, and bitcoind must all be enabled"
+if not (ENABLE_WALLET == 1 and ENABLE_UTILS == 1 and ENABLE_MOTIOND == 1):
+    print "No rpc tests to run. Wallet, utils, and motiond must all be enabled"
     sys.exit(0)
 
 # python-zmq may not be installed. Handle this gracefully and with some helpful info
@@ -117,15 +117,15 @@ testScripts = [
     'timestampindex.py',
     'spentindex.py',
     'decodescript.py',
-    'p2p-fullblocktest.py', # NOTE: needs dash_hash to pass
+    'p2p-fullblocktest.py', # NOTE: needs motion_hash to pass
     'blockchain.py',
     'disablewallet.py',
-    'sendheaders.py', # NOTE: needs dash_hash to pass
+    'sendheaders.py', # NOTE: needs motion_hash to pass
     'keypool.py',
     'keypool-hd.py',
     'prioritise_transaction.py',
-    'invalidblockrequest.py', # NOTE: needs dash_hash to pass
-    'invalidtxrequest.py', # NOTE: needs dash_hash to pass
+    'invalidblockrequest.py', # NOTE: needs motion_hash to pass
+    'invalidtxrequest.py', # NOTE: needs motion_hash to pass
     'abandonconflict.py',
     'p2p-versionbits-warning.py',
 ]
@@ -135,11 +135,11 @@ if ENABLE_ZMQ:
 testScriptsExt = [
     'bip9-softforks.py',
     'bip65-cltv.py',
-    'bip65-cltv-p2p.py', # NOTE: needs dash_hash to pass
+    'bip65-cltv-p2p.py', # NOTE: needs motion_hash to pass
     'bip68-sequence.py',
-    'bipdersig-p2p.py', # NOTE: needs dash_hash to pass
+    'bipdersig-p2p.py', # NOTE: needs motion_hash to pass
     'bipdersig.py',
-    'getblocktemplate_longpoll.py', # FIXME: "socket.error: [Errno 54] Connection reset by peer" on my Mac, same as  https://github.com/bitcoin/bitcoin/issues/6651
+    'getblocktemplate_longpoll.py', # FIXME: "socket.error: [Errno 54] Connection reset by peer" on my Mac, same as  https://github.com/motion/motion/issues/6651
     'getblocktemplate_proposals.py',
     'txn_doublespend.py',
     'txn_clone.py --mineblock',
@@ -149,10 +149,10 @@ testScriptsExt = [
 #    'rpcbind_test.py', #temporary, bug in libevent, see #6655
     'smartfees.py',
     'maxblocksinflight.py',
-    'p2p-acceptblock.py', # NOTE: needs dash_hash to pass
+    'p2p-acceptblock.py', # NOTE: needs motion_hash to pass
     'mempool_packages.py',
     'maxuploadtarget.py',
-    # 'replace-by-fee.py', # RBF is disabled in Dash Core
+    # 'replace-by-fee.py', # RBF is disabled in Motion Core
 ]
 
 def runtests():
@@ -214,7 +214,7 @@ class RPCCoverage(object):
     Coverage calculation works by having each test script subprocess write
     coverage files into a particular directory. These files contain the RPC
     commands invoked during testing, as well as a complete listing of RPC
-    commands per `bitcoin-cli help` (`rpc_interface.txt`).
+    commands per `motion-cli help` (`rpc_interface.txt`).
 
     After all tests complete, the commands run are combined and diff'd against
     the complete list to calculate uncovered RPC commands.

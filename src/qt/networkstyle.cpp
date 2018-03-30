@@ -42,7 +42,7 @@ void NetworkStyle::rotateColors(QImage& img, const int iconColorHueShift, const 
             col.getHsl(&h,&s,&l);
 
             // rotate color on RGB color circle
-            // 70° should end up with the typical "testnet" green (in bitcoin)
+            // 70° should end up with the typical "testnet" green (in motion)
             h+=iconColorHueShift;
 
             // change saturation value
@@ -69,7 +69,7 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
     // Grab theme from settings
     QString theme = GUIUtil::getThemeName();
     // load pixmap
-    QPixmap appIconPixmap(":/icons/bitcoin");
+    QPixmap appIconPixmap(":/icons/motion");
     QPixmap splashImagePixmap(":/images/" + theme + "/splash");
 
     if(iconColorHueShift != 0 && iconColorSaturationReduction != 0)

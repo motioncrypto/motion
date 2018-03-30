@@ -7,7 +7,7 @@
 # Test ZMQ interface
 #
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 import zmq
 import binascii
@@ -21,7 +21,7 @@ try:
 except ImportError:
     import urlparse
 
-class ZMQTest (BitcoinTestFramework):
+class ZMQTest (MotionTestFramework):
 
     port = 28332
 

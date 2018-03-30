@@ -17,7 +17,7 @@ OpenURIDialog::OpenURIDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 #if QT_VERSION >= 0x040700
-    ui->uriEdit->setPlaceholderText("dash:");
+    ui->uriEdit->setPlaceholderText("motion:");
 #endif
 }
 
@@ -34,7 +34,7 @@ QString OpenURIDialog::getURI()
 void OpenURIDialog::accept()
 {
     SendCoinsRecipient rcp;
-    if(GUIUtil::parseBitcoinURI(getURI(), &rcp))
+    if(GUIUtil::parseMotionURI(getURI(), &rcp))
     {
         /* Only accept value URIs */
         QDialog::accept();
@@ -49,5 +49,5 @@ void OpenURIDialog::on_selectFileButton_clicked()
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText("dash:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("motion:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

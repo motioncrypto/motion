@@ -2,7 +2,7 @@
 
 # Helpful little script that spits out a comma-separated list of
 # language codes for Qt icons that should be included
-# in binary Dash Core distributions
+# in binary Motion Core distributions
 
 import glob
 import os
@@ -10,13 +10,13 @@ import re
 import sys
 
 if len(sys.argv) != 3:
-  sys.exit("Usage: %s $QTDIR/translations $BITCOINDIR/src/qt/locale"%sys.argv[0])
+  sys.exit("Usage: %s $QTDIR/translations $MOTIONDIR/src/qt/locale"%sys.argv[0])
 
 d1 = sys.argv[1]
 d2 = sys.argv[2]
 
 l1 = set([ re.search(r'qt_(.*).qm', f).group(1) for f in glob.glob(os.path.join(d1, 'qt_*.qm')) ])
-l2 = set([ re.search(r'dash_(.*).qm', f).group(1) for f in glob.glob(os.path.join(d2, 'dash_*.qm')) ])
+l2 = set([ re.search(r'motion_(.*).qm', f).group(1) for f in glob.glob(os.path.join(d2, 'motion_*.qm')) ])
 
 print ",".join(sorted(l1.intersection(l2)))
 

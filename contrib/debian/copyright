@@ -1,13 +1,13 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Bitcoin
+Upstream-Name: Motion
 Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
- irc://#bitcoin@freenode.net
-Source: https://github.com/bitcoin/bitcoin
+ irc://#motion@freenode.net
+Source: https://github.com/motion/motion
 
 Files: *
 Copyright: 2009-2016, Bitcoin Core Developers
 License: Expat
-Comment: The Bitcoin Core Developers encompasses the current developers listed on bitcoin.org,
+Comment: The Motion Core Developers encompasses the current developers listed on motion.org,
          as well as the numerous contributors to the project.
 
 Files: debian/*
@@ -54,7 +54,7 @@ Files: src/qt/res/icons/connect*.png
        src/qt/res/icons/*/network_disabled.png
        src/qt/res/src/network_disabled.svg
 Copyright: Marco Falke
-           Luke Dashjr
+           Luke Motionjr
 License: Expat
 Comment: Inspired by Stephan Hutchings Typicons
 
@@ -78,12 +78,12 @@ License: Expat
 Comment: Modifications of Stephan Hutchings Typicons
 
 Files: src/qt/res/icons/about.png
-       src/qt/res/icons/bitcoin.*
-       share/pixmaps/bitcoin*
-       src/qt/res/src/bitcoin.svg
+       src/qt/res/icons/motion.*
+       share/pixmaps/motion*
+       src/qt/res/src/motion.svg
 Copyright: Bitboy, Jonas Schnelli
 License: public-domain
-Comment: Site: https://bitcointalk.org/?topic=1756.0
+Comment: Site: https://motiontalk.org/?topic=1756.0
 
 
 License: Expat

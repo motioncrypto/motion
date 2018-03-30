@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_POLICY_POLICY_H
-#define BITCOIN_POLICY_POLICY_H
+#ifndef MOTION_POLICY_POLICY_H
+#define MOTION_POLICY_POLICY_H
 
 #include "consensus/consensus.h"
 #include "script/interpreter.h"
@@ -18,7 +18,7 @@ class CCoinsViewCache;
 static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 750000;
 static const unsigned int DEFAULT_BLOCK_MIN_SIZE = 0;
 /** Default for -blockprioritysize, maximum space for zero/low-fee transactions **/
-static const unsigned int DEFAULT_BLOCK_PRIORITY_SIZE = 10000; // was 50000 in 0.12.0 and it is 0 in Bitcoin since 0.12
+static const unsigned int DEFAULT_BLOCK_PRIORITY_SIZE = 10000; // was 50000 in 0.12.0 and it is 0 in Motion since 0.12
 /** The maximum size for transactions we're willing to relay/mine */
 static const unsigned int MAX_STANDARD_TX_SIZE = 100000;
 /** Maximum number of signature check operations in an IsStandard() P2SH script */
@@ -63,4 +63,4 @@ bool IsStandardTx(const CTransaction& tx, std::string& reason);
      */
 bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs);
 
-#endif // BITCOIN_POLICY_POLICY_H
+#endif // MOTION_POLICY_POLICY_H

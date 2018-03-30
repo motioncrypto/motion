@@ -7,10 +7,10 @@
 # Test the CHECKLOCKTIMEVERIFY (BIP65) soft-fork logic
 #
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 
-class BIP65Test(BitcoinTestFramework):
+class BIP65Test(MotionTestFramework):
 
     def setup_network(self):
         self.nodes = []

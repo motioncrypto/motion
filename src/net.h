@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NET_H
-#define BITCOIN_NET_H
+#ifndef MOTION_NET_H
+#define MOTION_NET_H
 
 #include "addrdb.h"
 #include "addrman.h"
@@ -141,8 +141,8 @@ public:
 
     // fConnectToMasternode should be 'true' only if you want this node to allow to connect to itself
     // and/or you want it to be disconnected on CMasternodeMan::ProcessMasternodeConnections()
-    // Unfortunately, can't make this method private like in Bitcoin,
-    // because it's used in many Dash-specific places (masternode, privatesend).
+    // Unfortunately, can't make this method private like in Motion,
+    // because it's used in many Motion-specific places (masternode, privatesend).
     CNode* ConnectNode(CAddress addrConnect, const char *pszDest = NULL, bool fConnectToMasternode = false);
 
     struct CFullyConnectedOnly {
@@ -913,4 +913,4 @@ public:
 /** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
 int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);
 
-#endif // BITCOIN_NET_H
+#endif // MOTION_NET_H

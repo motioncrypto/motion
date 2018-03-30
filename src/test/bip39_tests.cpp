@@ -7,7 +7,7 @@
 #include "key.h"
 #include "util.h"
 #include "utilstrencodings.h"
-#include "test/test_dash.h"
+#include "test/test_motion.h"
 #include "bip39.h"
 
 #include <boost/test/unit_test.hpp>
@@ -57,9 +57,9 @@ BOOST_AUTO_TEST_CASE(bip39_vectors)
         key.SetMaster(&seed[0], 64);
         pubkey = key.Neuter();
 
-        CBitcoinExtKey b58key;
+        CMotionExtKey b58key;
         b58key.SetKey(key);
-        // printf("CBitcoinExtKey: %s\n", b58key.ToString().c_str());
+        // printf("CMotionExtKey: %s\n", b58key.ToString().c_str());
         BOOST_CHECK(b58key.ToString() == test[3].get_str());
     }
 }

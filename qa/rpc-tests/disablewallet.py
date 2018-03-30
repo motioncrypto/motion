@@ -7,11 +7,11 @@
 # Exercise API with -disablewallet.
 #
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 
 
-class DisableWalletTest (BitcoinTestFramework):
+class DisableWalletTest (MotionTestFramework):
 
     def setup_chain(self):
         print("Initializing test directory "+self.options.tmpdir)
@@ -23,7 +23,7 @@ class DisableWalletTest (BitcoinTestFramework):
         self.sync_all()
 
     def run_test (self):
-        # Check regression: https://github.com/bitcoin/bitcoin/issues/6963#issuecomment-154548880
+        # Check regression: https://github.com/motion/motion/issues/6963#issuecomment-154548880
         x = self.nodes[0].validateaddress('7TSBtVu959hGEGPKyHjJz9k55RpWrPffXz')
         assert(x['isvalid'] == False)
         x = self.nodes[0].validateaddress('ycwedq2f3sz2Yf9JqZsBCQPxp18WU3Hp4J')

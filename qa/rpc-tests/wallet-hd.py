@@ -6,10 +6,10 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test Hierarchical Deterministic wallet function."""
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 
-class WalletHDTest(BitcoinTestFramework):
+class WalletHDTest(MotionTestFramework):
 
     def setup_chain(self):
         print("Initializing test directory "+self.options.tmpdir)
@@ -31,7 +31,7 @@ class WalletHDTest(BitcoinTestFramework):
             start_node(1, self.options.tmpdir, ['-usehd=0'])
             raise AssertionError("Must not allow to turn off HD on an already existing HD wallet")
         except Exception as e:
-            assert("dashd exited with status 1 during initialization" in str(e))
+            assert("motiond exited with status 1 during initialization" in str(e))
         # assert_start_raises_init_error(1, self.options.tmpdir, ['-usehd=0'], 'already existing HD wallet')
         # self.nodes[1] = start_node(1, self.options.tmpdir, self.node_args[1])
         self.nodes[1] = start_node(1, self.options.tmpdir, ['-usehd=1', '-keypool=0'])

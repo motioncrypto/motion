@@ -55,14 +55,14 @@ void CHDChain::Debug(std::string strName) const
             CExtKey extkey;
             extkey.SetMaster(&vchSeed[0], vchSeed.size());
 
-            CBitcoinExtKey b58extkey;
+            CMotionExtKey b58extkey;
             b58extkey.SetKey(extkey);
             std::cout << "extended private masterkey: " << b58extkey.ToString().c_str() << std::endl;
 
             CExtPubKey extpubkey;
             extpubkey = extkey.Neuter();
 
-            CBitcoinExtPubKey b58extpubkey;
+            CMotionExtPubKey b58extpubkey;
             b58extpubkey.SetKey(extpubkey);
             std::cout << "extended public masterkey: " << b58extpubkey.ToString().c_str() << std::endl;
         }

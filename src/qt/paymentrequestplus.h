@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_PAYMENTREQUESTPLUS_H
-#define BITCOIN_QT_PAYMENTREQUESTPLUS_H
+#ifndef MOTION_QT_PAYMENTREQUESTPLUS_H
+#define MOTION_QT_PAYMENTREQUESTPLUS_H
 
 #include "paymentrequest.pb.h"
 
@@ -45,4 +45,4 @@ private:
     payments::PaymentDetails details;
 };
 
-#endif // BITCOIN_QT_PAYMENTREQUESTPLUS_H
+#endif // MOTION_QT_PAYMENTREQUESTPLUS_H

@@ -4,11 +4,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_VALIDATION_H
-#define BITCOIN_VALIDATION_H
+#ifndef MOTION_VALIDATION_H
+#define MOTION_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dash-config.h"
+#include "config/motion-config.h"
 #endif
 
 #include "amount.h"
@@ -503,4 +503,4 @@ static const unsigned int REJECT_ALREADY_KNOWN = 0x101;
 /** Transaction conflicts with a transaction already known */
 static const unsigned int REJECT_CONFLICT = 0x102;
 
-#endif // BITCOIN_VALIDATION_H
+#endif // MOTION_VALIDATION_H

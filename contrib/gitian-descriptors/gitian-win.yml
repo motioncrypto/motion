@@ -1,5 +1,5 @@
 ---
-name: "dash-win-0.12"
+name: "motion-win-0.12"
 enable_cache: true
 suites:
 - "trusty"
@@ -23,8 +23,8 @@ packages:
 - "python"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/dashpay/dash.git"
-  "dir": "dash"
+- "url": "https://github.com/motionpay/motion.git"
+  "dir": "motion"
 files: []
 script: |
   WRAP_DIR=$HOME/wrapped
@@ -71,7 +71,7 @@ script: |
 
   # Create per-host linker wrapper
   # This is only needed for trusty, as the mingw linker leaks a few bytes of
-  # heap, causing non-determinism. See discussion in https://github.com/bitcoin/bitcoin/pull/6900
+  # heap, causing non-determinism. See discussion in https://github.com/motion/motion/pull/6900
   for i in $HOSTS; do
     mkdir -p ${WRAP_DIR}/${i}
     for prog in collect2; do
@@ -94,7 +94,7 @@ script: |
 
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd dash
+  cd motion
   BASEPREFIX=`pwd`/depends
   # Build dependencies for each host
   for i in $HOSTS; do
@@ -105,14 +105,14 @@ script: |
   ./autogen.sh
   CONFIG_SITE=${BASEPREFIX}/`echo "${HOSTS}" | awk '{print $1;}'`/share/config.site ./configure --prefix=/
   make dist
-  SOURCEDIST=`echo dashcore-*.tar.gz`
+  SOURCEDIST=`echo motioncore-*.tar.gz`
   DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
 
   # Correct tar file order
   mkdir -p temp
   pushd temp
   tar xf ../$SOURCEDIST
-  find dashcore-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
+  find motioncore-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
   mkdir -p $OUTDIR/src
   cp ../$SOURCEDIST $OUTDIR/src
   popd
@@ -132,7 +132,7 @@ script: |
     make ${MAKEOPTS} -C src check-security
     make deploy
     make install DESTDIR=${INSTALLPATH}
-    cp -f dashcore-*setup*.exe $OUTDIR/
+    cp -f motioncore-*setup*.exe $OUTDIR/
     cd installed
     mv ${DISTNAME}/bin/*.dll ${DISTNAME}/lib/
     find . -name "lib*.la" -delete

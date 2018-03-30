@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_OVERVIEWPAGE_H
-#define BITCOIN_QT_OVERVIEWPAGE_H
+#ifndef MOTION_QT_OVERVIEWPAGE_H
+#define MOTION_QT_OVERVIEWPAGE_H
 
 #include "amount.h"
 
@@ -81,4 +81,4 @@ private Q_SLOTS:
     void handleOutOfSyncWarningClicks();
 };
 
-#endif // BITCOIN_QT_OVERVIEWPAGE_H
+#endif // MOTION_QT_OVERVIEWPAGE_H

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Motion
+Comment=Motion P2P Cryptocurrency
+Comment[fr]=Motion, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Motion, eşten eşe kriptografik sanal para birimi
+Exec=motion-qt %u
+Terminal=false
+Type=Application
+Icon=motion128
+MimeType=x-scheme-handler/motion;
+Categories=Office;Finance;

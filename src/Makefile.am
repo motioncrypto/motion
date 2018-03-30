@@ -14,19 +14,19 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
-BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+MOTION_CONFIG_INCLUDES=-I$(builddir)/config
+MOTION_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
-BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
-BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
+MOTION_INCLUDES += -I$(srcdir)/secp256k1/include
+MOTION_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBBITCOIN_SERVER=libbitcoin_server.a
-LIBBITCOIN_WALLET=libbitcoin_wallet.a
-LIBBITCOIN_COMMON=libbitcoin_common.a
-LIBBITCOIN_CLI=libbitcoin_cli.a
-LIBBITCOIN_UTIL=libbitcoin_util.a
-LIBBITCOIN_CRYPTO=crypto/libbitcoin_crypto.a
-LIBBITCOINQT=qt/libbitcoinqt.a
+LIBMOTION_SERVER=libmotion_server.a
+LIBMOTION_WALLET=libmotion_wallet.a
+LIBMOTION_COMMON=libmotion_common.a
+LIBMOTION_CLI=libmotion_cli.a
+LIBMOTION_UTIL=libmotion_util.a
+LIBMOTION_CRYPTO=crypto/libmotion_crypto.a
+LIBMOTIONQT=qt/libmotionqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -35,41 +35,41 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  crypto/libbitcoin_crypto.a \
-  libbitcoin_util.a \
-  libbitcoin_common.a \
-  libbitcoin_server.a \
-  libbitcoin_cli.a
+  crypto/libmotion_crypto.a \
+  libmotion_util.a \
+  libmotion_common.a \
+  libmotion_server.a \
+  libmotion_cli.a
 if ENABLE_WALLET
-BITCOIN_INCLUDES += $(BDB_CPPFLAGS)
-EXTRA_LIBRARIES += libbitcoin_wallet.a
+MOTION_INCLUDES += $(BDB_CPPFLAGS)
+EXTRA_LIBRARIES += libmotion_wallet.a
 endif
 if ENABLE_ZMQ
-EXTRA_LIBRARIES += libbitcoin_zmq.a
+EXTRA_LIBRARIES += libmotion_zmq.a
 endif
 
-if BUILD_BITCOIN_LIBS
-lib_LTLIBRARIES = libdashconsensus.la
-LIBBITCOIN_CONSENSUS=libdashconsensus.la
+if BUILD_MOTION_LIBS
+lib_LTLIBRARIES = libmotionconsensus.la
+LIBMOTION_CONSENSUS=libmotionconsensus.la
 else
-LIBBITCOIN_CONSENSUS=
+LIBMOTION_CONSENSUS=
 endif
 
 bin_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_BITCOIND
-  bin_PROGRAMS += dashd
+if BUILD_MOTIOND
+  bin_PROGRAMS += motiond
 endif
 
-if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += dash-cli dash-tx
+if BUILD_MOTION_UTILS
+  bin_PROGRAMS += motion-cli motion-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
-# dash core #
-BITCOIN_CORE_H = \
+# motion core #
+MOTION_CORE_H = \
   addrdb.h \
   activemasternode.h \
   addressindex.h \
@@ -205,12 +205,12 @@ obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh $(abs_top_builddir)/src/obj/build.h \
 	  $(abs_top_srcdir)
-libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
+libmotion_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between dashd and dash-qt
-libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_server_a_SOURCES = \
+# server: shared between motiond and motion-qt
+libmotion_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libmotion_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotion_server_a_SOURCES = \
   activemasternode.cpp \
   addrman.cpp \
   addrdb.cpp \
@@ -266,25 +266,25 @@ libbitcoin_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(BITCOIN_CORE_H)
+  $(MOTION_CORE_H)
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libbitcoin_zmq.a
+LIBMOTION_ZMQ=libmotion_zmq.a
 
-libbitcoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
-libbitcoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_zmq_a_SOURCES = \
+libmotion_zmq_a_CPPFLAGS = $(MOTION_INCLUDES) $(ZMQ_CFLAGS)
+libmotion_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotion_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp
 endif
 
 
-# wallet: shared between dashd and dash-qt, but only linked
+# wallet: shared between motiond and motion-qt, but only linked
 # when wallet enabled
-libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_wallet_a_SOURCES = \
+libmotion_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES)
+libmotion_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotion_wallet_a_SOURCES = \
   keepass.cpp \
   privatesend-client.cpp \
   privatesend-util.cpp \
@@ -296,12 +296,12 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/wallet_ismine.cpp \
   wallet/walletdb.cpp \
   policy/rbf.cpp \
-  $(BITCOIN_CORE_H)
+  $(MOTION_CORE_H)
 
 # crypto primitives library
-crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
-crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
-crypto_libbitcoin_crypto_a_SOURCES = \
+crypto_libmotion_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_CONFIG_INCLUDES) $(PIC_FLAGS)
+crypto_libmotion_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
+crypto_libmotion_crypto_a_SOURCES = \
   crypto/common.h \
   crypto/hmac_sha256.cpp \
   crypto/hmac_sha256.h \
@@ -317,8 +317,8 @@ crypto_libbitcoin_crypto_a_SOURCES = \
   crypto/sha512.cpp \
   crypto/sha512.h
 
-# x11
-crypto_libbitcoin_crypto_a_SOURCES += \
+# x16r
+crypto_libmotion_crypto_a_SOURCES += \
   crypto/blake.c \
   crypto/bmw.c \
   crypto/cubehash.c \
@@ -330,6 +330,11 @@ crypto_libbitcoin_crypto_a_SOURCES += \
   crypto/shavite.c \
   crypto/simd.c \
   crypto/skein.c \
+  crypto/sph_fugue.c \
+  crypto/sph_shabal.c \
+  crypto/sph_hamsi.c \
+  crypto/sph_hamsi_helper.c \
+  crypto/sph_whirlpool.c \
   crypto/sph_blake.h \
   crypto/sph_bmw.h \
   crypto/sph_cubehash.h \
@@ -341,12 +346,19 @@ crypto_libbitcoin_crypto_a_SOURCES += \
   crypto/sph_shavite.h \
   crypto/sph_simd.h \
   crypto/sph_skein.h \
-  crypto/sph_types.h
+  crypto/sph_types.h \
+  crypto/sph_fugue.h \
+  crypto/sph_shabal.h \
+  crypto/sph_hamsi.h \
+  crypto/sph_whirlpool.h \
+  crypto/sph_sha512.c \
+  crypto/sha512.cpp \
+  crypto/sha512.h
 
-# common: shared between dashd, and dash-qt and non-server tools
-libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_common_a_SOURCES = \
+# common: shared between motiond, and motion-qt and non-server tools
+libmotion_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES)
+libmotion_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotion_common_a_SOURCES = \
   amount.cpp \
   arith_uint256.cpp \
   base58.cpp \
@@ -373,14 +385,14 @@ libbitcoin_common_a_SOURCES = \
   script/script_error.cpp \
   script/sign.cpp \
   script/standard.cpp \
-  $(BITCOIN_CORE_H)
+  $(MOTION_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libbitcoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_util_a_SOURCES = \
+libmotion_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES)
+libmotion_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotion_util_a_SOURCES = \
   support/pagelocker.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
@@ -397,93 +409,93 @@ libbitcoin_util_a_SOURCES = \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
   utiltime.cpp \
-  $(BITCOIN_CORE_H)
+  $(MOTION_CORE_H)
 
 if GLIBC_BACK_COMPAT
-libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
+libmotion_util_a_SOURCES += compat/glibc_compat.cpp
 endif
 
-# cli: shared between dash-cli and dash-qt
-libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libbitcoin_cli_a_SOURCES = \
+# cli: shared between motion-cli and motion-qt
+libmotion_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES)
+libmotion_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotion_cli_a_SOURCES = \
   rpc/client.cpp \
-  $(BITCOIN_CORE_H)
+  $(MOTION_CORE_H)
 
-nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libmotion_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# bitcoind binary #
-dashd_SOURCES = dashd.cpp
-dashd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-dashd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dashd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# motiond binary #
+motiond_SOURCES = motiond.cpp
+motiond_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES)
+motiond_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+motiond_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dashd_SOURCES += dashd-res.rc
+motiond_SOURCES += motiond-res.rc
 endif
 
-dashd_LDADD = \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_COMMON) \
+motiond_LDADD = \
+  $(LIBMOTION_SERVER) \
+  $(LIBMOTION_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBMOTION_UTIL) \
+  $(LIBMOTION_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
 if ENABLE_ZMQ
-dashd_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+motiond_LDADD += $(LIBMOTION_ZMQ) $(ZMQ_LIBS)
 endif
 
 if ENABLE_WALLET
-dashd_LDADD += libbitcoin_wallet.a
+motiond_LDADD += libmotion_wallet.a
 endif
 
-dashd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+motiond_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 
-# dash-cli binary #
-dash_cli_SOURCES = dash-cli.cpp
-dash_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-dash_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dash_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# motion-cli binary #
+motion_cli_SOURCES = motion-cli.cpp
+motion_cli_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES) $(EVENT_CFLAGS)
+motion_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+motion_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dash_cli_SOURCES += dash-cli-res.rc
+motion_cli_SOURCES += motion-cli-res.rc
 endif
 
-dash_cli_LDADD = \
-  $(LIBBITCOIN_CLI) \
+motion_cli_LDADD = \
+  $(LIBMOTION_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL)
-dash_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+  $(LIBMOTION_UTIL)
+motion_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# dash-tx binary #
-dash_tx_SOURCES = dash-tx.cpp
-dash_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-dash_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dash_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# motion-tx binary #
+motion_tx_SOURCES = motion-tx.cpp
+motion_tx_CPPFLAGS = $(AM_CPPFLAGS) $(MOTION_INCLUDES)
+motion_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+motion_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dash_tx_SOURCES += dash-tx-res.rc
+motion_tx_SOURCES += motion-tx-res.rc
 endif
 
-dash_tx_LDADD = \
+motion_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBMOTION_COMMON) \
+  $(LIBMOTION_UTIL) \
+  $(LIBMOTION_CRYPTO) \
   $(LIBSECP256K1)
 
-dash_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+motion_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
-# dashconsensus library #
-if BUILD_BITCOIN_LIBS
-include_HEADERS = script/dashconsensus.h
-libdashconsensus_la_SOURCES = \
+# motionconsensus library #
+if BUILD_MOTION_LIBS
+include_HEADERS = script/motionconsensus.h
+libmotionconsensus_la_SOURCES = \
   crypto/hmac_sha512.cpp \
   crypto/ripemd160.cpp \
   crypto/sha1.cpp \
@@ -492,20 +504,20 @@ libdashconsensus_la_SOURCES = \
   hash.cpp \
   primitives/transaction.cpp \
   pubkey.cpp \
-  script/dashconsensus.cpp \
+  script/motionconsensus.cpp \
   script/interpreter.cpp \
   script/script.cpp \
   uint256.cpp \
   utilstrencodings.cpp
 
 if GLIBC_BACK_COMPAT
-  libdashconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libmotionconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libdashconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libdashconsensus_la_LIBADD = $(LIBSECP256K1)
-libdashconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
-libdashconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmotionconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libmotionconsensus_la_LIBADD = $(LIBSECP256K1)
+libmotionconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_MOTION_INTERNAL
+libmotionconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #

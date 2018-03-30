@@ -7,7 +7,7 @@
 # Test node handling
 #
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 
 try:
@@ -19,7 +19,7 @@ try:
 except ImportError:
     import urlparse
 
-class NodeHandlingTest (BitcoinTestFramework):
+class NodeHandlingTest (MotionTestFramework):
     def run_test(self):
         ###########################
         # setban/listbanned tests #

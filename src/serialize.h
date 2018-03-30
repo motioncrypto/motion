@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_SERIALIZE_H
-#define BITCOIN_SERIALIZE_H
+#ifndef MOTION_SERIALIZE_H
+#define MOTION_SERIALIZE_H
 
 #include "compat/endian.h"
 
@@ -1055,4 +1055,4 @@ inline void SerReadWriteMany(Stream& s, int nType, int nVersion, CSerActionUnser
     ::UnserializeMany(s, nType, nVersion, args...);
 }
 
-#endif // BITCOIN_SERIALIZE_H
+#endif // MOTION_SERIALIZE_H

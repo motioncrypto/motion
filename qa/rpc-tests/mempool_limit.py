@@ -5,10 +5,10 @@
 
 # Test mempool limiting together/eviction with the wallet
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import MotionTestFramework
 from test_framework.util import *
 
-class MempoolLimitTest(BitcoinTestFramework):
+class MempoolLimitTest(MotionTestFramework):
 
     def __init__(self):
         self.txouts = gen_return_txouts()

@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  motiond The Motion Core server.
+#
+#
+# chkconfig: 345 80 20
+# description: motiond
+# processname: motiond
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/motiond, see below
+if [ -f /etc/sysconfig/motiond ]; then
+        . /etc/sysconfig/motiond
+fi
+
+RETVAL=0
+
+prog=motiond
+# you can override the lockfile via MOTIOND_LOCKFILE in /etc/sysconfig/motiond
+lockfile=${MOTIOND_LOCKFILE-/var/lock/subsys/motiond}
+
+# motiond defaults to /usr/bin/motiond, override with MOTIOND_BIN
+motiond=${MOTIOND_BIN-/usr/bin/motiond}
+
+# motiond opts default to -disablewallet, override with MOTIOND_OPTS
+motiond_opts=${MOTIOND_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $motiond $motiond_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

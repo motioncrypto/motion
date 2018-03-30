@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NETADDRESS_H
-#define BITCOIN_NETADDRESS_H
+#ifndef MOTION_NETADDRESS_H
+#define MOTION_NETADDRESS_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dash-config.h"
+#include "config/motion-config.h"
 #endif
 
 #include "compat.h"
@@ -167,4 +167,4 @@ class CService : public CNetAddr
         }
 };
 
-#endif // BITCOIN_NETADDRESS_H
+#endif // MOTION_NETADDRESS_H

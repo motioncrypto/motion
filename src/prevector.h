@@ -1,5 +1,5 @@
-#ifndef _BITCOIN_PREVECTOR_H_
-#define _BITCOIN_PREVECTOR_H_
+#ifndef _MOTION_PREVECTOR_H_
+#define _MOTION_PREVECTOR_H_
 
 #include <stdlib.h>
 #include <stdint.h>

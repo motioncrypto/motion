@@ -599,7 +599,7 @@ void RPCConsole::buildParameterlist(QString arg)
     // Append repair parameter to command line.
     args.append(arg);
 
-    // Send command-line arguments to BitcoinGUI::handleRestart()
+    // Send command-line arguments to MotionGUI::handleRestart()
     Q_EMIT handleRestart(args);
 }
 
@@ -641,7 +641,7 @@ void RPCConsole::clear(bool clearHistory)
             ).arg(fixedFontInfo.family(), QString("%1pt").arg(consoleFontSize))
         );
 
-    message(CMD_REPLY, (tr("Welcome to the Dash Core RPC console.") + "<br>" +
+    message(CMD_REPLY, (tr("Welcome to the Motion Core RPC console.") + "<br>" +
                         tr("Use up and down arrows to navigate history, and <b>Ctrl-L</b> to clear screen.") + "<br>" +
                         tr("Type <b>help</b> for an overview of available commands.")), true);
 }

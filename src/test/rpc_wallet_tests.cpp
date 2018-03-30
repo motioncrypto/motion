@@ -9,7 +9,7 @@
 #include "validation.h"
 #include "wallet/wallet.h"
 
-#include "test/test_dash.h"
+#include "test/test_motion.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(rpc_addmultisig)
     const char address2Hex[] = "0388c2037017c62240b6b72ac1a2a5f94da790596ebd06177c8572752922165cb4";
 
     UniValue v;
-    CBitcoinAddress address;
+    CMotionAddress address;
     BOOST_CHECK_NO_THROW(v = addmultisig(createArgs(1, address1Hex), false));
     address.SetString(v.get_str());
     BOOST_CHECK(address.IsValid() && address.IsScript());
@@ -67,15 +67,15 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
     // Test RPC calls for various wallet statistics
     UniValue r;
     CPubKey demoPubkey;
-    CBitcoinAddress demoAddress;
+    CMotionAddress demoAddress;
     UniValue retValue;
     string strAccount = "walletDemoAccount";
-    CBitcoinAddress setaccountDemoAddress;
+    CMotionAddress setaccountDemoAddress;
     {
         LOCK(pwalletMain->cs_wallet);
 
         demoPubkey = pwalletMain->GenerateNewKey(0, false);
-        demoAddress = CBitcoinAddress(CTxDestination(demoPubkey.GetID()));
+        demoAddress = CMotionAddress(CTxDestination(demoPubkey.GetID()));
         string strPurpose = "receive";
         BOOST_CHECK_NO_THROW({ /*Initialize Wallet with an account */
             CWalletDB walletdb(pwalletMain->strWalletFile);
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
         });
 
         CPubKey setaccountDemoPubkey = pwalletMain->GenerateNewKey(0, false);
-        setaccountDemoAddress = CBitcoinAddress(CTxDestination(setaccountDemoPubkey.GetID()));
+        setaccountDemoAddress = CMotionAddress(CTxDestination(setaccountDemoPubkey.GetID()));
     }
     /*********************************
      * 			setaccount
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
     BOOST_CHECK_NO_THROW(CallRPC("getaccountaddress \"\""));
     BOOST_CHECK_NO_THROW(CallRPC("getaccountaddress accountThatDoesntExists")); // Should generate a new account
     BOOST_CHECK_NO_THROW(retValue = CallRPC("getaccountaddress " + strAccount));
-    BOOST_CHECK(CBitcoinAddress(retValue.get_str()).Get() == demoAddress.Get());
+    BOOST_CHECK(CMotionAddress(retValue.get_str()).Get() == demoAddress.Get());
 
     /*********************************
      * 			getaccount
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
     BOOST_CHECK_NO_THROW(retValue = CallRPC("getaddressesbyaccount " + strAccount));
     UniValue arr = retValue.get_array();
     BOOST_CHECK(arr.size() > 0);
-    BOOST_CHECK(CBitcoinAddress(arr[0].get_str()).Get() == demoAddress.Get());
+    BOOST_CHECK(CMotionAddress(arr[0].get_str()).Get() == demoAddress.Get());
 
     /*********************************
      * 	     fundrawtransaction

@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_NETWORKSTYLE_H
-#define BITCOIN_QT_NETWORKSTYLE_H
+#ifndef MOTION_QT_NETWORKSTYLE_H
+#define MOTION_QT_NETWORKSTYLE_H
 
 #include <QIcon>
 #include <QPixmap>
@@ -35,4 +35,4 @@ private:
     void rotateColors(QImage& img, const int iconColorHueShift, const int iconColorSaturationReduction);
 };
 
-#endif // BITCOIN_QT_NETWORKSTYLE_H
+#endif // MOTION_QT_NETWORKSTYLE_H

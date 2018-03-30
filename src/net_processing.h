@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NET_PROCESSING_H
-#define BITCOIN_NET_PROCESSING_H
+#ifndef MOTION_NET_PROCESSING_H
+#define MOTION_NET_PROCESSING_H
 
 #include "net.h"
 #include "validationinterface.h"
@@ -54,4 +54,4 @@ bool ProcessMessages(CNode* pfrom, CConnman& connman, std::atomic<bool>& interru
  */
 bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interrupt);
 
-#endif // BITCOIN_NET_PROCESSING_H
+#endif // MOTION_NET_PROCESSING_H

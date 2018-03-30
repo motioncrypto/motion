@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CONSENSUS_PARAMS_H
-#define BITCOIN_CONSENSUS_PARAMS_H
+#ifndef MOTION_CONSENSUS_PARAMS_H
+#define MOTION_CONSENSUS_PARAMS_H
 
 #include "uint256.h"
 #include <map>
@@ -77,14 +77,25 @@ struct Params {
     uint256 powLimit;
     bool fPowAllowMinDifficultyBlocks;
     bool fPowNoRetargeting;
+    bool useDarkGravityWave;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
-    int nPowKGWHeight;
-    int nPowDGWHeight;
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+
+    // Params for Digishield difficulty adjustment algorithm. (Used by mainnet currently.)
+    int64_t nDigishieldAveragingWindow;
+    int64_t nDigishieldMaxAdjustDown;
+    int64_t nDigishieldMaxAdjustUp;
+    int64_t DigishieldAveragingWindowTimespan() const { return nDigishieldAveragingWindow * nPowTargetSpacing; }
+    int64_t DigishieldMinActualTimespan() const {
+        return (DigishieldAveragingWindowTimespan() * (100 - nDigishieldMaxAdjustUp)) / 100;
+    }
+    int64_t DigishieldMaxActualTimespan() const {
+        return (DigishieldAveragingWindowTimespan() * (100 + nDigishieldMaxAdjustDown)) / 100;
+    }
 };
 } // namespace Consensus
 
-#endif // BITCOIN_CONSENSUS_PARAMS_H
+#endif // MOTION_CONSENSUS_PARAMS_H

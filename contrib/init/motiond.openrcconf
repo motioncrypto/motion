@@ -1,0 +1,33 @@
+# /etc/conf.d/motiond: config file for /etc/init.d/motiond
+
+# Config file location
+#MOTIOND_CONFIGFILE="/etc/motioncore/motion.conf"
+
+# What directory to write pidfile to?  (created and owned by $MOTIOND_USER)
+#MOTIOND_PIDDIR="/var/run/motiond"
+
+# What filename to give the pidfile
+#MOTIOND_PIDFILE="${MOTIOND_PIDDIR}/motiond.pid"
+
+# Where to write motiond data (be mindful that the blockchain is large)
+#MOTIOND_DATADIR="/var/lib/motiond"
+
+# User and group to own motiond process
+#MOTIOND_USER="motioncore"
+#MOTIOND_GROUP="motioncore"
+
+# Path to motiond executable
+#MOTIOND_BIN="/usr/bin/motiond"
+
+# Nice value to run motiond under
+#MOTIOND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+MOTIOND_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for motiond to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+MOTIOND_SIGTERM_TIMEOUT=60

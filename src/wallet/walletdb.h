@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_WALLET_WALLETDB_H
-#define BITCOIN_WALLET_WALLETDB_H
+#ifndef MOTION_WALLET_WALLETDB_H
+#define MOTION_WALLET_WALLETDB_H
 
 #include "amount.h"
 #include "wallet/db.h"
@@ -151,4 +151,4 @@ void ThreadFlushWalletDB(const std::string& strFile);
 
 bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& strBackupWarning, std::string& strBackupError);
 
-#endif // BITCOIN_WALLET_WALLETDB_H
+#endif // MOTION_WALLET_WALLETDB_H

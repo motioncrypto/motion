@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_PRIMITIVES_TRANSACTION_H
-#define BITCOIN_PRIMITIVES_TRANSACTION_H
+#ifndef MOTION_PRIMITIVES_TRANSACTION_H
+#define MOTION_PRIMITIVES_TRANSACTION_H
 
 #include "amount.h"
 #include "script/script.h"
@@ -340,7 +340,7 @@ struct CMutableTransaction
 };
 
 /** Implementation of BIP69
- * https://github.com/bitcoin/bips/blob/master/bip-0069.mediawiki
+ * https://github.com/motion/bips/blob/master/bip-0069.mediawiki
  */
 struct CompareInputBIP69
 {
@@ -367,4 +367,4 @@ struct CompareOutputBIP69
     }
 };
 
-#endif // BITCOIN_PRIMITIVES_TRANSACTION_H
+#endif // MOTION_PRIMITIVES_TRANSACTION_H

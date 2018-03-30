@@ -1,0 +1,6 @@
+usr/local/bin/motion-qt usr/bin
+share/pixmaps/motion32.xpm usr/share/pixmaps
+share/pixmaps/motion16.xpm usr/share/pixmaps
+share/pixmaps/motion128.png usr/share/pixmaps
+debian/motion-qt.desktop usr/share/applications
+debian/motion-qt.protocol usr/share/kde4/services/

@@ -1,0 +1,3 @@
+debian/manpages/motiond.1
+debian/manpages/motion.conf.5
+debian/manpages/motion-cli.1

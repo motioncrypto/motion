@@ -4,7 +4,7 @@
 
 #include "hash.h"
 #include "utilstrencodings.h"
-#include "test/test_dash.h"
+#include "test/test_motion.h"
 
 #include <vector>
 
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(murmurhash3)
 
     // Test MurmurHash3 with various inputs. Of course this is retested in the
     // bloom filter tests - they would fail if MurmurHash3() had any problems -
-    // but is useful for those trying to implement Bitcoin libraries as a
+    // but is useful for those trying to implement Motion libraries as a
     // source of test data for their MurmurHash3() primitive during
     // development.
     //
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(siphash)
     BOOST_CHECK_EQUAL(SipHashUint256(0x0706050403020100ULL, 0x0F0E0D0C0B0A0908ULL, uint256S("1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100")), 0x7127512f72f27cceull);
 
     // Check consistency between CSipHasher and SipHashUint256[Extra].
-    // TODO reenable when backporting Bitcoin #10321
+    // TODO reenable when backporting Motion #10321
     /*FastRandomContext ctx;
     for (int i = 0; i < 16; ++i) {
         uint64_t k1 = ctx.rand64();
