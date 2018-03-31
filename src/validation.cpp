@@ -1237,6 +1237,11 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
         return 1051200 * COIN;
     }
 
+    // Ninja Launch, first 500 blocks 1 MTN reward
+    if (nPrevHeigh <= 500) {
+        return 1 * COIN;
+    }
+
     if (nPrevHeight <= 4500 && Params().NetworkIDString() == CBaseChainParams::MAIN) {
         /* a bug which caused diff to not be correctly calculated */
         dDiff = (double)0x0000ffff / (double)(nPrevBits & 0x00ffffff);
