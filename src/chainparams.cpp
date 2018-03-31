@@ -272,6 +272,7 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("0xd5dec0980d7b84cc1c048eb8706afe68bbbdb07fdefab76de8d176dfcb858ae8"));
 
         vSeeds.push_back(CDNSSeedData("testnet.motionproject.org", "testnet.seed.motionproject.org"));
+        vSeeds.push_back(CDNSSeedData("fixed-seeds.motionproject.org", "testnet.fixed-seeds.motionproject.org"));
         // vFixedSeeds.clear();
         // vSeeds.clear();
 
