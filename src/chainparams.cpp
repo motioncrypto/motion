@@ -151,9 +151,9 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000fa43a87286840b93955cd88909ce2b4f758d68433436b1f94f2788f58ee"));
         assert(genesis.hashMerkleRoot == uint256S("0xc6392660069fae2937d5680f2cc48fe76f34e201c7c86d94224d555ce566aa40"));
 
-        // vSeeds.push_back(CDNSSeedData("motionproject.org", "seed.motionproject.org"));
-        vFixedSeeds.clear();
-        vSeeds.clear();
+        vSeeds.push_back(CDNSSeedData("motionproject.org", "seed.motionproject.org"));
+        // vFixedSeeds.clear();
+        // vSeeds.clear();
 
         // Motion addresses start with 'M'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,50);
