@@ -203,7 +203,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 518400;
+        consensus.nSubsidyHalvingInterval = 21600;
         consensus.nMasternodePaymentsStartBlock = 2; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 999;
         consensus.nMasternodePaymentsIncreasePeriod = 999;
@@ -213,7 +213,7 @@ public:
         consensus.nBudgetPaymentsWindowBlocks = 10;
         consensus.nBudgetProposalEstablishingTime = 60*20;
         consensus.nSuperblockStartBlock = 4200; // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
-        consensus.nSuperblockCycle = 24; // Superblocks can be issued hourly on testnet
+        consensus.nSuperblockCycle = 30; // Superblocks can be issued hourly on testnet
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 500;
         consensus.nMasternodeMinimumConfirmations = 1;
@@ -302,15 +302,15 @@ public:
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
         strSporkPubKey = "04d10e7758ba66412ddaa7f8b7e6a8532e817d85b3b18d683a0091fa379e5f0f616405b5863ca275547838115827e2fe614ca4ec3d8a36e12db58309f888ae2af8";
 
-        checkpointData = (CCheckpointData) {
-            boost::assign::map_list_of
-            (  0, uint256S("0x000009ebb773c2dbed181ee4a8dafb356190e47d089e985f3f56707fa25fa81e")),
+        // checkpointData = (CCheckpointData) {
+        //     boost::assign::map_list_of
+        //     (  0, uint256S("0x000009ebb773c2dbed181ee4a8dafb356190e47d089e985f3f56707fa25fa81e")),
 
-            1522201468, // * UNIX timestamp of last checkpoint block
-            0,       // * total number of transactions between genesis and last checkpoint
-                        //   (the tx=... number in the SetBestChain debug.log lines)
-            250         // * estimated number of transactions per day after checkpoint
-        };
+        //     1522201468, // * UNIX timestamp of last checkpoint block
+        //     0,       // * total number of transactions between genesis and last checkpoint
+        //                 //   (the tx=... number in the SetBestChain debug.log lines)
+        //     250         // * estimated number of transactions per day after checkpoint
+        // };
 
     }
 };
