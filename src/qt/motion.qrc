@@ -171,6 +171,21 @@
         <file alias="fontsmaller">res/icons/light/fontsmaller.png</file>
         <file alias="transaction_abandoned">res/icons/light/transaction_abandoned.png</file>
         <file alias="network_disabled">res/icons/light/network_disabled.png</file>
+        <file alias="chevron-right">res/icons/light/chevron-right.png</file>
+        <file alias="wrench">res/icons/light/wrench.png</file>
+        <file alias="pw">res/icons/light/pw.png</file>
+        <file alias="cancel">res/icons/light/cancel.png</file>
+        <file alias="info">res/icons/light/info.png</file>
+        <file alias="cloak">res/icons/light/cloak.png</file>
+        <file alias="inputs">res/icons/light/inputs.png</file>
+        <file alias="hidden">res/icons/light/hidden.png</file>
+        <file alias="alert">res/icons/light/alert.png</file>
+        <file alias="reset">res/icons/light/reset.png</file>
+        <file alias="fee">res/icons/light/fee.png</file>
+        <file alias="user-add">res/icons/light/user-add.png</file>
+        <file alias="remove-disabled">res/icons/light/remove-disabled.png</file>
+        <file alias="edit-disabled">res/icons/light/edit-disabled.png</file>
+        <file alias="stop">res/icons/light/stop.png</file>
     </qresource>
     <qresource prefix="/icons/trad">
         <file alias="address-book">res/icons/trad/address-book.png</file>
@@ -233,7 +248,6 @@
         <file alias="crownium">res/css/crownium.css</file>
         <file alias="light">res/css/light.css</file>
         <file alias="light-hires">res/css/light-hires.css</file>
-        <file alias="trad">res/css/trad.css</file>
     </qresource>
     <qresource prefix="/images/drkblue">
         <file alias="about">res/images/drkblue/about.png</file>
@@ -277,8 +291,14 @@
         <file alias="drkblue_rightArrow_small">res/images/light/drkblue_rightArrow_small.png</file>
         <file alias="drkblue_qtreeview_selected">res/images/light/drkblue_qtreeview_selected.png</file>
         <file alias="drkblue_walletFrame_bg">res/images/light/drkblue_walletFrame_bg.png</file>
+        <file alias="orchid222">res/images/light/orchid222.png</file>
+        <file alias="static">res/images/light/static.png</file>
         <file alias="splash">res/images/light/splash.png</file>
         <file alias="splash_testnet">res/images/light/splash_testnet.png</file>
+        <file alias="radio_checked">res/images/light/radio_checked.png</file>
+        <file alias="radio_unchecked">res/images/light/radio_unchecked.png</file>
+        <file alias="radio_disabled_checked">res/images/light/radio_disabled_checked.png</file>
+        <file alias="radio_disabled_unchecked">res/images/light/radio_disabled_unchecked.png</file>
     </qresource>
     <qresource prefix="/images/trad">
         <file alias="about">res/images/trad/about.png</file>

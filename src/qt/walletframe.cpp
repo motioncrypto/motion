@@ -120,7 +120,22 @@ void WalletFrame::gotoHistoryPage()
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoHistoryPage();
+    }
+    
+void WalletFrame::gotoSettingsPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoSettingsPage();
 }
+
+void WalletFrame::gotoToolsPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoToolsPage();
+}
+
 
 void WalletFrame::gotoMasternodePage()
 {
@@ -155,11 +170,19 @@ void WalletFrame::gotoVerifyMessageTab(QString addr)
     WalletView *walletView = currentWalletView();
     if (walletView)
         walletView->gotoVerifyMessageTab(addr);
+    }
+    
+void WalletFrame::gotoToolsPageTab(enum ToolsPage::TabTypes page)
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoToolsPageTab(page);
 }
 
 void WalletFrame::encryptWallet(bool status)
 {
     WalletView *walletView = currentWalletView();
+    status = true;
     if (walletView)
         walletView->encryptWallet(status);
 }

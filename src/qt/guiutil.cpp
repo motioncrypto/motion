@@ -184,7 +184,7 @@ bool parseMotionURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!MotionUnits::parse(MotionUnits::MOTION, i->second, &rv.amount))
+                if(!MotionUnits::parse(MotionUnits::MTN, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -223,7 +223,7 @@ QString formatMotionURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(MotionUnits::format(MotionUnits::MOTION, info.amount, false, MotionUnits::separatorNever));
+        ret += QString("?amount=%1").arg(MotionUnits::format(MotionUnits::MTN, info.amount, false, MotionUnits::separatorNever));
         paramCount++;
     }
 

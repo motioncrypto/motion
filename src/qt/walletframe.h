@@ -5,6 +5,7 @@
 #ifndef MOTION_QT_WALLETFRAME_H
 #define MOTION_QT_WALLETFRAME_H
 
+#include "toolspage.h"
 #include <QFrame>
 #include <QMap>
 
@@ -37,6 +38,8 @@ public:
     bool handlePaymentRequest(const SendCoinsRecipient& recipient);
 
     void showOutOfSyncWarning(bool fShow);
+    WalletView getWalletView();
+    void gotoToolsPageTab(enum ToolsPage::TabTypes page);
 
 Q_SIGNALS:
     /** Notify that the user has requested more information about the out-of-sync warning */
@@ -65,6 +68,8 @@ public Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+    void gotoSettingsPage();
+    void gotoToolsPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");

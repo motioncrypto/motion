@@ -24,10 +24,9 @@ Drag Motion-Qt to your applications folder, and then run Motion-Qt.
 
 ### Need Help?
 
-* See the [Motion documentation](https://motionpay.atlassian.net/wiki/display/DOC)
+* See the [Motion documentation](https://dashpay.atlassian.net/wiki/display/DOC)
 for help and more information.
-* Ask for help on [#motionpay](http://webchat.freenode.net?channels=motionpay) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=motionpay).
-* Ask for help on the [MotionTalk](https://motiontalk.org/) forums.
+* Ask for help on the [BitcoinTalk](https://bitcointalk.org/) forums.
 
 Building
 ---------------------

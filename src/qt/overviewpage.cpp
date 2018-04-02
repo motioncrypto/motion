@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2017-2018 The Galactrum developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -38,7 +39,7 @@ class TxViewDelegate : public QAbstractItemDelegate
     Q_OBJECT
 public:
     TxViewDelegate(const PlatformStyle *_platformStyle, QObject *parent=nullptr):
-        QAbstractItemDelegate(parent), unit(MotionUnits::MOTION),
+        QAbstractItemDelegate(parent), unit(MotionUnits::MTN),
         platformStyle(_platformStyle)
     {
 
@@ -121,7 +122,7 @@ public:
 };
 #include "overviewpage.moc"
 
-OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
+OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent, QWidget *walletview, QWidget *walletframe) :
     QWidget(parent),
     ui(new Ui::OverviewPage),
     clientModel(0),
@@ -133,23 +134,15 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     currentWatchUnconfBalance(-1),
     currentWatchImmatureBalance(-1),
     txdelegate(new TxViewDelegate(platformStyle, this)),
-    timer(nullptr)
+    fShowPrivateSend(false)
 {
     ui->setupUi(this);
     QString theme = GUIUtil::getThemeName();
 
-    // Recent transactions
-    ui->listTransactions->setItemDelegate(txdelegate);
-    ui->listTransactions->setIconSize(QSize(DECORATION_SIZE, DECORATION_SIZE));
-    // Note: minimum height of listTransactions will be set later in updateAdvancedPSUI() to reflect actual settings
-    ui->listTransactions->setAttribute(Qt::WA_MacShowFocusRect, false);
-
-    connect(ui->listTransactions, SIGNAL(clicked(QModelIndex)), this, SLOT(handleTransactionClicked(QModelIndex)));
+  
 
     // init "out of sync" warning labels
     ui->labelWalletStatus->setText("(" + tr("out of sync") + ")");
-    ui->labelPrivateSendSyncStatus->setText("(" + tr("out of sync") + ")");
-    ui->labelTransactionsStatus->setText("(" + tr("out of sync") + ")");
 
     // hide PS frame (helps to preserve saved size)
     // we'll setup and make it visible in updateAdvancedPSUI() later if we are not in litemode
@@ -157,6 +150,17 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
+
+    // Pass through encryption status changed signals
+    connect(walletview, SIGNAL(encryptionStatusChanged(int)), this, SLOT(setEncryptionStatus(int)));
+    connect(ui->pushButtonEncryptWallet, SIGNAL(clicked(bool)), walletframe, SLOT(encryptWallet(bool)));
+    connect(ui->pushButtonBackupWallet, SIGNAL(clicked()), walletframe, SLOT(backupWallet()));
+    connect(ui->pushButtonChangePassphrase, SIGNAL(clicked()), walletframe, SLOT(changePassphrase()));
+    connect(ui->pushButtonUnlockWallet, SIGNAL(clicked()), walletframe, SLOT(unlockWallet()));
+    connect(ui->pushButtonLockWallet, SIGNAL(clicked()), walletframe, SLOT(lockWallet()));
+
+    connect(ui->buttonShowPrivateSend, SIGNAL(clicked()), this, SLOT(showPrivateSend()));
+    connect(ui->buttonHidePrivateSend, SIGNAL(clicked()), this, SLOT(hidePrivateSend()));
 
     // that's it for litemode
     if(fLiteMode) return;
@@ -169,9 +173,9 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         }
     } else {
         if(!privateSendClient.fEnablePrivateSend){
-            ui->togglePrivateSend->setText(tr("Start Mixing"));
+            ui->togglePrivateSend->setText(tr("Start Cloaking"));
         } else {
-            ui->togglePrivateSend->setText(tr("Stop Mixing"));
+            ui->togglePrivateSend->setText(tr("Stop Cloaking"));
         }
         // Disable privateSendClient builtin support for automatic backups while we are in GUI,
         // we'll handle automatic backups and user warnings in privateSendStatus()
@@ -181,7 +185,104 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         connect(timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
         timer->start(1000);
     }
+    
+    ui->pushButtonEncryptWallet->setIcon(QIcon(":icons/light/pw"));
+    ui->pushButtonBackupWallet->setIcon(QIcon(":icons/light/filesave"));
+    ui->pushButtonChangePassphrase->setIcon(QIcon(":icons/light/pw"));
+    ui->pushButtonUnlockWallet->setIcon(QIcon(":icons/light/key"));
+    ui->pushButtonLockWallet->setIcon(QIcon(":icons/light/lock_closed"));
+    ui->pushButtonEncryptWallet->setIconSize(QSize(32, 32));
+    ui->pushButtonBackupWallet->setIconSize(QSize(32, 32));
+    ui->pushButtonChangePassphrase->setIconSize(QSize(32, 32));
+    ui->pushButtonUnlockWallet->setIconSize(QSize(32, 32));
+    ui->pushButtonLockWallet->setIconSize(QSize(32, 32));
+
+    ui->buttonShowPrivateSend->setIcon(QIcon(":icons/light/edit"));
+    ui->buttonHidePrivateSend->setIcon(QIcon(":icons/light/hidden"));
+    ui->privateSendInfo->setIcon(QIcon(":icons/light/info"));
+    ui->togglePrivateSend->setIcon(QIcon(":icons/light/cloak"));
+    ui->privateSendReset->setIcon(QIcon(":icons/light/reset"));
+    ui->buttonShowPrivateSend->setIconSize(QSize(32, 32));
+    ui->buttonHidePrivateSend->setIconSize(QSize(32, 32));
+    ui->privateSendInfo->setIconSize(QSize(32, 32));
+    ui->togglePrivateSend->setIconSize(QSize(32, 32));
+    ui->privateSendReset->setIconSize(QSize(32, 32));
 }
+
+void OverviewPage::showPrivateSend() {
+    ui->framePrivateSend->setVisible(true);
+    ui->buttonShowPrivateSend->setVisible(false);
+    ui->buttonHidePrivateSend->setVisible(true);
+}
+
+void OverviewPage::hidePrivateSend() {
+    ui->framePrivateSend->setVisible(false);
+    ui->buttonShowPrivateSend->setVisible(true);
+    ui->buttonHidePrivateSend->setVisible(false);
+}
+
+#ifdef ENABLE_WALLET
+void OverviewPage::setEncryptionStatus(int status)
+{
+    switch(status)
+    {
+    case WalletModel::Unencrypted:
+        /*labelEncryptionIcon->hide();
+        encryptWalletAction->setChecked(false);
+        changePassphraseAction->setEnabled(false);
+        unlockWalletAction->setVisible(false);
+        lockWalletAction->setVisible(false);
+        encryptWalletAction->setEnabled(true);*/
+        ui->pushButtonEncryptWallet->setVisible(true);
+        ui->pushButtonChangePassphrase->setVisible(false);
+        ui->pushButtonLockWallet->setVisible(false);
+        ui->pushButtonUnlockWallet->setVisible(false);
+        break;
+    case WalletModel::Unlocked:
+        /*labelEncryptionIcon->show();
+        labelEncryptionIcon->setPixmap(QIcon(":/icons/" + theme + "/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b>"));
+        encryptWalletAction->setChecked(true);
+        changePassphraseAction->setEnabled(true);
+        unlockWalletAction->setVisible(false);
+        lockWalletAction->setVisible(true);
+        encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported*/
+        ui->pushButtonEncryptWallet->setVisible(false);
+        ui->pushButtonChangePassphrase->setVisible(true);
+        ui->pushButtonLockWallet->setVisible(true);
+        ui->pushButtonUnlockWallet->setVisible(false);
+        break;
+    case WalletModel::UnlockedForMixingOnly:
+        /*labelEncryptionIcon->show();
+        labelEncryptionIcon->setPixmap(QIcon(":/icons/" + theme + "/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b> for mixing only"));
+        encryptWalletAction->setChecked(true);
+        changePassphraseAction->setEnabled(true);
+        unlockWalletAction->setVisible(true);
+        lockWalletAction->setVisible(true);
+        encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported*/
+        ui->pushButtonEncryptWallet->setVisible(false);
+        ui->pushButtonChangePassphrase->setVisible(true);
+        ui->pushButtonLockWallet->setVisible(true);
+        ui->pushButtonUnlockWallet->setVisible(false);
+        break;
+    case WalletModel::Locked:
+        /*labelEncryptionIcon->show();
+        labelEncryptionIcon->setPixmap(QIcon(":/icons/" + theme + "/lock_closed").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>locked</b>"));
+        encryptWalletAction->setChecked(true);
+        changePassphraseAction->setEnabled(true);
+        unlockWalletAction->setVisible(true);
+        lockWalletAction->setVisible(false);
+        encryptWalletAction->setEnabled(false); // TODO: decrypt currently not supported*/
+        ui->pushButtonEncryptWallet->setVisible(false);
+        ui->pushButtonChangePassphrase->setVisible(true);
+        ui->pushButtonLockWallet->setVisible(false);
+        ui->pushButtonUnlockWallet->setVisible(true);
+        break;
+    }
+}
+#endif
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)
 {
@@ -196,7 +297,7 @@ void OverviewPage::handleOutOfSyncWarningClicks()
 
 OverviewPage::~OverviewPage()
 {
-    if(timer) disconnect(timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
+    if(!fLiteMode && !fMasterNode) disconnect(timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
     delete ui;
 }
 
@@ -235,7 +336,50 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
 
     if(cachedTxLocks != nCompleteTXLocks){
         cachedTxLocks = nCompleteTXLocks;
-        ui->listTransactions->update();
+        //ui->listTransactions->update();
+    }
+
+    if (unconfirmedBalance == 0) {
+        ui->labelPendingText->setVisible(false);
+        ui->labelUnconfirmed->setVisible(false);
+    } else {
+        ui->labelPendingText->setVisible(true);
+        ui->labelUnconfirmed->setVisible(true);
+    }
+    if (immatureBalance == 0) {
+        ui->labelImmature->setVisible(false);
+        ui->labelImmatureText->setVisible(false);
+    } else {
+        ui->labelImmature->setVisible(true);
+        ui->labelImmatureText->setVisible(true);
+    }
+    if (immatureBalance + unconfirmedBalance == 0) {
+        ui->labelTotal->setVisible(false);
+        ui->labelTotalText->setVisible(false);
+    } else {
+        ui->labelTotal->setVisible(true);
+        ui->labelTotalText->setVisible(true);
+    }
+    if (watchUnconfBalance > 0) {
+        ui->labelWatchPending->setVisible(true);
+        ui->labelUnconfirmed->setVisible(true);
+        ui->labelPendingText->setVisible(true);
+    } else {
+        ui->labelWatchPending->setVisible(false);
+    }
+    if (watchImmatureBalance > 0) {
+        ui->labelImmature->setVisible(true);
+        ui->labelImmatureText->setVisible(true);
+        ui->labelWatchImmature->setVisible(true);
+    } else {
+        ui->labelWatchImmature->setVisible(false);
+    }
+    if (watchOnlyBalance + watchUnconfBalance + watchImmatureBalance > 0) {
+        ui->labelWatchTotal->setVisible(true);
+        ui->labelTotal->setVisible(true);
+        ui->labelTotalText->setVisible(true);
+    } else {
+        ui->labelWatchTotal->setVisible(false);
     }
 }
 
@@ -276,7 +420,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
     this->walletModel = model;
     if(model && model->getOptionsModel())
     {
-        // update the display unit, to not use the default ("MOTION")
+        // update the display unit, to not use the default ("MTN")
         updateDisplayUnit();
         // Keep up to date with wallet
         setBalance(model->getBalance(), model->getUnconfirmedBalance(), model->getImmatureBalance(), model->getAnonymizedBalance(),
@@ -311,7 +455,7 @@ void OverviewPage::updateDisplayUnit()
         // Update txdelegate->unit with the current unit
         txdelegate->unit = nDisplayUnit;
 
-        ui->listTransactions->update();
+        //ui->listTransactions->update();
     }
 }
 
@@ -325,7 +469,7 @@ void OverviewPage::showOutOfSyncWarning(bool fShow)
 {
     ui->labelWalletStatus->setVisible(fShow);
     ui->labelPrivateSendSyncStatus->setVisible(fShow);
-    ui->labelTransactionsStatus->setVisible(fShow);
+    //ui->labelTransactionsStatus->setVisible(fShow);
 }
 
 void OverviewPage::updatePrivateSendProgress()
@@ -442,7 +586,7 @@ void OverviewPage::updateAdvancedPSUI(bool fShowAdvancedPSUI) {
 
     if (fLiteMode) return;
 
-    ui->framePrivateSend->setVisible(true);
+    //ui->framePrivateSend->setVisible(true);
     ui->labelCompletitionText->setVisible(fShowAdvancedPSUI);
     ui->privateSendProgress->setVisible(fShowAdvancedPSUI);
     ui->labelSubmittedDenomText->setVisible(fShowAdvancedPSUI);
@@ -477,9 +621,10 @@ void OverviewPage::privateSendStatus()
         }
 
         ui->labelPrivateSendLastMessage->setText("");
-        ui->togglePrivateSend->setText(tr("Start Mixing"));
+        ui->togglePrivateSend->setText(tr("Start Cloaking"));
+        ui->togglePrivateSend->setIcon(QIcon(":icons/light/cloak"));
 
-        QString strEnabled = tr("Disabled");
+        QString strEnabled = tr("Cloaking stopped");
         // Show how many keys left in advanced PS UI mode only
         if (fShowAdvancedPSUI) strEnabled += ", " + strKeysLeftText;
         ui->labelPrivateSendEnabled->setText(strEnabled);
@@ -499,7 +644,7 @@ void OverviewPage::privateSendStatus()
                                 tr("Note: You turn this message off in options.");
             ui->labelPrivateSendEnabled->setToolTip(strWarn);
             LogPrintf("OverviewPage::privateSendStatus -- Very low number of keys left since last automatic backup, warning user and trying to create new backup...\n");
-            QMessageBox::warning(this, tr("PrivateSend"), strWarn, QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::warning(this, tr("Cloaking"), strWarn, QMessageBox::Ok, QMessageBox::Ok);
         } else {
             LogPrintf("OverviewPage::privateSendStatus -- Very low number of keys left since last automatic backup, skipping warning and trying to create new backup...\n");
         }
@@ -511,7 +656,7 @@ void OverviewPage::privateSendStatus()
                 // It's still more or less safe to continue but warn user anyway
                 LogPrintf("OverviewPage::privateSendStatus -- WARNING! Something went wrong on automatic backup: %s\n", strBackupWarning);
 
-                QMessageBox::warning(this, tr("PrivateSend"),
+                QMessageBox::warning(this, tr("Cloaking"),
                     tr("WARNING! Something went wrong on automatic backup") + ":<br><br>" + strBackupWarning.c_str(),
                     QMessageBox::Ok, QMessageBox::Ok);
             }
@@ -519,7 +664,7 @@ void OverviewPage::privateSendStatus()
                 // Things are really broken, warn user and stop mixing immediately
                 LogPrintf("OverviewPage::privateSendStatus -- ERROR! Failed to create automatic backup: %s\n", strBackupError);
 
-                QMessageBox::warning(this, tr("PrivateSend"),
+                QMessageBox::warning(this, tr("Cloaking"),
                     tr("ERROR! Failed to create automatic backup") + ":<br><br>" + strBackupError.c_str() + "<br>" +
                     tr("Mixing is disabled, please close your wallet and fix the issue!"),
                     QMessageBox::Ok, QMessageBox::Ok);
@@ -527,7 +672,7 @@ void OverviewPage::privateSendStatus()
         }
     }
 
-    QString strEnabled = privateSendClient.fEnablePrivateSend ? tr("Enabled") : tr("Disabled");
+    QString strEnabled = privateSendClient.fEnablePrivateSend ? tr("Cloaking in progress") : tr("Cloaking stopped");
     // Show how many keys left in advanced PS UI mode only
     if(fShowAdvancedPSUI) strEnabled += ", " + strKeysLeftText;
     ui->labelPrivateSendEnabled->setText(strEnabled);
@@ -557,10 +702,10 @@ void OverviewPage::privateSendStatus()
 
     QString strStatus = QString(privateSendClient.GetStatus().c_str());
 
-    QString s = tr("Last PrivateSend message:\n") + strStatus;
+    QString s = tr("Last Cloaking message:\n") + strStatus;
 
     if(s != ui->labelPrivateSendLastMessage->text())
-        LogPrintf("OverviewPage::privateSendStatus -- Last PrivateSend message: %s\n", strStatus.toStdString());
+        LogPrintf("OverviewPage::privateSendStatus -- Last Cloaking message: %s\n", strStatus.toStdString());
 
     ui->labelPrivateSendLastMessage->setText(s);
 
@@ -580,8 +725,8 @@ void OverviewPage::privateSendAuto(){
 void OverviewPage::privateSendReset(){
     privateSendClient.ResetPool();
 
-    QMessageBox::warning(this, tr("PrivateSend"),
-        tr("PrivateSend was successfully reset."),
+    QMessageBox::warning(this, tr("Cloaking"),
+        tr("Cloaking was successfully reset."),
         QMessageBox::Ok, QMessageBox::Ok);
 }
 
@@ -595,8 +740,8 @@ void OverviewPage::togglePrivateSend(){
     // Popup some information on first mixing
     QString hasMixed = settings.value("hasMixed").toString();
     if(hasMixed.isEmpty()){
-        QMessageBox::information(this, tr("PrivateSend"),
-                tr("If you don't want to see internal PrivateSend fees/transactions select \"Most Common\" as Type on the \"Transactions\" tab."),
+        QMessageBox::information(this, tr("Cloaking"),
+                tr("If you don't want to see internal Cloaking fees/transactions select \"Most Common\" as Type on the \"History\" tab."),
                 QMessageBox::Ok, QMessageBox::Ok);
         settings.setValue("hasMixed", "hasMixed");
     }
@@ -604,8 +749,8 @@ void OverviewPage::togglePrivateSend(){
         const CAmount nMinAmount = CPrivateSend::GetSmallestDenomination() + CPrivateSend::GetMaxCollateralAmount();
         if(currentBalance < nMinAmount){
             QString strMinAmount(MotionUnits::formatWithUnit(nDisplayUnit, nMinAmount));
-            QMessageBox::warning(this, tr("PrivateSend"),
-                tr("PrivateSend requires at least %1 to use.").arg(strMinAmount),
+            QMessageBox::warning(this, tr("Cloaking"),
+                tr("Cloaking requires at least %1 to use.").arg(strMinAmount),
                 QMessageBox::Ok, QMessageBox::Ok);
             return;
         }
@@ -618,10 +763,10 @@ void OverviewPage::togglePrivateSend(){
             {
                 //unlock was cancelled
                 privateSendClient.nCachedNumBlocks = std::numeric_limits<int>::max();
-                QMessageBox::warning(this, tr("PrivateSend"),
-                    tr("Wallet is locked and user declined to unlock. Disabling PrivateSend."),
+                QMessageBox::warning(this, tr("Cloaking"),
+                    tr("Wallet is locked and user declined to unlock. Disabling Cloaking."),
                     QMessageBox::Ok, QMessageBox::Ok);
-                LogPrint("privatesend", "OverviewPage::togglePrivateSend -- Wallet is locked and user declined to unlock. Disabling PrivateSend.\n");
+                LogPrint("privatesend", "OverviewPage::togglePrivateSend -- Wallet is locked and user declined to unlock. Disabling Cloaking.\n");
                 return;
             }
         }
@@ -632,10 +777,12 @@ void OverviewPage::togglePrivateSend(){
     privateSendClient.nCachedNumBlocks = std::numeric_limits<int>::max();
 
     if(!privateSendClient.fEnablePrivateSend){
-        ui->togglePrivateSend->setText(tr("Start Mixing"));
+        ui->togglePrivateSend->setText(tr("Start Cloaking"));
+        ui->togglePrivateSend->setIcon(QIcon(":icons/light/cloak"));
         privateSendClient.UnlockCoins();
     } else {
-        ui->togglePrivateSend->setText(tr("Stop Mixing"));
+        ui->togglePrivateSend->setText(tr("Stop Cloaking"));
+        ui->togglePrivateSend->setIcon(QIcon(":icons/light/stop"));
 
         /* show darksend configuration if client has defaults set */
 
@@ -649,21 +796,7 @@ void OverviewPage::togglePrivateSend(){
 }
 
 void OverviewPage::SetupTransactionList(int nNumItems) {
-    ui->listTransactions->setMinimumHeight(nNumItems * (DECORATION_SIZE + 2));
-
-    if(walletModel && walletModel->getOptionsModel()) {
-        // Set up transaction list
-        filter.reset(new TransactionFilterProxy());
-        filter->setSourceModel(walletModel->getTransactionTableModel());
-        filter->setLimit(nNumItems);
-        filter->setDynamicSortFilter(true);
-        filter->setSortRole(Qt::EditRole);
-        filter->setShowInactive(false);
-        filter->sort(TransactionTableModel::Status, Qt::DescendingOrder);
-
-        ui->listTransactions->setModel(filter.get());
-        ui->listTransactions->setModelColumn(TransactionTableModel::ToAddress);
-    }
+   
 }
 
 void OverviewPage::DisablePrivateSendCompletely() {

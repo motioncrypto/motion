@@ -38,6 +38,8 @@ QT_FORMS_UI = \
   qt/forms/debugwindow.ui \
   qt/forms/sendcoinsdialog.ui \
   qt/forms/sendcoinsentry.ui \
+  qt/forms/settingspage.ui \
+  qt/forms/toolspage.ui \
   qt/forms/signverifymessagedialog.ui \
   qt/forms/transactiondescdialog.ui
 
@@ -77,6 +79,8 @@ QT_MOC_CPP = \
   qt/moc_rpcconsole.cpp \
   qt/moc_sendcoinsdialog.cpp \
   qt/moc_sendcoinsentry.cpp \
+  qt/moc_settingspage.cpp \
+  qt/moc_toolspage.cpp \
   qt/moc_signverifymessagedialog.cpp \
   qt/moc_splashscreen.cpp \
   qt/moc_trafficgraphwidget.cpp \
@@ -150,6 +154,8 @@ MOTION_QT_H = \
   qt/rpcconsole.h \
   qt/sendcoinsdialog.h \
   qt/sendcoinsentry.h \
+  qt/settingspage.h \
+  qt/toolspage.h \
   qt/signverifymessagedialog.h \
   qt/splashscreen.h \
   qt/trafficgraphdata.h \
@@ -283,6 +289,7 @@ RES_ICONS = \
   qt/res/icons/light/add.png \
   qt/res/icons/light/address-book.png \
   qt/res/icons/light/browse.png \
+  qt/res/icons/light/chevron-right.png \ 
   qt/res/icons/light/clock1.png \
   qt/res/icons/light/clock2.png \
   qt/res/icons/light/clock3.png \
@@ -334,6 +341,20 @@ RES_ICONS = \
   qt/res/icons/light/fontsmaller.png \
   qt/res/icons/light/transaction_abandoned.png \
   qt/res/icons/light/network_disabled.png \
+  qt/res/icons/light/wrench.png \
+  qt/res/icons/light/pw.png \
+  qt/res/icons/light/cancel.png \
+  qt/res/icons/light/info.png \
+  qt/res/icons/light/cloak.png \
+  qt/res/icons/light/inputs.png \
+  qt/res/icons/light/reset.png \
+  qt/res/icons/light/hidden.png \
+  qt/res/icons/light/alert.png \
+  qt/res/icons/light/fee.png \
+  qt/res/icons/light/user-add.png \
+  qt/res/icons/light/remove-disabled.png \
+  qt/res/icons/light/edit-disabled.png \
+  qt/res/icons/light/stop.png \
   qt/res/icons/trad/add.png \
   qt/res/icons/trad/address-book.png \
   qt/res/icons/trad/browse.png \
@@ -437,6 +458,8 @@ MOTION_QT_CPP += \
   qt/recentrequeststablemodel.cpp \
   qt/sendcoinsdialog.cpp \
   qt/sendcoinsentry.cpp \
+  qt/settingspage.cpp \
+  qt/toolspage.cpp \
   qt/signverifymessagedialog.cpp \
   qt/transactiondesc.cpp \
   qt/transactiondescdialog.cpp \
@@ -490,6 +513,12 @@ RES_IMAGES = \
   qt/res/images/light/drkblue_rightArrow_small.png \
   qt/res/images/light/drkblue_qtreeview_selected.png \
   qt/res/images/light/drkblue_walletFrame_bg.png \
+  qt/res/images/light/orchid222.png \
+  qt/res/images/light/static.png \
+  qt/res/images/light/radio_checked.png \
+  qt/res/images/light/radio_unchecked.png \
+  qt/res/images/light/radio_disabled_unchecked.png \
+  qt/res/images/light/radio_disabled_checked.png \
   qt/res/images/trad/about.png \
   qt/res/images/trad/splash.png \
   qt/res/images/trad/splash_testnet.png \
@@ -506,8 +535,7 @@ RES_CSS = \
   qt/res/css/drkblue.css \
   qt/res/css/crownium.css \
   qt/res/css/light.css \
-  qt/res/css/light-hires.css \
-  qt/res/css/trad.css
+  qt/res/css/light-hires.css 
 
 RES_MOVIES = $(wildcard qt/res/movies/spinner-*.png)
 

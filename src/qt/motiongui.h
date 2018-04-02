@@ -83,6 +83,7 @@ protected:
 private:
     ClientModel *clientModel;
     WalletFrame *walletFrame;
+    //QStatusBar *statusbar;
 
     UnitDisplayStatusBarControl *unitDisplayControl;
     QLabel *labelEncryptionIcon;
@@ -96,6 +97,8 @@ private:
     QMenuBar *appMenuBar;
     QAction *overviewAction;
     QAction *historyAction;
+    QAction *settingsAction;
+    QAction *toolsAction;
     QAction *masternodeAction;
     QAction *quitAction;
     QAction *sendCoinsAction;
@@ -146,7 +149,7 @@ private:
     /** Create the menu bar and sub-menus. */
     void createMenuBar();
     /** Create the toolbars */
-    void createToolBars();
+    void createToolBars(QWidget *);
     /** Create system tray icon and notification */
     void createTrayIcon(const NetworkStyle *networkStyle);
     /** Create system tray menu (or setup the dock menu) */
@@ -223,6 +226,8 @@ private Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+    void gotoSettingsPage();
+    void gotoToolsPage();
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
@@ -255,7 +260,7 @@ private Q_SLOTS:
 
     /** Show help message dialog */
     void showHelpMessageClicked();
-    /** Show PrivateSend help message dialog */
+    /** Show Cloaking help message dialog */
     void showPrivateSendHelpClicked();
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */

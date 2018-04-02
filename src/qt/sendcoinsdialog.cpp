@@ -1,11 +1,12 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2017-2018 The Galactrum developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "sendcoinsdialog.h"
 #include "ui_sendcoinsdialog.h"
-
+#include "motiongui.h"
 #include "addresstablemodel.h"
 #include "motionunits.h"
 #include "clientmodel.h"
@@ -30,7 +31,7 @@
 #include <QSettings>
 #include <QTextDocument>
 
-SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent) :
+SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent, QWidget *walletview) :
     QDialog(parent),
     ui(new Ui::SendCoinsDialog),
     clientModel(0),
@@ -47,9 +48,22 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *pa
         ui->clearButton->setIcon(QIcon());
         ui->sendButton->setIcon(QIcon());
     } else {
-        ui->addButton->setIcon(QIcon(":/icons/" + theme + "/add"));
+        ui->addButton->setIcon(QIcon(":/icons/" + theme + "/user-add"));
         ui->clearButton->setIcon(QIcon(":/icons/" + theme + "/remove"));
         ui->sendButton->setIcon(QIcon(":/icons/" + theme + "/send"));
+        ui->sendingAddressesButton->setIcon(QIcon(":/icons/" + theme + "/address-book"));
+        ui->openURIButton->setIcon(QIcon(":/icons/" + theme + "/browse"));
+        ui->buttonMinimizeFee->setIcon(QIcon(":/icons/light/hidden"));
+        ui->buttonChooseFee->setIcon(QIcon(":/icons/light/fee"));
+        ui->pushButtonCoinControl->setIcon(QIcon(":/icons/light/inputs"));
+        ui->pushButtonCoinControl->setIconSize(QSize(32, 32));
+        ui->sendButton->setIconSize(QSize(32, 32));
+        ui->addButton->setIconSize(QSize(32, 32));
+        ui->clearButton->setIconSize(QSize(32, 32));
+        ui->sendingAddressesButton->setIconSize(QSize(32, 32));
+        ui->openURIButton->setIconSize(QSize(32, 32));
+        ui->buttonMinimizeFee->setIconSize(QSize(32, 32));
+        ui->buttonChooseFee->setIconSize(QSize(32, 32));
     }
 
     GUIUtil::setupAddressWidget(ui->lineEditCoinControlChange, this);
@@ -58,6 +72,10 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *pa
 
     connect(ui->addButton, SIGNAL(clicked()), this, SLOT(addEntry()));
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+    //MotionGUI *btcGUI = ((MotionGUI*)this->parentWidget());
+    connect(ui->openURIButton, SIGNAL(clicked()), walletview->parentWidget()->parentWidget(), SLOT(openClicked()));
+    connect(ui->sendingAddressesButton, SIGNAL(clicked()), walletview,  SLOT(usedSendingAddresses()));
+
 
     // Coin Control
     connect(ui->pushButtonCoinControl, SIGNAL(clicked()), this, SLOT(coinControlButtonClicked()));
@@ -261,7 +279,7 @@ void SendCoinsDialog::on_sendButton_clicked()
             MotionUnits::formatWithUnit(
                 model->getOptionsModel()->getDisplayUnit(), CPrivateSend::GetSmallestDenomination()));
         strFee = QString(tr(
-            "(privatesend requires this amount to be rounded up to the nearest %1)."
+            "(cloaking requires this amount to be rounded up to the nearest %1)."
         ).arg(strNearestAmount));
     } else {
         recipients[0].inputType = ALL_COINS;
@@ -271,7 +289,7 @@ void SendCoinsDialog::on_sendButton_clicked()
     if(ui->checkUseInstantSend->isChecked()) {
         recipients[0].fUseInstantSend = true;
         strFunds += " ";
-        strFunds += tr("and InstantSend");
+        strFunds += tr("and Instant Send");
     } else {
         recipients[0].fUseInstantSend = false;
     }

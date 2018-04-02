@@ -53,7 +53,7 @@ private:
     Qt::SortOrder order;
 };
 
-/** Model for list of recently generated payment requests / motion: URIs.
+/** Model for list of recently generated payment requests / galactrum: URIs.
  * Part of wallet model.
  */
 class RecentRequestsTableModel: public QAbstractTableModel
@@ -88,6 +88,11 @@ public:
     void addNewRequest(const SendCoinsRecipient &recipient);
     void addNewRequest(const std::string &recipient);
     void addNewRequest(RecentRequestEntry &recipient);
+    int count();
+
+
+Q_SIGNALS:
+    void countChanged(int);
 
 public Q_SLOTS:
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
@@ -103,6 +108,7 @@ private:
     void updateAmountColumnTitle();
     /** Gets title for amount column including current display unit if optionsModel reference available. */
     QString getAmountTitle();
+    void emitCountChanged();
 };
 
 #endif // MOTION_QT_RECENTREQUESTSTABLEMODEL_H

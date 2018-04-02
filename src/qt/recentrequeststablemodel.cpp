@@ -157,6 +157,7 @@ bool RecentRequestsTableModel::removeRows(int row, int count, const QModelIndex 
         beginRemoveRows(parent, row, row + count - 1);
         list.erase(list.begin() + row, list.begin() + row + count);
         endRemoveRows();
+        emitCountChanged();
         return true;
     } else {
         return false;
@@ -209,6 +210,7 @@ void RecentRequestsTableModel::addNewRequest(RecentRequestEntry &recipient)
     beginInsertRows(QModelIndex(), 0, 0);
     list.prepend(recipient);
     endInsertRows();
+    emitCountChanged();
 }
 
 void RecentRequestsTableModel::sort(int column, Qt::SortOrder order)
@@ -220,6 +222,16 @@ void RecentRequestsTableModel::sort(int column, Qt::SortOrder order)
 void RecentRequestsTableModel::updateDisplayUnit()
 {
     updateAmountColumnTitle();
+}
+
+void RecentRequestsTableModel::emitCountChanged() 
+{
+    Q_EMIT countChanged(list.count());
+}
+
+int RecentRequestsTableModel::count()
+{
+    return list.count();
 }
 
 bool RecentRequestEntryLessThan::operator()(RecentRequestEntry &left, RecentRequestEntry &right) const

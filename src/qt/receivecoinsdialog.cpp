@@ -22,7 +22,7 @@
 #include <QScrollBar>
 #include <QTextDocument>
 
-ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent) :
+ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent, QWidget *walletview) :
     QDialog(parent),
     ui(new Ui::ReceiveCoinsDialog),
     columnResizingFixer(0),
@@ -39,9 +39,15 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
         ui->removeRequestButton->setIcon(QIcon());
     } else {
         ui->clearButton->setIcon(QIcon(":/icons/" + theme + "/remove"));
+        ui->clearButton->setIconSize(QSize(32, 32));
         ui->receiveButton->setIcon(QIcon(":/icons/" + theme + "/receiving_addresses"));
-        ui->showRequestButton->setIcon(QIcon(":/icons/" + theme + "/edit"));
-        ui->removeRequestButton->setIcon(QIcon(":/icons/" + theme + "/remove"));
+        ui->receiveButton->setIconSize(QSize(32, 32));
+        ui->showRequestButton->setIcon(QIcon(":/icons/" + theme + "/edit-disabled"));
+        ui->showRequestButton->setIconSize(QSize(32, 32));
+        ui->removeRequestButton->setIcon(QIcon(":/icons/" + theme + "/remove-disabled"));
+        ui->removeRequestButton->setIconSize(QSize(32, 32));
+        ui->receivingAddressesButton->setIcon(QIcon(":/icons/" + theme + "/address-book"));
+        ui->receivingAddressesButton->setIconSize(QSize(32, 32));
     }
 
     // context menu actions
@@ -65,6 +71,23 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+
+    connect(ui->receivingAddressesButton, SIGNAL(clicked()), walletview, SLOT(usedReceivingAddresses()));
+
+    ui->frameHistory->setVisible(false);
+}
+
+void ReceiveCoinsDialog::updateRequestView(int count)
+{
+    LogPrintf("RCD::updaterequest %d", count);
+    ui->frameHistory->setVisible(count > 0);
+    if (count > 0) {
+        ui->verticalLayout->setStretch(3, 0);
+        ui->verticalLayout->setStretch(4, 1);
+    } else {
+        ui->verticalLayout->setStretch(3, 1);
+        ui->verticalLayout->setStretch(4, 0);
+    }
 }
 
 void ReceiveCoinsDialog::setModel(WalletModel *model)
@@ -87,7 +110,8 @@ void ReceiveCoinsDialog::setModel(WalletModel *model)
         tableView->setSelectionMode(QAbstractItemView::ContiguousSelection);
         tableView->setColumnWidth(RecentRequestsTableModel::Date, DATE_COLUMN_WIDTH);
         tableView->setColumnWidth(RecentRequestsTableModel::Label, LABEL_COLUMN_WIDTH);
-
+        updateRequestView(model->getRecentRequestsTableModel()->count());
+        connect(model->getRecentRequestsTableModel(), SIGNAL(countChanged(int)), this, SLOT(updateRequestView(int)));
         connect(tableView->selectionModel(),
             SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
             SLOT(recentRequestsView_selectionChanged(QItemSelection, QItemSelection)));
@@ -184,6 +208,13 @@ void ReceiveCoinsDialog::recentRequestsView_selectionChanged(const QItemSelectio
     bool enable = !ui->recentRequestsView->selectionModel()->selectedRows().isEmpty();
     ui->showRequestButton->setEnabled(enable);
     ui->removeRequestButton->setEnabled(enable);
+    if (!enable) {
+        ui->showRequestButton->setIcon(QIcon(":icons/light/edit-disabled"));
+        ui->removeRequestButton->setIcon(QIcon(":icons/light/remove-disabled"));
+    } else {
+         ui->showRequestButton->setIcon(QIcon(":icons/light/edit"));
+        ui->removeRequestButton->setIcon(QIcon(":icons/light/remove"));
+    }
 }
 
 void ReceiveCoinsDialog::on_showRequestButton_clicked()
@@ -207,6 +238,7 @@ void ReceiveCoinsDialog::on_removeRequestButton_clicked()
     // correct for selection mode ContiguousSelection
     QModelIndex firstIndex = selection.at(0);
     model->getRecentRequestsTableModel()->removeRows(firstIndex.row(), selection.length(), firstIndex.parent());
+    updateRequestView(model->getRecentRequestsTableModel()->count());
 }
 
 // We override the virtual resizeEvent of the QWidget to adjust tables column
