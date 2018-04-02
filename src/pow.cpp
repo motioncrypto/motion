@@ -138,10 +138,10 @@ unsigned int LwmaCalculateNextWorkRequired(const CBlockIndex* pindexLast, const 
     const int N = params.nZawyLwmaAveragingWindow;
     const int k = params.nZawyLwmaAjustedWeight;
     const int height = pindexLast->nHeight + 1;
-    assert(height > N);
-
     // For new coins
     if (height <= 1) { return 1; }
+    assert(height > N);
+
 
     arith_uint256 sum_target;
     int t = 0, j = 0;
