@@ -102,7 +102,7 @@ public:
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
 
-        consensus.nPowTargetTimespan = 30 * 60 * 60; // Motion: 1 day
+        consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -233,7 +233,7 @@ public:
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
 
-        consensus.nPowTargetTimespan = 30 * 60 * 60; // Motion: 1 day
+        consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
@@ -261,7 +261,7 @@ public:
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
-        
+
         pchMessageStart[0] = 0xa1;
         pchMessageStart[1] = 0xbb;
         pchMessageStart[2] = 0xca;
@@ -353,8 +353,8 @@ public:
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
 
-        consensus.nPowTargetTimespan = 30 * 60 * 60; // Motion: 1 day
-        consensus.nPowTargetSpacing = 2 * 60; // Motion: 2.5 minutes
+        consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
+        consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.useDarkGravityWave = false;
