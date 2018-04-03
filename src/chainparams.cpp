@@ -80,15 +80,15 @@ public:
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 518400; // Note: actual number of blocks per calendar year with DGW v3 is ~200700 (for example 449750 - 249050)
         consensus.nMasternodePaymentsStartBlock = 2; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 99; // deactivated on initial launch
-        consensus.nMasternodePaymentsIncreasePeriod = 99; // deactivated on initial launch
+        consensus.nMasternodePaymentsIncreaseBlock = 9999999999; // deactivated on initial launch
+        consensus.nMasternodePaymentsIncreasePeriod = 9999999999; // deactivated on initial launch
         consensus.nInstantSendKeepLock = 24;
-        consensus.nBudgetPaymentsStartBlock = 328008; // actual historical value
-        consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
-        consensus.nBudgetPaymentsWindowBlocks = 100;
-        consensus.nBudgetProposalEstablishingTime = 60*60*24;
-        consensus.nSuperblockStartBlock = 614820; // The block at which 12.1 goes live (end of final 12.0 budget cycle)
-        consensus.nSuperblockCycle = 21600; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
+        consensus.nBudgetPaymentsStartBlock = 9999999999; // Disabled
+        consensus.nBudgetPaymentsCycleBlocks = 9999999999; // Disabled
+        consensus.nBudgetPaymentsWindowBlocks = 9999999999; // Disabled
+        consensus.nBudgetProposalEstablishingTime = 60*20*9999999999; // Disabled
+        consensus.nSuperblockStartBlock = 99999999999; // Disabled
+        consensus.nSuperblockCycle = 9999999999; // Disabled
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
@@ -214,12 +214,12 @@ public:
         consensus.nMasternodePaymentsIncreaseBlock = 999;
         consensus.nMasternodePaymentsIncreasePeriod = 999;
         consensus.nInstantSendKeepLock = 6;
-        consensus.nBudgetPaymentsStartBlock = 4100;
-        consensus.nBudgetPaymentsCycleBlocks = 50;
-        consensus.nBudgetPaymentsWindowBlocks = 10;
-        consensus.nBudgetProposalEstablishingTime = 60*20;
-        consensus.nSuperblockStartBlock = 4200; // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
-        consensus.nSuperblockCycle = 30; // Superblocks can be issued hourly on testnet
+        consensus.nBudgetPaymentsStartBlock = 9999999999; // Disabled
+        consensus.nBudgetPaymentsCycleBlocks = 9999999999; // Disabled
+        consensus.nBudgetPaymentsWindowBlocks = 9999999999; // Disabled
+        consensus.nBudgetProposalEstablishingTime = 60*20*9999999999; // Disabled
+        consensus.nSuperblockStartBlock = 99999999999; // Disabled
+        consensus.nSuperblockCycle = 9999999999; // Disabled
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 500;
         consensus.nMasternodeMinimumConfirmations = 1;
