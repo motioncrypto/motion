@@ -927,7 +927,7 @@
                                             </layout>
                                         </item>
                                         <item>
-                                            <widget class="QLabel" name="labelSettingsCloaking">
+                                            <widget class="QLabel" name="labelSettingsPrivateSend">
                                                 <property name="font">
                                                     <font>
                                                         <weight>75</weight>
@@ -935,7 +935,7 @@
                                                     </font>
                                                 </property>
                                                 <property name="text">
-                                                    <string>Cloaking</string>
+                                                    <string>PrivateSend</string>
                                                 </property>
                                             </widget>
                                         </item>
@@ -944,30 +944,30 @@
                                                 <item>
                                                     <widget class="QCheckBox" name="showAdvancedPSUI">
                                                         <property name="toolTip">
-                                                            <string>Show additional information and buttons for Cloaking on overview screen.</string>
+                                                            <string>Show additional information and buttons for PrivateSend on overview screen.</string>
                                                         </property>
                                                         <property name="text">
-                                                            <string>Enable advanced Cloaking interface</string>
+                                                            <string>Enable advanced PrivateSend interface</string>
                                                         </property>
                                                     </widget>
                                                 </item>
                                                 <item>
                                                     <widget class="QCheckBox" name="lowKeysWarning">
                                                         <property name="toolTip">
-                                                            <string>Show warning dialog when Cloaking detects that wallet has very low number of keys left.</string>
+                                                            <string>Show warning dialog when PrivateSend detects that wallet has very low number of keys left.</string>
                                                         </property>
                                                         <property name="text">
-                                                            <string>Warn if Cloaking is running out of keys</string>
+                                                            <string>Warn if PrivateSend is running out of keys</string>
                                                         </property>
                                                     </widget>
                                                 </item>
                                                 <item>
                                                     <widget class="QCheckBox" name="privateSendMultiSession">
                                                         <property name="toolTip">
-                                                            <string>Whether to use experimental Cloaking mode with multiple mixing sessions per block.&lt;br/&gt;Note: You must use this feature carefully.&lt;br/&gt;Make sure you always have recent wallet (auto)backup in a safe place!</string>
+                                                            <string>Whether to use experimental PrivateSend mode with multiple mixing sessions per block.&lt;br/&gt;Note: You must use this feature carefully.&lt;br/&gt;Make sure you always have recent wallet (auto)backup in a safe place!</string>
                                                         </property>
                                                         <property name="text">
-                                                            <string>Enable Cloaking &amp;multi-session</string>
+                                                            <string>Enable PrivateSend &amp;multi-session</string>
                                                         </property>
                                                     </widget>
                                                 </item>
@@ -981,7 +981,7 @@
                                                             <string>This setting determines the amount of individual masternodes that an input will be anonymized through.&lt;br/&gt;More rounds of anonymization gives a higher degree of privacy, but also costs more in fees.</string>
                                                         </property>
                                                         <property name="text">
-                                                            <string>Cloaking rounds to use</string>
+                                                            <string>PrivateSend rounds to use</string>
                                                         </property>
                                                     </widget>
                                                 </item>
@@ -1018,7 +1018,7 @@
                                                 <item>
                                                     <widget class="QLabel" name="label_2">
                                                         <property name="toolTip">
-                                                            <string>This amount acts as a threshold to turn off Cloaking once it's reached.</string>
+                                                            <string>This amount acts as a threshold to turn off PrivateSend once it's reached.</string>
                                                         </property>
                                                         <property name="statusTip">
                                                             <string notr="true"/>

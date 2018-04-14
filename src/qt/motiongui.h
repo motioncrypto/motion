@@ -260,7 +260,7 @@ private Q_SLOTS:
 
     /** Show help message dialog */
     void showHelpMessageClicked();
-    /** Show Cloaking help message dialog */
+    /** Show PrivateSend help message dialog */
     void showPrivateSendHelpClicked();
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */

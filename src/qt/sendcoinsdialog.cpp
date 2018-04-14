@@ -279,7 +279,7 @@ void SendCoinsDialog::on_sendButton_clicked()
             MotionUnits::formatWithUnit(
                 model->getOptionsModel()->getDisplayUnit(), CPrivateSend::GetSmallestDenomination()));
         strFee = QString(tr(
-            "(cloaking requires this amount to be rounded up to the nearest %1)."
+            "(PrivateSend requires this amount to be rounded up to the nearest %1)."
         ).arg(strNearestAmount));
     } else {
         recipients[0].inputType = ALL_COINS;

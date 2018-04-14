@@ -1,11 +1,11 @@
 WalletFrame {
-    background-color: #181818;
+    background-color: rgb(0, 11, 22);
     margin:0;
     padding-top: 0px;
     padding-bottom: 20px;
     }
     #Intro {
-        background: #282828;
+        background: rgb(0, 11, 22);
     }
     #frameStatusBarLeft {
         height: 30px;
@@ -22,13 +22,12 @@ WalletFrame {
         min-height: 0;
         margin: 0;
         border: 0px solid #000;
-    
     }
     #topbar {
-        background-color: #121212;
+        background-color: rgb(0, 16, 32);
     }
     #test {
-        background: #282828;
+        background: #121212;
     }
     QValidatedLineEdit {
         border: 1px solid #000;
@@ -58,15 +57,15 @@ WalletFrame {
     #frameNavMain,
     #frameNavOpenConf
     {
-        border-top: 1px solid #282828;
-        border-bottom: 1px solid #282828;
+        border-top: 1px solid #121212;
+        border-bottom: 1px solid #121212;
     }
     #frameNavExpert,
     #frameNavNetwork,
     #frameNavOpenMNConf,
     #frameNavOpenBackups
     {
-        border-bottom: 1px solid #282828;
+        border-bottom: 1px solid #121212;
     }
     
     #labelNavMain,
@@ -95,7 +94,7 @@ WalletFrame {
     #labelSettingsHSProxy,
     #labelSettingsSending,
     #labelSettingsMasternodes,
-    #labelSettingsCloaking,
+    #labelSettingsPrivateSend,
     #labelSettingsNode,
     
     QWidget#ReceiveCoinsDialog .QFrame#frame .QLabel#label_6,  /* Requested Payments History Label */
@@ -107,7 +106,7 @@ WalletFrame {
          qproperty-alignment: 'AlignVCenter | AlignLeft';
          background-color:transparent;
          color:#f4f4f5;
-         border-bottom: 1px solid #282828;
+         border-bottom: 1px solid #121212;
          font-size: 20px;
          font-weight: normal;
     }
@@ -122,7 +121,7 @@ WalletFrame {
     #labelSettingsHSProxy,
     #labelSettingsSending,
     #labelSettingsMasternodes,
-    #labelSettingsCloaking,
+    #labelSettingsPrivateSend,
     #labelSettingsNode
     {
         margin-bottom: 10px;
@@ -137,7 +136,7 @@ WalletFrame {
     #labelSettingsProxy,
     #labelSettingsHSProxy,
     #labelSettingsMasternodes,
-    #labelSettingsCloaking,
+    #labelSettingsPrivateSend,
     #labelSettingsNode
     {
         padding-top: 35px;
@@ -154,14 +153,14 @@ WalletFrame {
     }
     
     QToolBar {
-    background-color:#282828;
+    background-color:#121212;
     border:0px solid #000;
     padding:0;
     margin:0;
     }
     
     QToolBar > QToolButton {
-    background-color:#282828;
+    background-color:#121212;
     border:0px solid #333;
     font-size: 15px;
     min-height:2.5em;
@@ -203,7 +202,7 @@ WalletFrame {
     min-height:25px;
     outline:0;
     padding:3px;
-    background-color:#111;
+    background-color:#121212;
     color: #ddd;
     border-radius: 3px;
     }
@@ -215,7 +214,7 @@ WalletFrame {
     .QValidatedLineEdit:disabled, .QLineEdit:disabled {
         background-color: #ADAFAE;
         opacity: 0.7;
-        color: #282828;
+        color: #121212;
     }
     
     /*******************************************************/
@@ -314,7 +313,7 @@ WalletFrame {
     QComboBox { /* Dropdown Menus */
     border:1px solid #000;
     padding: 3px 5px 3px 5px;
-    background:#111;
+    background:#121212;
     min-height:25px;
     border-radius: 3px;
     color:#ddd;
@@ -340,7 +339,7 @@ WalletFrame {
     }
     
     QComboBox QListView {
-    background: #111;
+    background: #121212;
     color: #ddd;
     border:1px solid #333;
     padding-right:1px;
@@ -356,12 +355,12 @@ WalletFrame {
     }
     
     QComboBox::item:alternate {
-    background:#282828;
+    background:#121212;
     }
     
     QComboBox::item:selected {
     border:0px solid transparent;
-    background:#282828;
+    background:#121212;
     }
     
     QComboBox::indicator {
@@ -375,7 +374,7 @@ WalletFrame {
     border:1px solid #000;
     border-radius: 3px;
     padding: 3px 5px 3px 5px;
-    background: #111;
+    background: #121212;
     min-height:25px;
     color:#ddd;
     }
@@ -384,7 +383,7 @@ WalletFrame {
     subcontrol-origin: border;ba
     subcontrol-position: top right;
     width:21px;
-    background:#111;
+    background:#121212;
     border-left:0px;
     border-right:1px solid #000;
     border-top:1px solid #000;
@@ -402,7 +401,7 @@ WalletFrame {
     subcontrol-origin: border;
     subcontrol-position: bottom right;
     width:21px;
-    background:#111;
+    background:#121212;
     border-top:0px;
     border-left:0px;
     border-right:1px solid #000;
@@ -505,7 +504,7 @@ WalletFrame {
     }
     
     QTableView::item:selected { /* Table Item Selected */
-        background-color:#282828;
+        background-color:#121212;
     }
     
     QScrollBar { /* Scroll Bar */
@@ -619,7 +618,7 @@ WalletFrame {
     #tabMyMasternodes,
     #tabAllMasternodes
     {
-        background-color:  #282828;
+        background-color:  #121212;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
         border-top-right-radius: 4px;
@@ -639,7 +638,7 @@ WalletFrame {
         border-top: 1px solid #222;
         border-right: 1px solid #222;
         border-left: 1px solid #222;
-        background: #111;
+        background: #121212;
         color: #ddd;
         padding: 8px 8px;
         padding-bottom: 9px;
@@ -649,7 +648,7 @@ WalletFrame {
         border-top-right-radius: 4px;
     }
     #tabWidget QTabBar::tab:selected {
-        background-color: #282828;
+        background-color: #121212;
         color: #ddd;
     }
     /*******************************************************/
@@ -1028,7 +1027,7 @@ WalletFrame {
     
     
     /******************************************************************/
-    QWidget .QFrame#framePrivateSend .QLabel#labelPrivateSendSyncStatus { /* Cloaking Sync Status */
+    QWidget .QFrame#framePrivateSend .QLabel#labelPrivateSendSyncStatus { /* PrivateSend Sync Status */
     qproperty-alignment: 'AlignVCenter | AlignLeft';
     margin-left:2px;
     padding-right:5px;
@@ -1037,7 +1036,7 @@ WalletFrame {
     
     
     
-    QWidget .QFrame#framePrivateSend .QLabel#labelPrivateSendLastMessage { /* Cloaking Status Notifications */
+    QWidget .QFrame#framePrivateSend .QLabel#labelPrivateSendLastMessage { /* PrivateSend Status Notifications */
     qproperty-alignment: 'AlignVCenter | AlignCenter';
     min-height: 43px;
     font-size:11px;
@@ -1061,7 +1060,7 @@ WalletFrame {
     }
     
     QWidget#contentWidget { /* The actual content with the text/buttons/etc... */
-        background: #282828;
+        background: #121212;
     border-top:0px solid #000;
     margin:0;
     padding-top:20px;
@@ -1130,7 +1129,7 @@ WalletFrame {
         border-color: #27aee4;
     }
     
-    QDialog#SendCoinsDialog .QCheckBox#checkUsePrivateSend { /* Cloaking Checkbox */
+    QDialog#SendCoinsDialog .QCheckBox#checkUsePrivateSend { /* PrivateSend Checkbox */
     color:#fff;
     font-weight:bold;
     border-radius:5px;
@@ -1171,7 +1170,7 @@ WalletFrame {
     #frameReceiveForm
     {
         /*background-image: url(":/images/light/static");*/
-        background-color: #282828;
+        background-color: #121212;
         border-radius: 3px;
     }
     QStackedWidget#SendCoinsEntry
@@ -1216,11 +1215,11 @@ WalletFrame {
         color: #ddd;
     }
     #treeWidget QTreeWidgetItem {
-        background: #111;
+        background: #121212;
         color: #ddd;
     }
     #treeWidget QTreeView::item {
-        background: #111;
+        background: #121212;
         color: #ddd;
     }
     
@@ -1402,12 +1401,12 @@ WalletFrame {
     
     
     QDialog#CoinControlDialog .CoinControlTreeWidget#treeWidget::item:selected { /* Coin Control Item (selected) */
-    background-color:#282828;
+    background-color:#121212;
     color:#ddd;
     }
     
     QDialog#CoinControlDialog .CoinControlTreeWidget#treeWidget::item:checked { /* Coin Control Item (checked) */
-    background-color:#282828;
+    background-color:#121212;
     color:#ddd;
     }
     

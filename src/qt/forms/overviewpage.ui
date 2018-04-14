@@ -527,10 +527,10 @@
                                 <item>
                                     <widget class="QPushButton" name="buttonShowPrivateSend">
                                         <property name="toolTip">
-                                            <string>Hide/Show Cloaking Controls</string>
+                                            <string>Hide/Show PrivateSend Controls</string>
                                         </property>
                                         <property name="text">
-                                            <string>Show Cloaking Controls</string>
+                                            <string>Show PrivateSend Controls</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -540,10 +540,10 @@
                                             <bool>false</bool>
                                         </property>
                                         <property name="toolTip">
-                                            <string>Hide/Show Cloaking Controls</string>
+                                            <string>Hide/Show PrivateSend Controls</string>
                                         </property>
                                         <property name="text">
-                                            <string>Hide Cloaking Controls</string>
+                                            <string>Hide PrivateSend Controls</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -563,10 +563,10 @@
                                 <item>
                                     <widget class="QPushButton" name="privateSendInfo">
                                         <property name="toolTip">
-                                            <string>Information about Cloaking</string>
+                                            <string>Information about PrivateSend</string>
                                         </property>
                                         <property name="text">
-                                            <string>Info on Cloaking</string>
+                                            <string>Info on PrivateSend</string>
                                         </property>
                                     </widget>
                                 </item>
@@ -749,17 +749,17 @@
                                         <item>
                                             <widget class="QPushButton" name="togglePrivateSend">
                                                 <property name="text">
-                                                    <string>Start/Stop Cloaking</string>
+                                                    <string>Start/Stop PrivateSend</string>
                                                 </property>
                                             </widget>
                                         </item>
                                         <item>
                                             <widget class="QPushButton" name="privateSendAuto">
                                                 <property name="toolTip">
-                                                    <string>Try to manually submit a Cloaking request.</string>
+                                                    <string>Try to manually submit a PrivateSend request.</string>
                                                 </property>
                                                 <property name="text">
-                                                    <string>Try Cloaking</string>
+                                                    <string>Try PrivateSend</string>
                                                 </property>
                                             </widget>
                                         </item>
@@ -779,7 +779,7 @@
                                         <item>
                                             <widget class="QPushButton" name="privateSendReset">
                                                 <property name="toolTip">
-                                                    <string>Reset the current status of Cloaking (can interrupt Cloaking if it's in the process of Mixing, which can cost you money!)</string>
+                                                    <string>Reset the current status of PrivateSend (can interrupt PrivateSend if it's in the process of Mixing, which can cost you money!)</string>
                                                 </property>
                                                 <property name="autoFillBackground">
                                                     <bool>false</bool>
