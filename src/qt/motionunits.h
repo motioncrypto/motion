@@ -57,9 +57,9 @@ public:
      */
     enum Unit
     {
-        MOTION,
-        mMOTION,
-        uMOTION,
+        MTN,
+        mMTN,
+        uMTN,
         duffs
     };
 

@@ -27,7 +27,7 @@ QT_BEGIN_NAMESPACE
 class QModelIndex;
 QT_END_NAMESPACE
 
-/** Dialog for requesting payment of motions */
+/** Dialog for requesting payment of motion */
 class ReceiveCoinsDialog : public QDialog
 {
     Q_OBJECT
@@ -40,7 +40,7 @@ public:
         MINIMUM_COLUMN_WIDTH = 130
     };
 
-    explicit ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent = 0);
+    explicit ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidget *parent = 0, QWidget *walletframe = 0);
     ~ReceiveCoinsDialog();
 
     void setModel(WalletModel *model);
@@ -76,6 +76,7 @@ private Q_SLOTS:
     void copyLabel();
     void copyMessage();
     void copyAmount();
+    void updateRequestView(int);
 };
 
 #endif // MOTION_QT_RECEIVECOINSDIALOG_H

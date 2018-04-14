@@ -1,5 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2017-2018 The Bitcoin Gold developers
+// Copyright (c) 2017-2018 The zawy12
+// Copyright (c) 2017-2018 The Motion Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -84,17 +87,9 @@ struct Params {
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
 
-    // Params for Digishield difficulty adjustment algorithm. (Used by mainnet currently.)
-    int64_t nDigishieldAveragingWindow;
-    int64_t nDigishieldMaxAdjustDown;
-    int64_t nDigishieldMaxAdjustUp;
-    int64_t DigishieldAveragingWindowTimespan() const { return nDigishieldAveragingWindow * nPowTargetSpacing; }
-    int64_t DigishieldMinActualTimespan() const {
-        return (DigishieldAveragingWindowTimespan() * (100 - nDigishieldMaxAdjustUp)) / 100;
-    }
-    int64_t DigishieldMaxActualTimespan() const {
-        return (DigishieldAveragingWindowTimespan() * (100 + nDigishieldMaxAdjustDown)) / 100;
-    }
+    // Params for Zawy's LWMA difficulty adjustment algorithm. (Used by testnet and regtest)
+    int64_t nZawyLwmaAveragingWindow;  // N = (0.5+40*(600/T)^0.3))
+    int64_t nZawyLwmaAjustedWeight;  // k = (N+1)/2 * 0.9989^(500/N) * T
 };
 } // namespace Consensus
 

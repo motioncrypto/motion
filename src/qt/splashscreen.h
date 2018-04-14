@@ -5,14 +5,13 @@
 #ifndef MOTION_QT_SPLASHSCREEN_H
 #define MOTION_QT_SPLASHSCREEN_H
 
-#include <functional>
 #include <QSplashScreen>
 
 class NetworkStyle;
 
 /** Class for the splashscreen with information of the running client.
  *
- * @note this is intentionally not a QSplashScreen. Motion Core initialization
+ * @note this is intentionally not a QSplashScreen. Bitcoin Core initialization
  * can take a long time, and in that case a progress window that cannot be
  * moved around and minimized has turned out to be frustrating to the user.
  */
@@ -35,11 +34,6 @@ public Q_SLOTS:
     /** Show message and progress */
     void showMessage(const QString &message, int alignment, const QColor &color);
 
-    /** Sets the break action */
-    void setBreakAction(const std::function<void(void)> &action);
-protected:
-    bool eventFilter(QObject * obj, QEvent * ev);
-
 private:
     /** Connect core signals to splash screen */
     void subscribeToCoreSignals();
@@ -50,8 +44,6 @@ private:
     QString curMessage;
     QColor curColor;
     int curAlignment;
-
-    std::function<void(void)> breakAction;
 };
 
 #endif // MOTION_QT_SPLASHSCREEN_H

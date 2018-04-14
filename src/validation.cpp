@@ -1237,6 +1237,16 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
         return 1051200 * COIN;
     }
 
+    // Ninja Launch, first 500 blocks 1 MTN reward
+    if (nPrevHeight <= 500) {
+        return 1 * COIN;
+    }
+
+    // Total supply 22,075,700
+    if (nPrevHeight >= 3154101) {
+        return 0;
+    }
+
     if (nPrevHeight <= 4500 && Params().NetworkIDString() == CBaseChainParams::MAIN) {
         /* a bug which caused diff to not be correctly calculated */
         dDiff = (double)0x0000ffff / (double)(nPrevBits & 0x00ffffff);
@@ -1253,8 +1263,8 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     }
 
     // Minimum reward is 1.25
-    if (nSubsidy < 1.25) {
-        nSubsidy = 1.25;
+    if (nSubsidy < (1.25 * COIN)) {
+        nSubsidy = 1.25 * COIN;
     }
 
     // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)

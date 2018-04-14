@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2017-2018 The Galactrum developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -18,6 +19,7 @@
 #include "platformstyle.h"
 #include "rpcconsole.h"
 #include "utilitydialog.h"
+#include "toolspage.h"
 
 #ifdef ENABLE_WALLET
 #include "walletframe.h"
@@ -46,6 +48,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QMimeData>
+#include <QPixmap>
 #include <QProgressDialog>
 #include <QSettings>
 #include <QShortcut>
@@ -55,6 +58,8 @@
 #include <QTimer>
 #include <QToolBar>
 #include <QVBoxLayout>
+
+#include <QFontDatabase>
 
 #if QT_VERSION < 0x050000
 #include <QTextDocument>
@@ -90,6 +95,7 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     appMenuBar(0),
     overviewAction(0),
     historyAction(0),
+    settingsAction(0),
     masternodeAction(0),
     quitAction(0),
     sendCoinsAction(0),
@@ -122,12 +128,13 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     spinnerFrame(0),
     platformStyle(platformStyle)
 {
+    QFontDatabase::addApplicationFont(":/fonts/AUdimat-Regular.otf");
     /* Open CSS when configured */
     this->setStyleSheet(GUIUtil::loadStyleSheet());
 
     GUIUtil::restoreWindowGeometry("nWindow", QSize(850, 550), this);
 
-    QString windowTitle = tr("Motion Core") + " - ";
+    QString windowTitle = tr("Motion") + " - ";
 #ifdef ENABLE_WALLET
     /* if compiled with wallet support, -disablewallet can still disable the wallet */
     enableWallet = !GetBoolArg("-disablewallet", false);
@@ -180,21 +187,9 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     // Needs walletFrame to be initialized
     createActions();
 
-    // Create application menu bar
-    createMenuBar();
-
-    // Create the toolbars
-    createToolBars();
-
-    // Create system tray icon and notification
-    createTrayIcon(networkStyle);
-
-    // Create status bar
-    statusBar();
-
-    // Disable size grip because it looks ugly and nobody needs it
-    statusBar()->setSizeGripEnabled(false);
-
+    QFrame *statusbar = new QFrame;
+    statusbar->setObjectName(QStringLiteral("topbar"));
+    statusbar->setStyleSheet("QFrame { background-color: #121212; }");
     // Status bar notification icons
     QFrame *frameBlocks = new QFrame();
     frameBlocks->setContentsMargins(0,0,0,0);
@@ -208,19 +203,13 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     labelConnectionsIcon = new GUIUtil::ClickableLabel();
 
     labelBlocksIcon = new GUIUtil::ClickableLabel();
+    labelBlocksIcon->setVisible(false);
     if(enableWallet)
     {
         frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(unitDisplayControl);
-        frameBlocksLayout->addStretch();
         frameBlocksLayout->addWidget(labelEncryptionIcon);
-        frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
     }
-    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelConnectionsIcon);
-    frameBlocksLayout->addStretch();
-    frameBlocksLayout->addWidget(labelBlocksIcon);
-    frameBlocksLayout->addStretch();
 
     // Progress bar and label for blocks download
     progressBarLabel = new QLabel();
@@ -237,10 +226,36 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     {
         progressBar->setStyleSheet("QProgressBar { background-color: #F8F8F8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #00CCFF, stop: 1 #33CCFF); border-radius: 7px; margin: 0px; }");
     }
+    
+    QHBoxLayout *layoutLogo = new QHBoxLayout;
+    QSpacerItem *horizontalSpacerLeft = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QPixmap pixmapLogo(":/images/light/motion_logo_horizontal");
+    statusbar->setObjectName(QStringLiteral("frameLogo"));
+    QSpacerItem *horizontalSpacerRight = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    QLabel *labelLogo = new QLabel;
+    QFrame *frameLeft = new QFrame;
+    frameLeft->setFixedWidth(300);
+    frameLeft->setFixedHeight(55);
+    frameLeft->setObjectName(QStringLiteral("frameStatusbarLeft"));
+    QVBoxLayout *layoutLeft = new QVBoxLayout;
+    frameLeft->setLayout(layoutLeft);
+    layoutLeft->addWidget(progressBarLabel);
+    layoutLeft->addWidget(progressBar);
+    layoutLeft->addWidget(labelBlocksIcon);
+    labelLogo->setPixmap(pixmapLogo);
+    labelLogo->setAlignment(Qt::AlignCenter);
+    layoutLogo->addWidget(frameLeft);
+    layoutLogo->addWidget(labelLogo);
+    frameBlocks->setObjectName(QStringLiteral("frameStatusbarRight"));
+    layoutLogo->addWidget(frameBlocks);
+    frameBlocks->setFixedWidth(300);
+    statusbar->setLayout(layoutLogo);
 
-    statusBar()->addWidget(progressBarLabel);
-    statusBar()->addWidget(progressBar);
-    statusBar()->addPermanentWidget(frameBlocks);
+    // Create the toolbars
+    createToolBars(statusbar);
+
+    // Create system tray icon and notification
+    createTrayIcon(networkStyle);
 
     // Install event filter to be able to catch status tip events (QEvent::StatusTip)
     this->installEventFilter(this);
@@ -307,7 +322,7 @@ void MotionGUI::createActions()
 #endif
     tabGroup->addAction(sendCoinsAction);
 
-    sendCoinsMenuAction = new QAction(QIcon(":/icons/" + theme + "/send"), sendCoinsAction->text(), this);
+    sendCoinsMenuAction = new QAction(sendCoinsAction->text(), this);
     sendCoinsMenuAction->setStatusTip(sendCoinsAction->statusTip());
     sendCoinsMenuAction->setToolTip(sendCoinsMenuAction->statusTip());
 
@@ -322,11 +337,11 @@ void MotionGUI::createActions()
 #endif
     tabGroup->addAction(receiveCoinsAction);
 
-    receiveCoinsMenuAction = new QAction(QIcon(":/icons/" + theme + "/receiving_addresses"), receiveCoinsAction->text(), this);
+    receiveCoinsMenuAction = new QAction(receiveCoinsAction->text(), this);
     receiveCoinsMenuAction->setStatusTip(receiveCoinsAction->statusTip());
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
-    historyAction = new QAction(QIcon(":/icons/" + theme + "/history"), tr("&Transactions"), this);
+    historyAction = new QAction(QIcon(":/icons/" + theme + "/history"), tr("&History"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
     historyAction->setToolTip(historyAction->statusTip());
     historyAction->setCheckable(true);
@@ -337,6 +352,8 @@ void MotionGUI::createActions()
 #endif
     tabGroup->addAction(historyAction);
 
+    
+
 #ifdef ENABLE_WALLET
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool()) {
@@ -345,14 +362,39 @@ void MotionGUI::createActions()
         masternodeAction->setToolTip(masternodeAction->statusTip());
         masternodeAction->setCheckable(true);
 #ifdef Q_OS_MAC
-        masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
+        masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_6));
 #else
-        masternodeAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+        masternodeAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
 #endif
         tabGroup->addAction(masternodeAction);
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
     }
+
+    toolsAction = new QAction(QIcon(":/icons/" + theme + "/wrench"), "Tools", this);
+    toolsAction->setStatusTip(tr("Tools"));
+    toolsAction->setToolTip(toolsAction->statusTip());
+    toolsAction->setCheckable(true);
+    tabGroup->addAction(toolsAction);
+
+    settingsAction = new QAction(QIcon(":/icons/" + theme + "/options"), "Settings", this);
+    settingsAction->setStatusTip(tr("Wallet Settings"));
+    settingsAction->setToolTip(settingsAction->statusTip());
+    settingsAction->setCheckable(true);
+#ifdef Q_OS_MAC
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        settingsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_6));
+    } else {
+        settingsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
+    }
+#else
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        settingsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    } else {
+        settingsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    }
+#endif
+    tabGroup->addAction(settingsAction);
 
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
@@ -368,56 +410,60 @@ void MotionGUI::createActions()
     connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
+    connect(settingsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(settingsAction, SIGNAL(triggered()), this, SLOT(gotoSettingsPage()));
+    connect(toolsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(toolsAction, SIGNAL(triggered()), this, SLOT(gotoToolsPage()));
 #endif // ENABLE_WALLET
 
-    quitAction = new QAction(QIcon(":/icons/" + theme + "/quit"), tr("E&xit"), this);
+    quitAction = new QAction(tr("E&xit"), this);
     quitAction->setStatusTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
-    aboutAction = new QAction(QIcon(":/icons/" + theme + "/about"), tr("&About Motion Core"), this);
-    aboutAction->setStatusTip(tr("Show information about Motion Core"));
+    aboutAction = new QAction(tr("&About Motion"), this);
+    aboutAction->setStatusTip(tr("Show information about Motion"));
     aboutAction->setMenuRole(QAction::AboutRole);
     aboutAction->setEnabled(false);
-    aboutQtAction = new QAction(QIcon(":/icons/" + theme + "/about_qt"), tr("About &Qt"), this);
+    aboutQtAction = new QAction(tr("About &Qt"), this);
     aboutQtAction->setStatusTip(tr("Show information about Qt"));
     aboutQtAction->setMenuRole(QAction::AboutQtRole);
-    optionsAction = new QAction(QIcon(":/icons/" + theme + "/options"), tr("&Options..."), this);
-    optionsAction->setStatusTip(tr("Modify configuration options for Motion Core"));
+    optionsAction = new QAction("Settings...", this);
+    optionsAction->setStatusTip(tr("Modify configuration options for Motion"));
     optionsAction->setMenuRole(QAction::PreferencesRole);
     optionsAction->setEnabled(false);
-    toggleHideAction = new QAction(QIcon(":/icons/" + theme + "/about"), tr("&Show / Hide"), this);
+    toggleHideAction = new QAction(tr("&Show / Hide"), this);
     toggleHideAction->setStatusTip(tr("Show or hide the main Window"));
 
-    encryptWalletAction = new QAction(QIcon(":/icons/" + theme + "/lock_closed"), tr("&Encrypt Wallet..."), this);
+    encryptWalletAction = new QAction(tr("&Encrypt Wallet..."), this);
     encryptWalletAction->setStatusTip(tr("Encrypt the private keys that belong to your wallet"));
     encryptWalletAction->setCheckable(true);
-    backupWalletAction = new QAction(QIcon(":/icons/" + theme + "/filesave"), tr("&Backup Wallet..."), this);
+    backupWalletAction = new QAction(tr("&Backup Wallet..."), this);
     backupWalletAction->setStatusTip(tr("Backup wallet to another location"));
-    changePassphraseAction = new QAction(QIcon(":/icons/" + theme + "/key"), tr("&Change Passphrase..."), this);
+    changePassphraseAction = new QAction(tr("&Change Passphrase..."), this);
     changePassphraseAction->setStatusTip(tr("Change the passphrase used for wallet encryption"));
     unlockWalletAction = new QAction(tr("&Unlock Wallet..."), this);
     unlockWalletAction->setToolTip(tr("Unlock wallet"));
     lockWalletAction = new QAction(tr("&Lock Wallet"), this);
-    signMessageAction = new QAction(QIcon(":/icons/" + theme + "/edit"), tr("Sign &message..."), this);
+    signMessageAction = new QAction(tr("Sign &message..."), this);
     signMessageAction->setStatusTip(tr("Sign messages with your Motion addresses to prove you own them"));
-    verifyMessageAction = new QAction(QIcon(":/icons/" + theme + "/transaction_0"), tr("&Verify message..."), this);
+    verifyMessageAction = new QAction(tr("&Verify message..."), this);
     verifyMessageAction->setStatusTip(tr("Verify messages to ensure they were signed with specified Motion addresses"));
 
-    openInfoAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation), tr("&Information"), this);
+    openInfoAction = new QAction(tr("&Information"), this);
     openInfoAction->setStatusTip(tr("Show diagnostic information"));
-    openRPCConsoleAction = new QAction(QIcon(":/icons/" + theme + "/debugwindow"), tr("&Debug console"), this);
+    openRPCConsoleAction = new QAction(tr("&Debug console"), this);
     openRPCConsoleAction->setStatusTip(tr("Open debugging console"));
-    openGraphAction = new QAction(QIcon(":/icons/" + theme + "/connect_4"), tr("&Network Monitor"), this);
+    openGraphAction = new QAction(tr("&Network Monitor"), this);
     openGraphAction->setStatusTip(tr("Show network monitor"));
-    openPeersAction = new QAction(QIcon(":/icons/" + theme + "/connect_4"), tr("&Peers list"), this);
+    openPeersAction = new QAction(tr("&Peers list"), this);
     openPeersAction->setStatusTip(tr("Show peers info"));
-    openRepairAction = new QAction(QIcon(":/icons/" + theme + "/options"), tr("Wallet &Repair"), this);
+    openRepairAction = new QAction(tr("Wallet &Repair"), this);
     openRepairAction->setStatusTip(tr("Show wallet repair options"));
-    openConfEditorAction = new QAction(QIcon(":/icons/" + theme + "/edit"), tr("Open Wallet &Configuration File"), this);
+    openConfEditorAction = new QAction(tr("Open Wallet &Configuration File"), this);
     openConfEditorAction->setStatusTip(tr("Open configuration file"));
-    openMNConfEditorAction = new QAction(QIcon(":/icons/" + theme + "/edit"), tr("Open &Masternode Configuration File"), this);
+    openMNConfEditorAction = new QAction(tr("Open &Masternode Configuration File"), this);
     openMNConfEditorAction->setStatusTip(tr("Open Masternode configuration file"));    
-    showBackupsAction = new QAction(QIcon(":/icons/" + theme + "/browse"), tr("Show Automatic &Backups"), this);
+    showBackupsAction = new QAction(tr("Show Automatic &Backups"), this);
     showBackupsAction->setStatusTip(tr("Show automatically created wallet backups"));
     // initially disable the debug window menu items
     openInfoAction->setEnabled(false);
@@ -426,9 +472,9 @@ void MotionGUI::createActions()
     openPeersAction->setEnabled(false);
     openRepairAction->setEnabled(false);
 
-    usedSendingAddressesAction = new QAction(QIcon(":/icons/" + theme + "/address-book"), tr("&Sending addresses..."), this);
+    usedSendingAddressesAction = new QAction(tr("&Sending addresses..."), this);
     usedSendingAddressesAction->setStatusTip(tr("Show the list of used sending addresses and labels"));
-    usedReceivingAddressesAction = new QAction(QIcon(":/icons/" + theme + "/address-book"), tr("&Receiving addresses..."), this);
+    usedReceivingAddressesAction = new QAction(tr("&Receiving addresses..."), this);
     usedReceivingAddressesAction->setStatusTip(tr("Show the list of used receiving addresses and labels"));
 
     openAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_DirOpenIcon), tr("Open &URI..."), this);
@@ -436,7 +482,7 @@ void MotionGUI::createActions()
 
     showHelpMessageAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation), tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
-    showHelpMessageAction->setStatusTip(tr("Show the Motion Core help message to get a list with possible Motion Core command-line options"));
+    showHelpMessageAction->setStatusTip(tr("Show the Motion help message to get a list with possible Motion command-line options"));
 
     showPrivateSendHelpAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation), tr("&PrivateSend information"), this);
     showPrivateSendHelpAction->setMenuRole(QAction::NoRole);
@@ -445,16 +491,22 @@ void MotionGUI::createActions()
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-    connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
+    connect(optionsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(optionsAction, SIGNAL(triggered()), this, SLOT(gotoSettingsPage()));
     connect(toggleHideAction, SIGNAL(triggered()), this, SLOT(toggleHidden()));
     connect(showHelpMessageAction, SIGNAL(triggered()), this, SLOT(showHelpMessageClicked()));
     connect(showPrivateSendHelpAction, SIGNAL(triggered()), this, SLOT(showPrivateSendHelpClicked()));
 
     // Jump directly to tabs in RPC-console
+    connect(openInfoAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(openInfoAction, SIGNAL(triggered()), this, SLOT(showInfo()));
+    connect(openRPCConsoleAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(openRPCConsoleAction, SIGNAL(triggered()), this, SLOT(showConsole()));
+    connect(openGraphAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(openGraphAction, SIGNAL(triggered()), this, SLOT(showGraph()));
+    connect(openPeersAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(openPeersAction, SIGNAL(triggered()), this, SLOT(showPeers()));
+    connect(openRepairAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(openRepairAction, SIGNAL(triggered()), this, SLOT(showRepair()));
 
     // Open configs and backup folder from menu
@@ -464,6 +516,7 @@ void MotionGUI::createActions()
 
     // Get restart command-line parameters and handle restart
     connect(rpcConsole, SIGNAL(handleRestart(QStringList)), this, SLOT(handleRestart(QStringList)));
+    connect(walletFrame, SIGNAL(handleRestart(QStringList)), this, SLOT(handleRestart(QStringList)));
     
     // prevents an open debug window from becoming stuck/unusable on client shutdown
     connect(quitAction, SIGNAL(triggered()), rpcConsole, SLOT(hide()));
@@ -491,80 +544,25 @@ void MotionGUI::createActions()
     new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_R), this, SLOT(showRepair()));
 }
 
-void MotionGUI::createMenuBar()
+
+void MotionGUI::createToolBars(QWidget* statusbar)
 {
-#ifdef Q_OS_MAC
-    // Create a decoupled menu bar on Mac which stays even if the window is closed
-    appMenuBar = new QMenuBar();
-#else
-    // Get the main window's menu bar on other platforms
-    appMenuBar = menuBar();
-#endif
-
-    // Configure the menus
-    QMenu *file = appMenuBar->addMenu(tr("&File"));
-    if(walletFrame)
-    {
-        file->addAction(openAction);
-        file->addAction(backupWalletAction);
-        file->addAction(signMessageAction);
-        file->addAction(verifyMessageAction);
-        file->addSeparator();
-        file->addAction(usedSendingAddressesAction);
-        file->addAction(usedReceivingAddressesAction);
-        file->addSeparator();
-    }
-    file->addAction(quitAction);
-
-    QMenu *settings = appMenuBar->addMenu(tr("&Settings"));
-    if(walletFrame)
-    {
-        settings->addAction(encryptWalletAction);
-        settings->addAction(changePassphraseAction);
-        settings->addAction(unlockWalletAction);
-        settings->addAction(lockWalletAction);
-        settings->addSeparator();
-    }
-    settings->addAction(optionsAction);
-
-    if(walletFrame)
-    {
-        QMenu *tools = appMenuBar->addMenu(tr("&Tools"));
-        tools->addAction(openInfoAction);
-        tools->addAction(openRPCConsoleAction);
-        tools->addAction(openGraphAction);
-        tools->addAction(openPeersAction);
-        tools->addAction(openRepairAction);
-        tools->addSeparator();
-        tools->addAction(openConfEditorAction);
-        tools->addAction(openMNConfEditorAction);
-        tools->addAction(showBackupsAction);
-    }
-
-    QMenu *help = appMenuBar->addMenu(tr("&Help"));
-    help->addAction(showHelpMessageAction);
-    help->addAction(showPrivateSendHelpAction);
-    help->addSeparator();
-    help->addAction(aboutAction);
-    help->addAction(aboutQtAction);
-}
-
-void MotionGUI::createToolBars()
-{
-#ifdef ENABLE_WALLET
     if(walletFrame)
     {
         QToolBar *toolbar = new QToolBar(tr("Tabs toolbar"));
-        toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
+        
         QSettings settings;
         if (settings.value("fShowMasternodesTab").toBool())
         {
             toolbar->addAction(masternodeAction);
         }
+        toolbar->addAction(toolsAction);
+        toolbar->addAction(settingsAction);
         toolbar->setMovable(false); // remove unused icon in upper left corner
         overviewAction->setChecked(true);
 
@@ -572,15 +570,18 @@ void MotionGUI::createToolBars()
             This is a workaround mostly for toolbar styling on Mac OS but should work fine for every other OSes too.
         */
         QVBoxLayout *layout = new QVBoxLayout;
-        layout->addWidget(toolbar);
+      
+        layout->addWidget(statusbar);
         layout->addWidget(walletFrame);
+        layout->addWidget(toolbar);
+        layout->setAlignment(toolbar, Qt::AlignCenter);
         layout->setSpacing(0);
         layout->setContentsMargins(QMargins());
         QWidget *containerWidget = new QWidget();
+        containerWidget->setObjectName("test");
         containerWidget->setLayout(layout);
         setCentralWidget(containerWidget);
     }
-#endif // ENABLE_WALLET
 }
 
 void MotionGUI::setClientModel(ClientModel *clientModel)
@@ -705,6 +706,7 @@ void MotionGUI::setWalletActionsEnabled(bool enabled)
     receiveCoinsAction->setEnabled(enabled);
     receiveCoinsMenuAction->setEnabled(enabled);
     historyAction->setEnabled(enabled);
+    settingsAction->setEnabled(enabled);
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool() && masternodeAction) {
         masternodeAction->setEnabled(enabled);
@@ -722,7 +724,7 @@ void MotionGUI::setWalletActionsEnabled(bool enabled)
 void MotionGUI::createTrayIcon(const NetworkStyle *networkStyle)
 {
     trayIcon = new QSystemTrayIcon(this);
-    QString toolTip = tr("Motion Core client") + " " + networkStyle->getTitleAddText();
+    QString toolTip = tr("Motion client") + " " + networkStyle->getTitleAddText();
     trayIcon->setToolTip(toolTip);
     trayIcon->setIcon(networkStyle->getTrayAndWindowIcon());
     trayIcon->hide();
@@ -734,13 +736,14 @@ void MotionGUI::createIconMenu(QMenu *pmenu)
     // Configuration of the tray icon (or dock icon) icon menu
     pmenu->addAction(toggleHideAction);
     pmenu->addSeparator();
+    pmenu->addAction(optionsAction);
+    pmenu->addSeparator();
     pmenu->addAction(sendCoinsMenuAction);
     pmenu->addAction(receiveCoinsMenuAction);
     pmenu->addSeparator();
-    pmenu->addAction(signMessageAction);
-    pmenu->addAction(verifyMessageAction);
-    pmenu->addSeparator();
-    pmenu->addAction(optionsAction);
+ //   pmenu->addAction(signMessageAction);
+  //  pmenu->addAction(verifyMessageAction);
+ //   
     pmenu->addAction(openInfoAction);
     pmenu->addAction(openRPCConsoleAction);
     pmenu->addAction(openGraphAction);
@@ -796,32 +799,32 @@ void MotionGUI::showDebugWindow()
 
 void MotionGUI::showInfo()
 {
-    rpcConsole->setTabFocus(RPCConsole::TAB_INFO);
-    showDebugWindow();
+    toolsAction->setChecked(true);
+    walletFrame->gotoToolsPageTab(ToolsPage::TAB_INFO);
 }
 
 void MotionGUI::showConsole()
 {
-    rpcConsole->setTabFocus(RPCConsole::TAB_CONSOLE);
-    showDebugWindow();
+    toolsAction->setChecked(true);
+    walletFrame->gotoToolsPageTab(ToolsPage::TAB_CONSOLE);
 }
 
 void MotionGUI::showGraph()
 {
-    rpcConsole->setTabFocus(RPCConsole::TAB_GRAPH);
-    showDebugWindow();
+    toolsAction->setChecked(true);
+    walletFrame->gotoToolsPageTab(ToolsPage::TAB_GRAPH);
 }
 
 void MotionGUI::showPeers()
 {
-    rpcConsole->setTabFocus(RPCConsole::TAB_PEERS);
-    showDebugWindow();
+    toolsAction->setChecked(true);
+    walletFrame->gotoToolsPageTab(ToolsPage::TAB_PEERS);
 }
 
 void MotionGUI::showRepair()
 {
-    rpcConsole->setTabFocus(RPCConsole::TAB_REPAIR);
-    showDebugWindow();
+    toolsAction->setChecked(true);
+    walletFrame->gotoToolsPageTab(ToolsPage::TAB_REPAIR);
 }
 
 void MotionGUI::showConfEditor()
@@ -873,6 +876,18 @@ void MotionGUI::gotoHistoryPage()
 {
     historyAction->setChecked(true);
     if (walletFrame) walletFrame->gotoHistoryPage();
+}
+
+void MotionGUI::gotoSettingsPage() 
+{
+    settingsAction->setChecked(true);
+    if(walletFrame) walletFrame->gotoSettingsPage();
+}
+
+void MotionGUI::gotoToolsPage()
+{
+    toolsAction->setChecked(true);
+    if(toolsAction) walletFrame->gotoToolsPage();
 }
 
 void MotionGUI::gotoMasternodePage()
@@ -928,7 +943,7 @@ void MotionGUI::updateNetworkState()
         icon = ":/icons/" + theme + "/network_disabled";
     }
 
-    labelConnectionsIcon->setPixmap(platformStyle->SingleColorIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+    labelConnectionsIcon->setPixmap(platformStyle->SingleColorIcon(icon).pixmap(32, 32));
 }
 
 void MotionGUI::setNumConnections(int count)
@@ -963,7 +978,8 @@ void MotionGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
         return;
 
     // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbelled text)
-    statusBar()->clearMessage();
+    //statusBar()->clearMessage();
+    //statusbar->clearMessage();
 
     // Acquire current block source
     enum BlockSource blockSource = clientModel->getBlockSource();
@@ -1071,7 +1087,8 @@ void MotionGUI::setAdditionalDataSyncProgress(double nSyncProgress)
         return;
 
     // Prevent orphan statusbar messages (e.g. hover Quit in main menu, wait until chain-sync starts -> garbelled text)
-    statusBar()->clearMessage();
+    //statusBar()->clearMessage();
+    //statusbar->clearMessage();
 
     QString tooltip;
 
@@ -1084,7 +1101,9 @@ void MotionGUI::setAdditionalDataSyncProgress(double nSyncProgress)
     if(masternodeSync.IsSynced()) {
         progressBarLabel->setVisible(false);
         progressBar->setVisible(false);
+
         labelBlocksIcon->setPixmap(QIcon(":/icons/" + theme + "/synced").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelBlocksIcon->setVisible(true);
     } else {
 
         labelBlocksIcon->setPixmap(platformStyle->SingleColorIcon(QString(
@@ -1116,7 +1135,7 @@ void MotionGUI::setAdditionalDataSyncProgress(double nSyncProgress)
 
 void MotionGUI::message(const QString &title, const QString &message, unsigned int style, bool *ret)
 {
-    QString strTitle = tr("Motion Core"); // default title
+    QString strTitle = tr("Motion"); // default title
     // Default to information icon
     int nMBoxIcon = QMessageBox::Information;
     int nNotifyIcon = Notificator::Information;
@@ -1142,7 +1161,7 @@ void MotionGUI::message(const QString &title, const QString &message, unsigned i
             break;
         }
     }
-    // Append title to "Motion Core - "
+    // Append title to "Motion - "
     if (!msgType.isEmpty())
         strTitle += " - " + msgType;
 
