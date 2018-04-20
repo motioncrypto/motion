@@ -903,7 +903,7 @@ WalletFrame {
     min-height:30px;
     }
     
-    #frameCloakedBalance {
+    #framePrivateSendBalance {
         padding-top: 0px;
     }
     
