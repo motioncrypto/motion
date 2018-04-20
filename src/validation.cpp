@@ -1233,10 +1233,6 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 {
     double dDiff;
 
-    if (!nPrevHeight) {
-        return 1051200 * COIN;
-    }
-
     // Ninja Launch, first 500 blocks 1 MTN reward
     if (nPrevHeight <= 500) {
         return 1 * COIN;
