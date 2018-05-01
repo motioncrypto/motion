@@ -154,19 +154,26 @@ unsigned int LwmaCalculateNextWorkRequired(const CBlockIndex* pindexLast, const 
         const CBlockIndex* block_Prev = block->GetAncestor(i - 1);
         int64_t solvetime = block->GetBlockTime() - block_Prev->GetBlockTime();
 
-        if (solvetime > 6 * T) { solvetime =  6 * T; }
-        if (solvetime < -5 * T) { solvetime = -5 * T; }
+        if (solvetime > 7 * T) {
+    	    solvetime = 7 * T; 
+    	}
+    	if (solvetime < -(7 * T)) {
+    	    solvetime = -(7 * T);
+    	}
 
         j++;
         t +=  solvetime * j;
 
         arith_uint256 target;
         target.SetCompact(block->nBits);
-        sum_target += target / k;
+        sum_target += target / (k * N * N);
     }
     // Keep t reasonable in case strange solvetimes occurred.
-    if (t < N * k / 3) {
-        t = N * k / 3;
+    // if (t < N * k / 3) {
+    //     t = N * k / 3;
+    // }
+    if (t < 1) {
+        t = 1;
     }
 
     const arith_uint256 pow_limit = UintToArith256(params.powLimit);
