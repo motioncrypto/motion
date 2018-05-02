@@ -25,8 +25,8 @@ Build-Depends: debhelper,
  python
 Standards-Version: 3.9.2
 Homepage: https://www.motion.org/
-Vcs-Git: git://github.com/motionpay/motion.git
-Vcs-Browser: https://github.com/motionpay/motion
+Vcs-Git: git://github.com/motioncrypto/motion.git
+Vcs-Browser: https://github.com/motioncrypto/motion
 
 Package: motiond
 Architecture: any

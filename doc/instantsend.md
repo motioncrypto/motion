@@ -12,8 +12,8 @@ When a "Transaction Lock" occurs the hash of the related transaction is broadcas
 * `zmqpubhashtxlock`: publishes the transaction hash when locked via InstantSend
 
 This mechanism has been integrated into Bitcore-Node-Motion which allows for notification to be broadcast through Insight API in one of two ways:
-* WebSocket: [https://github.com/motionpay/insight-api-motion#web-socket-api](https://github.com/motionpay/insight-api-motion#web-socket-api)
-* API: [https://github.com/motionpay/insight-api-motion#instantsend-transactions](https://github.com/motionpay/insight-api-motion#instantsend-transactions)
+* WebSocket: [https://github.com/motioncrypto/insight-api-motion#web-socket-api](https://github.com/motioncrypto/insight-api-motion#web-socket-api)
+* API: [https://github.com/motioncrypto/insight-api-motion#instantsend-transactions](https://github.com/motioncrypto/insight-api-motion#instantsend-transactions)
 
 #### Command line option
 

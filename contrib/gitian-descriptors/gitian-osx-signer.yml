@@ -8,7 +8,7 @@ packages:
 - "faketime"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/motionpay/motion-detached-sigs.git"
+- "url": "https://github.com/motioncrypto/motion-detached-sigs.git"
   "dir": "signature"
 files:
 - "motion-osx-unsigned.tar.gz"

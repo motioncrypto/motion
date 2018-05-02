@@ -3,7 +3,7 @@ Construct a linear, no-fork, best version of the blockchain.
 
 ## Step 0: Install motion_hash
 
-https://github.com/motionpay/motion_hash
+https://github.com/motioncrypto/motion_hash
 
 ## Step 1: Download hash list
 

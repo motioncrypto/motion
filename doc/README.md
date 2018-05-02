@@ -57,7 +57,7 @@ The Motion Core repo's [root README](/README.md) contains relevant information o
 
 ### Resources
 * Discuss on the [MotionTalk](https://motiontalk.org/) forums, in the Development & Technical Discussion board.
-* Discuss on [#motionpay](http://webchat.freenode.net/?channels=motionpay) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=motionpay).
+* Discuss on [#motioncrypto](http://webchat.freenode.net/?channels=motioncrypto) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=motioncrypto).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
