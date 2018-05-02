@@ -4142,11 +4142,15 @@ https://www.transifex.com/projects/p/motion/</translation>
     </message>
     <message>
         <source>Copyright (C) 2009-%i The Bitcoin Core Developers</source>
-        <translation>Bản quyền (C) 2009-%i bởi Nhóm phát triển Motion Core</translation>
+        <translation>Bản quyền (C) 2009-%i bởi Nhóm phát triển Bitcoin Core</translation>
     </message>
     <message>
-        <source>Copyright (C) 2014-%i The Bitcoin Core Developers</source>
-        <translation>Bản quyền (C) 2014-%i bởi Nhóm phát triển Motion Core</translation>
+        <source>Copyright (C) 2014-%i The Dash Core Developers</source>
+        <translation>Bản quyền (C) 2014-%i bởi Nhóm phát triển Dash Core</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2017-%i The Motion Core Developers</source>
+        <translation>Bản quyền (C) 2017-%i bởi Nhóm phát triển Motion Core</translation>
     </message>
     <message>
         <source>Enable the client to act as a masternode (0-1, default: %u)</source>

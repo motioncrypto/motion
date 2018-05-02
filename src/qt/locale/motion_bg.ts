@@ -4145,8 +4145,12 @@ https://www.transifex.com/projects/p/motion/</translation>
         <translation>Запазени права (C) 2009-%i Motion Core разработчици</translation>
     </message>
     <message>
-        <source>Copyright (C) 2014-%i The Bitcoin Core Developers</source>
-        <translation>Запазени права (C) 2014-%i Motion Core разработчиците</translation>
+        <source>Copyright (C) 2014-%i The Dash Core Developers</source>
+        <translation>Запазени права (C) 2014-%i Dash Core разработчиците</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2017-%i The Motion Core Developers</source>
+        <translation>Запазени права (C) 2017-%i Motion Core разработчиците</translation>
     </message>
     <message>
         <source>Enable the client to act as a masternode (0-1, default: %u)</source>
