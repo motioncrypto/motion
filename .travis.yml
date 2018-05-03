@@ -45,6 +45,8 @@ env:
     libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" MOTION_CONFIG="--enable-gui
     --enable-reduce-exports" OSX_SDK=10.9 GOAL="deploy"
 before_install:
+- openssl aes-256-cbc -K $encrypted_3f8326effd40_key -iv $encrypted_3f8326effd40_iv
+  -in deploy_rsa.enc -out deploy_rsa -d
 - git clone https://github.com/motioncrypto/x16r_hash
 - travis_retry sudo apt-get install python-dev
 - travis_retry sudo add-apt-repository ppa:ubuntu-wine/ppa -y
@@ -93,12 +95,3 @@ script:
 after_script:
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then (echo "Upload goes here. Something like: scp
     -r $BASE_OUTDIR server" || echo "upload failed"); fi
-deploy:
-  provider: gcs
-  access_key_id: GOOGYOYYAVSJFNBHOBJC
-  secret_access_key:
-    secure: p1m/as/PTV68KhEy0YKWdFSpmTVw3jWLR0eYFgrYCvfjK+Eig8bsoDt3Q0Pm/n4ikqhH8b8TORzjYITMOZqw7+za9lS5M/uAD1Hj8ld4JCA7/eEf9aVAyBnIW8Pt7wtXjuVdYeMqkXu1ZChvJ2eNt/Q5wC7rKCcbRfmpY59hfzTiLSz/DLo12b2pBEA08oueg6XAYSMiKzvxy83N+7r1pxG/huczAxTTIJ6DqSuJ94hX7PEVl4B7YuqeAAdjoG308P8BaHUg7zlsSOjB+TJDlLV5MS3C3acmFOFziG3dDTKtAFqjBYFh7lUp2Iud0VygAQUtiSDLh2iNUs6tlr5i0079fhNq7kUOqxRqLa+6yYL4aMM7gXt+GNRKkoxd3nX27VTahgXc2bAssorMrj0VD2IuTmDxYd5hBClu0le/pu5MWb3IhcFYRY7KwxgqB4KxF1/IW5xorZh0+oGCcW41SyPXivyH4pM0CLwuMgj/DDaBu1aMyvXzisZ/oI5oimf6OD+K/B+uJgChxgxDU+davCbTU13aGQgbm9rJ64Q8olI8hTOHBDf2ubaUMxNv0ucAW4aB8QotDuz1uO5mkKO8WQCqd8w6FJw1tUyMrm/NX0zO8njxBj7nx4vDMTjm0ZedGjkMrNmI7HhN2iXqLA/ExFWZLUYro1N/zsbOxV8gq4I=
-  bucket: motioncrypto-release
-  on:
-    repo: motioncrypto/motion
-  skip_cleanup: true
