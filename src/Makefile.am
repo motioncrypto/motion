@@ -18,7 +18,6 @@ MOTION_CONFIG_INCLUDES=-I$(builddir)/config
 MOTION_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
 MOTION_INCLUDES += -I$(srcdir)/secp256k1/include
-MOTION_INCLUDES += -I$(srcdir)/crypto
 MOTION_INCLUDES += $(UNIVALUE_CFLAGS)
 
 LIBMOTION_SERVER=libmotion_server.a
