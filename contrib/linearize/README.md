@@ -1,9 +1,9 @@
 # Linearize
 Construct a linear, no-fork, best version of the blockchain.
 
-## Step 0: Install motion_hash
+## Step 0: Install x16r_hash
 
-https://github.com/motioncrypto/motion_hash
+https://github.com/motioncrypto/x16r_hash
 
 ## Step 1: Download hash list
 
