@@ -99,4 +99,5 @@ after_script:
 - ssh-add /tmp/deploy_rsa
 - ls $TRAVIS_BUILD_DIR
 - ls $BASE_OUTDIR
-- rsync -r --ignore-existing --rsync-path="mkdir -p /$TRAVIS_JOB_NUMBER/$HOST && rsync" --quiet $TRAVIS_BUILD_DIR/motion-$HOST motion@163.172.171.97:/home/motion/dist/$TRAVIS_JOB_NUMBER/$HOST
+- ls $TRAVIS_BUILD_DIR/motion-$HOST
+- rsync -r --ignore-existing --quiet $TRAVIS_BUILD_DIR/motion-$HOST motion@163.172.171.97:/home/motion/dist/$TRAVIS_JOB_NUMBER-$HOST
