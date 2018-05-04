@@ -99,4 +99,6 @@ after_script:
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/deploy_rsa
 - ssh-add /tmp/deploy_rsa
+- ls $TRAVIS_BUILD_DIR
+- ls $BASE_OUTDIR
 - rsync -r --ignore-existing --quiet $BASE_OUTDIR motion@163.172.171.97:/home/motion/dist
