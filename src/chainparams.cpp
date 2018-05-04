@@ -97,7 +97,7 @@ public:
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256S("0x000007d91d1254d60e2dd1ae580383070a4ddffa4c64c2eeb4a2f9ecc0414343");
-        consensus.powLimit = uint256S("0007ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
@@ -152,9 +152,9 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1525450609, 467500, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1525472701, 2755738, 0x1e0ffff0, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000004bb2c1c1d7031c7004fb24fde825052a0a6ab92eff3e48a36d8a31a876a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000040ae353574c4d1feebec3dcc3c32a73085c97d3936873457cf541b05b00"));
         assert(genesis.hashMerkleRoot == uint256S("0x537fa2dbc0e079d646ce7770b09cbb7e9615ece5cd65e490c7fb3e3b0021f75f"));
 
         vSeeds.push_back(CDNSSeedData("motionproject.org", "seed.motionproject.org"));
@@ -190,14 +190,14 @@ public:
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
         strSporkPubKey = "04d0a5652fedcddbae0481c4cfeded5fc563f74c76ac249e1e57335cb7fbce7fd39cc10037169952ce7f3529b86f9d11cd0c8cb96423fce109c5963668997067d4";
 
-        // checkpointData = (CCheckpointData) {
-        //     boost::assign::map_list_of
-        //     (  0, uint256S("0x000004bb2c1c1d7031c7004fb24fde825052a0a6ab92eff3e48a36d8a31a876a")),
-        //     1525450609, // * UNIX timestamp of last checkpoint block
-        //     0,    // * total number of transactions between genesis and last checkpoint
-        //                 //   (the tx=... number in the SetBestChain debug.log lines)
-        //     500        // * estimated number of transactions per day after checkpoint
-        // };
+        checkpointData = (CCheckpointData) {
+            boost::assign::map_list_of
+            (  0, uint256S("0x0000040ae353574c4d1feebec3dcc3c32a73085c97d3936873457cf541b05b00")),
+            1525472701, // * UNIX timestamp of last checkpoint block
+            0,    // * total number of transactions between genesis and last checkpoint
+                        //   (the tx=... number in the SetBestChain debug.log lines)
+            500        // * estimated number of transactions per day after checkpoint
+        };
     }
 };
 

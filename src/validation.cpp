@@ -1233,7 +1233,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 {
     double dDiff;
 
-    if (!nPrevHeight && Params().NetworkIDString() != "test") { // Premine on testnet
+    if (!nPrevHeight && Params().NetworkIDString() != "test") { // No Premine on testnet
         return 1051200 * COIN;
     }
 
