@@ -33,7 +33,7 @@ env:
     --enable-reduce-exports" MAKEJOBS="-j4" WINE=true
   - HOST=i686-pc-linux-gnu PPA="ppa:bitcoin/bitcoin" PACKAGES="g++-multilib bc python3-zmq"
     DEP_OPTS="NO_QT=1" GOAL="install" MOTION_CONFIG="--enable-zmq --enable-glibc-back-compat
-    --enable-reduce-exports LDFLAGS=-static-libstdc++" USE_SHELL="/bin/motion" PYZMQ=true
+    --enable-reduce-exports LDFLAGS=-static-libstdc++" PYZMQ=true
   - HOST=x86_64-w64-mingw32 DPKG_ADD_ARCH="i386" DEP_OPTS="NO_QT=1" PPA="ppa:bitcoin/bitcoin"
     PACKAGES="python3 nsis g++-mingw-w64-x86-64 wine1.7 bc" GOAL="install" MOTION_CONFIG="--enable-gui
     --enable-reduce-exports" MAKEJOBS="-j4" WINE=true
@@ -99,4 +99,4 @@ after_script:
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/deploy_rsa
 - ssh-add /tmp/deploy_rsa
-- rsync -r --delete-after --quiet $BASE_OUTDIR motion@163.172.171.97:/home/motion/dist; fi
+- rsync -r --delete-after --quiet $BASE_OUTDIR motion@163.172.171.97:/home/motion/dist
