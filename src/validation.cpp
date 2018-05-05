@@ -1233,8 +1233,8 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 {
     double dDiff;
 
-    if (!nPrevHeight && Params().NetworkIDString() != "test") { // No Premine on testnet
-        return 1051200 * COIN;
+    if (!nPrevHeight && Params().NetworkIDString() != "test" || nPrevHeight <= 2) { // No Premine on testnet
+        return 305400 * COIN;
     }
 
     // Ninja Launch, first 500 blocks 1 MTN reward

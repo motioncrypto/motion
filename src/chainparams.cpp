@@ -152,9 +152,9 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1525472701, 2755738, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1525487708, 83189, 0x1e0ffff0, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000040ae353574c4d1feebec3dcc3c32a73085c97d3936873457cf541b05b00"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000001e9dc60dd2618e91f7b9014134922c374496b61c1a272519b1c39979d78"));
         assert(genesis.hashMerkleRoot == uint256S("0x537fa2dbc0e079d646ce7770b09cbb7e9615ece5cd65e490c7fb3e3b0021f75f"));
 
         vSeeds.push_back(CDNSSeedData("motionproject.org", "seed.motionproject.org"));
@@ -192,8 +192,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  0, uint256S("0x0000040ae353574c4d1feebec3dcc3c32a73085c97d3936873457cf541b05b00")),
-            1525472701, // * UNIX timestamp of last checkpoint block
+            (  0, uint256S("0x000001e9dc60dd2618e91f7b9014134922c374496b61c1a272519b1c39979d78")),
+            1525487708, // * UNIX timestamp of last checkpoint block
             0,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             500        // * estimated number of transactions per day after checkpoint
