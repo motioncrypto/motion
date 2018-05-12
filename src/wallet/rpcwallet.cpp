@@ -485,7 +485,7 @@ UniValue instantsendtoaddress(const UniValue& params, bool fHelp)
             + HelpRequiringPassphrase() +
             "\nArguments:\n"
             "1. \"motionaddress\"  (string, required) The motion address to send to.\n"
-            "2. \"amount\"      (numeric, required) The amount in MTN to send. eg 0.1\n"
+            "2. \"amount\"      (numeric, required) The amount in XMN to send. eg 0.1\n"
             "3. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
             "                             This is not part of the transaction, just kept in your wallet.\n"
             "4. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
@@ -1056,11 +1056,11 @@ UniValue sendmany(const UniValue& params, bool fHelp)
             "                                    the number of addresses.\n"
             "\nExamples:\n"
             "\nSend two amounts to two different addresses:\n"
-            + HelpExampleCli("sendmany", "\"tabby\" \"{\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\":0.01,\\\"XuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\":0.02}\"") +
+            + HelpExampleCli("sendmany", "\"tabby\" \"{\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\":0.01,\\\"MuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\":0.02}\"") +
             "\nSend two amounts to two different addresses setting the confirmation and comment:\n"
-            + HelpExampleCli("sendmany", "\"tabby\" \"{\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\":0.01,\\\"XuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\":0.02}\" 6 false \"testing\"") +
+            + HelpExampleCli("sendmany", "\"tabby\" \"{\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\":0.01,\\\"MuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\":0.02}\" 6 false \"testing\"") +
             "\nAs a json rpc call\n"
-            + HelpExampleRpc("sendmany", "\"tabby\", \"{\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\":0.01,\\\"XuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\":0.02}\", 6, false, \"testing\"")
+            + HelpExampleRpc("sendmany", "\"tabby\", \"{\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\":0.01,\\\"MuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\":0.02}\", 6, false, \"testing\"")
         );
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
@@ -2570,8 +2570,8 @@ UniValue listunspent(const UniValue& params, bool fHelp)
 
             "\nExamples\n"
             + HelpExampleCli("listunspent", "")
-            + HelpExampleCli("listunspent", "6 9999999 \"[\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\",\\\"XuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\"]\"")
-            + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\",\\\"XuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\"]\"")
+            + HelpExampleCli("listunspent", "6 9999999 \"[\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\",\\\"MuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\"]\"")
+            + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"MbWMQqUNEosjjEb9WAGuJ5KGN9h4WL5bqf\\\",\\\"MuQQkwA4FYkq2XERzMY2CiAZhJTEDAMTNg\\\"]\"")
         );
 
     RPCTypeCheck(params, boost::assign::list_of(UniValue::VNUM)(UniValue::VNUM)(UniValue::VARR));

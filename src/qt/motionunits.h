@@ -57,9 +57,9 @@ public:
      */
     enum Unit
     {
-        MTN,
-        mMTN,
-        uMTN,
+        XMN,
+        mXMN,
+        uXMN,
         duffs
     };
 

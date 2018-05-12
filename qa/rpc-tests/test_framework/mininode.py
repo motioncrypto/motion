@@ -41,7 +41,7 @@ MY_SUBVERSION = b"/python-mininode-tester:0.0.2/"
 MAX_INV_SZ = 50000
 MAX_BLOCK_SIZE = 1000000
 
-COIN = 100000000L # 1 MTN in satoshis
+COIN = 100000000L # 1 XMN in satoshis
 
 # Keep our own socket map for asyncore, so that we can track disconnects
 # ourselves (to workaround an issue with closing an asyncore socket when 

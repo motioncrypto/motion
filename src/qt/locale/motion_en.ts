@@ -3447,7 +3447,7 @@ https://www.transifex.com/projects/p/motion/</translation>
     <message>
         <location line="+20"/>
         <source>Inputs...</source>
-        <translation>MTN Inputs...</translation>
+        <translation>XMN Inputs...</translation>
     </message>
     <message>
         <location line="+10"/>

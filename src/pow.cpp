@@ -113,10 +113,6 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
        return DarkGravityWave(pindexLast, params);
     }
 
-    if (pindexLast->nHeight <= 100) {
-        return 1; // to mature premine
-    }
-
     return LwmaGetNextWorkRequired(pindexLast, pblock, params);
 }
 
