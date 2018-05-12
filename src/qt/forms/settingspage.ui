@@ -1033,7 +1033,7 @@
                                                             <string notr="true"/>
                                                         </property>
                                                         <property name="text">
-                                                            <string>Amount of MTN to keep anonymized</string>
+                                                            <string>Amount of XMN to keep anonymized</string>
                                                         </property>
                                                     </widget>
                                                 </item>

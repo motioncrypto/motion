@@ -982,7 +982,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         // Remove conflicting transactions from the mempool
         BOOST_FOREACH(const CTxMemPool::txiter it, allConflicting)
         {
-            LogPrint("mempool", "replacing tx %s with %s for %s MTN additional fees, %d delta bytes\n",
+            LogPrint("mempool", "replacing tx %s with %s for %s XMN additional fees, %d delta bytes\n",
                     it->GetTx().GetHash().ToString(),
                     hash.ToString(),
                     FormatMoney(nModifiedFees - nConflictingFees),
@@ -1237,7 +1237,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
         return 350400 * COIN;
     }
 
-    // Ninja Launch, first 500 blocks 1 MTN reward
+    // Ninja Launch, first 500 blocks 1 XMN reward
     if (nPrevHeight <= 300) {
         return 1 * COIN;
     }
@@ -1255,7 +1255,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     }
 
     // LogPrintf("height %u diff %4.2f reward %d\n", nPrevHeight, dDiff, nSubsidyBase);
-    // Block reward starts at 20 and declines 50% every 2 years, getting in 10 years ~21M MTN.
+    // Block reward starts at 20 and declines 50% every 2 years, getting in 10 years ~21M XMN.
     CAmount nSubsidy = 20 * COIN;
 
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {

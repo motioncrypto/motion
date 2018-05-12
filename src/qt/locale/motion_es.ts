@@ -2209,7 +2209,7 @@ https://www.transifex.com/projects/p/motion/</translation>
     </message>
     <message>
         <source>Inputs...</source>
-        <translation>Entradas de MTN...</translation>
+        <translation>Entradas de XMN...</translation>
     </message>
     <message>
         <source>automatically selected</source>

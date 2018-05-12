@@ -446,10 +446,10 @@ Then when building, override the remote URLs that gbuild would otherwise pull fr
 cd /some/root/path/
 git clone https://github.com/motioncrypto/motion-detached-sigs.git
 
-MTNPATH=/some/root/path/motion.git
+XMNPATH=/some/root/path/motion.git
 SIGPATH=/some/root/path/motion-detached-sigs.git
 
-./bin/gbuild --url motion=${MTNPATH},signature=${SIGPATH} ../motion/contrib/gitian-descriptors/gitian-win-signer.yml
+./bin/gbuild --url motion=${XMNPATH},signature=${SIGPATH} ../motion/contrib/gitian-descriptors/gitian-win-signer.yml
 ```
 
 Signing externally

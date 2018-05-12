@@ -19,9 +19,9 @@ MotionUnits::MotionUnits(QObject *parent):
 QList<MotionUnits::Unit> MotionUnits::availableUnits()
 {
     QList<MotionUnits::Unit> unitlist;
-    unitlist.append(MTN);
-    unitlist.append(mMTN);
-    unitlist.append(uMTN);
+    unitlist.append(XMN);
+    unitlist.append(mXMN);
+    unitlist.append(uXMN);
     unitlist.append(duffs);
     return unitlist;
 }
@@ -30,9 +30,9 @@ bool MotionUnits::valid(int unit)
 {
     switch(unit)
     {
-    case MTN:
-    case mMTN:
-    case uMTN:
+    case XMN:
+    case mXMN:
+    case uXMN:
     case duffs:
         return true;
     default:
@@ -46,9 +46,9 @@ QString MotionUnits::name(int unit)
     {
         switch(unit)
         {
-            case MTN: return QString("MTN");
-            case mMTN: return QString("mMTN");
-            case uMTN: return QString::fromUtf8("μMTN");
+            case XMN: return QString("XMN");
+            case mXMN: return QString("mXMN");
+            case uXMN: return QString::fromUtf8("μXMN");
             case duffs: return QString("duffs");
             default: return QString("???");
         }
@@ -57,9 +57,9 @@ QString MotionUnits::name(int unit)
     {
         switch(unit)
         {
-            case MTN: return QString("tMTN");
-            case mMTN: return QString("mtMTN");
-            case uMTN: return QString::fromUtf8("μtMTN");
+            case XMN: return QString("tXMN");
+            case mXMN: return QString("mtXMN");
+            case uXMN: return QString::fromUtf8("μtXMN");
             case duffs: return QString("tduffs");
             default: return QString("???");
         }
@@ -72,9 +72,9 @@ QString MotionUnits::description(int unit)
     {
         switch(unit)
         {
-            case MTN: return QString("Motion");
-            case mMTN: return QString("Milli-Motion (1 / 1" THIN_SP_UTF8 "000)");
-            case uMTN: return QString("Micro-Motion (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case XMN: return QString("Motion");
+            case mXMN: return QString("Milli-Motion (1 / 1" THIN_SP_UTF8 "000)");
+            case uXMN: return QString("Micro-Motion (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             case duffs: return QString("Ten Nano-Motion (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
@@ -83,9 +83,9 @@ QString MotionUnits::description(int unit)
     {
         switch(unit)
         {
-            case MTN: return QString("TestMotions");
-            case mMTN: return QString("Milli-TestMotion (1 / 1" THIN_SP_UTF8 "000)");
-            case uMTN: return QString("Micro-TestMotion (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case XMN: return QString("TestMotions");
+            case mXMN: return QString("Milli-TestMotion (1 / 1" THIN_SP_UTF8 "000)");
+            case uXMN: return QString("Micro-TestMotion (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             case duffs: return QString("Ten Nano-TestMotion (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
@@ -96,9 +96,9 @@ qint64 MotionUnits::factor(int unit)
 {
     switch(unit)
     {
-    case MTN:  return 100000000;
-    case mMTN: return 100000;
-    case uMTN: return 100;
+    case XMN:  return 100000000;
+    case mXMN: return 100000;
+    case uXMN: return 100;
     case duffs: return 1;
     default:   return 100000000;
     }
@@ -108,9 +108,9 @@ int MotionUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case MTN: return 8;
-    case mMTN: return 5;
-    case uMTN: return 2;
+    case XMN: return 8;
+    case mXMN: return 5;
+    case uXMN: return 2;
     case duffs: return 0;
     default: return 0;
     }
