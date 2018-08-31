@@ -36,6 +36,7 @@
 #include "util.h"
 #include "masternode-sync.h"
 #include "masternodelist.h"
+#include "proposallist.h"
 
 #include <iostream>
 
@@ -117,6 +118,7 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     openAction(0),
     showHelpMessageAction(0),
     showPrivateSendHelpAction(0),
+	proposalAction(0),
     trayIcon(0),
     trayIconMenu(0),
     dockIconMenu(0),
@@ -415,6 +417,14 @@ void MotionGUI::createActions()
     connect(toolsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(toolsAction, SIGNAL(triggered()), this, SLOT(gotoToolsPage()));
 #endif // ENABLE_WALLET
+	/* remove to enable proposal tab 
+    proposalAction = new QAction(QIcon(":/icons/" + theme + "/proposal"), tr("&Proposals"), this);
+    proposalAction->setStatusTip(tr("Browse proposals"));
+    proposalAction->setToolTip(proposalAction->statusTip());
+    proposalAction->setCheckable(true);
+    proposalAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_6));
+    tabGroup->addAction(proposalAction);  */
+
 
     quitAction = new QAction(tr("E&xit"), this);
     quitAction->setStatusTip(tr("Quit application"));
@@ -488,6 +498,11 @@ void MotionGUI::createActions()
     showPrivateSendHelpAction->setMenuRole(QAction::NoRole);
     showPrivateSendHelpAction->setStatusTip(tr("Show the PrivateSend basic information"));
 
+	/* remove to enable proposal tab 
+    connect(proposalAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(proposalAction, SIGNAL(triggered()), this, SLOT(gotoProposalPage()));
+	*/
+	
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -561,6 +576,7 @@ void MotionGUI::createToolBars(QWidget* statusbar)
         {
             toolbar->addAction(masternodeAction);
         }
+		//toolbar->addAction(proposalAction); remove to enable proposal tab 
         toolbar->addAction(toolsAction);
         toolbar->addAction(settingsAction);
         toolbar->setMovable(false); // remove unused icon in upper left corner
@@ -711,6 +727,7 @@ void MotionGUI::setWalletActionsEnabled(bool enabled)
     if (settings.value("fShowMasternodesTab").toBool() && masternodeAction) {
         masternodeAction->setEnabled(enabled);
     }
+	//proposalAction->setEnabled(enabled); remove to enable proposal tab 
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
@@ -904,6 +921,14 @@ void MotionGUI::gotoReceiveCoinsPage()
     receiveCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoReceiveCoinsPage();
 }
+
+/* remove to enable proposal tab 
+void MotionGUI::gotoProposalPage()
+{
+    proposalAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoProposalPage();
+} */
+
 
 void MotionGUI::gotoSendCoinsPage(QString addr)
 {
