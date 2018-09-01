@@ -221,15 +221,15 @@ public:
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 21600;
         consensus.nMasternodePaymentsStartBlock = 2000; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 9999;
-        consensus.nMasternodePaymentsIncreasePeriod = 9999;
+        consensus.nMasternodePaymentsIncreaseBlock = 9999999999;
+        consensus.nMasternodePaymentsIncreasePeriod = 9999999999;
         consensus.nInstantSendKeepLock = 6;
         consensus.nBudgetPaymentsStartBlock = 9999999999; // Disabled
-        consensus.nBudgetPaymentsCycleBlocks = 9999999999; // Disabled
-        consensus.nBudgetPaymentsWindowBlocks = 9999999999; // Disabled
-        consensus.nBudgetProposalEstablishingTime = 60*20*9999999999; // Disabled
+        consensus.nBudgetPaymentsCycleBlocks = 50; // Disabled
+        consensus.nBudgetPaymentsWindowBlocks = 10;
+        consensus.nBudgetProposalEstablishingTime = 60*24;
         consensus.nSuperblockStartBlock = 99999999999; // Disabled
-        consensus.nSuperblockCycle = 9999999999; // Disabled
+        consensus.nSuperblockCycle = 24; // Superblocks can be issued hourly on testnet
         consensus.nGovernanceMinQuorum = 1;
         consensus.nGovernanceFilterElements = 500;
         consensus.nMasternodeMinimumConfirmations = 1;
@@ -243,7 +243,7 @@ public:
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
 
-        consensus.nInflationProtectionStart = 400; // Activate new coin specs
+        consensus.nInflationProtectionStart = 300; // Activate new coin specs
 
         consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
@@ -284,9 +284,9 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1535776310UL, 1730791UL, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1535825455UL, 153578UL, 0x1e0ffff0, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000007dcb09639f0877351d706d23924399e5d52b44e7d1e693201304b0f40bf"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000009c5d231d8d5cafeb08d0a8522f8ca0973cbe3cb6c712562d1d148a86aad"));
         assert(genesis.hashMerkleRoot == uint256S("0x537fa2dbc0e079d646ce7770b09cbb7e9615ece5cd65e490c7fb3e3b0021f75f"));
 
         vSeeds.push_back(CDNSSeedData("testnet.motionproject.org", "testnet.seed.motionproject.org"));
