@@ -1338,7 +1338,7 @@ Varoitus: Jos käytät käyttöjärjestelmää suoraan usb, dvd tai cd levyltä 
         <translation>Näytä lisävälilehti jonka ensimmäisellä alivälilehdellä näkyvät sinun masternodet&lt;br/&gt;ja toisella alivälilehdellä näkyvät verkon kaikki masternodet.</translation>
     </message>
     <message>
-        <source>Show Masternodes Tab</source>
+        <source>Show Masternodes and Proposals Tabs</source>
         <translation>Näytä Masternodet Välilehti</translation>
     </message>
     <message>

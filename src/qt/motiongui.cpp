@@ -363,6 +363,11 @@ void MotionGUI::createActions()
         masternodeAction->setStatusTip(tr("Browse masternodes"));
         masternodeAction->setToolTip(masternodeAction->statusTip());
         masternodeAction->setCheckable(true);
+
+        proposalAction = new QAction(QIcon(":/icons/" + theme + "/proposal"), tr("&Proposals"), this);
+        proposalAction->setStatusTip(tr("Browse proposals"));
+        proposalAction->setToolTip(proposalAction->statusTip());
+        proposalAction->setCheckable(true);
 #ifdef Q_OS_MAC
         masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_6));
 #else
@@ -371,6 +376,10 @@ void MotionGUI::createActions()
         tabGroup->addAction(masternodeAction);
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
+
+        tabGroup->addAction(proposalAction);
+        connect(proposalAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+        connect(proposalAction, SIGNAL(triggered()), this, SLOT(gotoProposalPage()));
     }
 
     toolsAction = new QAction(QIcon(":/icons/" + theme + "/wrench"), "Tools", this);
@@ -417,15 +426,6 @@ void MotionGUI::createActions()
     connect(toolsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(toolsAction, SIGNAL(triggered()), this, SLOT(gotoToolsPage()));
 #endif // ENABLE_WALLET
-	/* remove to enable proposal tab 
-    proposalAction = new QAction(QIcon(":/icons/" + theme + "/proposal"), tr("&Proposals"), this);
-    proposalAction->setStatusTip(tr("Browse proposals"));
-    proposalAction->setToolTip(proposalAction->statusTip());
-    proposalAction->setCheckable(true);
-    proposalAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_6));
-    tabGroup->addAction(proposalAction);  */
-
-
     quitAction = new QAction(tr("E&xit"), this);
     quitAction->setStatusTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
@@ -498,11 +498,6 @@ void MotionGUI::createActions()
     showPrivateSendHelpAction->setMenuRole(QAction::NoRole);
     showPrivateSendHelpAction->setStatusTip(tr("Show the PrivateSend basic information"));
 
-	/* remove to enable proposal tab 
-    connect(proposalAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(proposalAction, SIGNAL(triggered()), this, SLOT(gotoProposalPage()));
-	*/
-	
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -575,8 +570,8 @@ void MotionGUI::createToolBars(QWidget* statusbar)
         if (settings.value("fShowMasternodesTab").toBool())
         {
             toolbar->addAction(masternodeAction);
+		    toolbar->addAction(proposalAction);
         }
-		//toolbar->addAction(proposalAction); remove to enable proposal tab 
         toolbar->addAction(toolsAction);
         toolbar->addAction(settingsAction);
         toolbar->setMovable(false); // remove unused icon in upper left corner
@@ -726,8 +721,8 @@ void MotionGUI::setWalletActionsEnabled(bool enabled)
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool() && masternodeAction) {
         masternodeAction->setEnabled(enabled);
+	    proposalAction->setEnabled(enabled);
     }
-	//proposalAction->setEnabled(enabled); remove to enable proposal tab 
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
@@ -922,12 +917,15 @@ void MotionGUI::gotoReceiveCoinsPage()
     if (walletFrame) walletFrame->gotoReceiveCoinsPage();
 }
 
-/* remove to enable proposal tab 
+
 void MotionGUI::gotoProposalPage()
 {
-    proposalAction->setChecked(true);
-    if (walletFrame) walletFrame->gotoProposalPage();
-} */
+    QSettings settings;
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        proposalAction->setChecked(true);
+        if (walletFrame) walletFrame->gotoProposalPage();
+    }
+}
 
 
 void MotionGUI::gotoSendCoinsPage(QString addr)

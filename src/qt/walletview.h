@@ -90,7 +90,7 @@ public Q_SLOTS:
     /** Switch to masternode page */
     void gotoMasternodePage();
     /** Switch to proposal page */
-    //void gotoProposalPage();	remove to enable proposal tab
+    void gotoProposalPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */

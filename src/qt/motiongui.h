@@ -228,7 +228,7 @@ private Q_SLOTS:
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
     /** Switch to proposal page */
-    //void gotoProposalPage();	 remove to enable proposal tab
+    void gotoProposalPage();
     void gotoSettingsPage();
     void gotoToolsPage();
 

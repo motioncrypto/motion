@@ -1256,7 +1256,10 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 
     // LogPrintf("height %u diff %4.2f reward %d\n", nPrevHeight, dDiff, nSubsidyBase);
     // Block reward starts at 20 and declines 50% every 2 years, getting in 10 years ~21M XMN.
-    CAmount nSubsidy = 20 * COIN;
+    CAmount nSubsidy = 15 * COIN;
+    if (nPrevHeight < consensusParams.nInflationProtectionStart) {
+        nSubsidy = 20 * COIN; // Before inflation adjustements will keep receiving 20 XMN as reward
+    }
 
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
         nSubsidy = nSubsidy/2;

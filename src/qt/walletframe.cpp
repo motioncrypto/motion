@@ -145,13 +145,12 @@ void WalletFrame::gotoMasternodePage()
 }
 
 
-/* remove to enable proposal tab 
 void WalletFrame::gotoProposalPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoProposalPage();
-} */
+}
 
 
 void WalletFrame::gotoReceiveCoinsPage()

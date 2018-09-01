@@ -102,6 +102,8 @@ public:
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
 
+        consensus.nInflationProtectionStart = 95000; // Activate new coin specs
+
         consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -192,8 +194,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  0, uint256S("0x000001e9dc60dd2618e91f7b9014134922c374496b61c1a272519b1c39979d78")),
-            1525487708, // * UNIX timestamp of last checkpoint block
+            (  0, uint256S("0x000001e9dc60dd2618e91f7b9014134922c374496b61c1a272519b1c39979d78"))
+            (  10000, uint256S("0x0000000000f960c1df69425b7173140141386209740e1a233e621869eeedf0b6"))
+            (  30000, uint256S("0x000000000017ff82ad61e7a786f267982d4e0cd6952192eee491f40c85d0d81b"))
+            (  50000, uint256S("0x0000000000109a863382feaa2d3fe1dd32f4271ec2257b4f50bb082f7caf94dc"))
+            (  70000, uint256S("0x00000000008186355fd7286c68de5c58b363a6ab2620fdc2a7c15f4f995c9f77"))
+            (  80000, uint256S("0x000000000038c10d4d3ba544802e8d6dc131348e8b9f7bf0287f43521723f0ba")),
+            1535047457, // * UNIX timestamp of last checkpoint block
             0,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             500        // * estimated number of transactions per day after checkpoint
@@ -236,6 +243,8 @@ public:
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
 
+        consensus.nInflationProtectionStart = 400; // Activate new coin specs
+
         consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -275,10 +284,10 @@ public:
         nDelayGetHeadersTime = 24 * 60 * 60;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1525413615UL, 1507179UL, 0x1e0ffff0, 1, 150000 * COIN);
+        genesis = CreateGenesisBlock(1535776310UL, 1730791UL, 0x1e0ffff0, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000ba049e5c1f95474ea3fc62d5f1b1632a294c20c22fea701134a43cf3068"));
-        assert(genesis.hashMerkleRoot == uint256S("0xd5dec0980d7b84cc1c048eb8706afe68bbbdb07fdefab76de8d176dfcb858ae8"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000007dcb09639f0877351d706d23924399e5d52b44e7d1e693201304b0f40bf"));
+        assert(genesis.hashMerkleRoot == uint256S("0x537fa2dbc0e079d646ce7770b09cbb7e9615ece5cd65e490c7fb3e3b0021f75f"));
 
         vSeeds.push_back(CDNSSeedData("testnet.motionproject.org", "testnet.seed.motionproject.org"));
         vSeeds.push_back(CDNSSeedData("fixed-seeds.motionproject.org", "testnet.fixed-seeds.motionproject.org"));
@@ -355,6 +364,8 @@ public:
 
         consensus.nZawyLwmaAveragingWindow = 65;
         consensus.nZawyLwmaAjustedWeight = 3927;
+
+        consensus.nInflationProtectionStart = 400; // Activate new coin specs
 
         consensus.nPowTargetTimespan = 30 * 60 * 2; // Motion: 1 hour
         consensus.nPowTargetSpacing = 2 * 60; // Motion: 2 minutes

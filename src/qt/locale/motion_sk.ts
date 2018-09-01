@@ -1241,7 +1241,7 @@
         <translation>&amp;Spusť Motion po prihlásení do systému</translation>
     </message>
     <message>
-        <source>Show Masternodes Tab</source>
+        <source>Show Masternodes and Proposals Tabs</source>
         <translation>Ukázať záložku Masternodes</translation>
     </message>
     <message>

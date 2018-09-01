@@ -1338,7 +1338,7 @@ Der Mixing-Prozeß läuft nach dem Start vollständig im Hintergrund, d.h. es is
         <translation>Tabulator mit der Lister aller/Ihrer Masternodes anzeigen.</translation>
     </message>
     <message>
-        <source>Show Masternodes Tab</source>
+        <source>Show Masternodes and Proposals Tabs</source>
         <translation>Masternode Tabulator anzeigen</translation>
     </message>
     <message>

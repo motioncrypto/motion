@@ -93,11 +93,11 @@ WalletView::WalletView(const PlatformStyle *platformStyle, QWidget *parent):
     if (settings.value("fShowMasternodesTab").toBool()) {
         masternodeListPage = new MasternodeList(platformStyle);
         addWidget(masternodeListPage);
-    }
-/* remove to enable proposal tab 	
-    proposalListPage = new ProposalList(platformStyle);
-    addWidget(proposalListPage);	
-*/
+
+        proposalListPage = new ProposalList(platformStyle);
+        addWidget(proposalListPage);
+    }	
+
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
     connect(overviewPage, SIGNAL(outOfSyncWarningClicked()), this, SLOT(requestedSyncWarningInfo()));
@@ -259,11 +259,14 @@ void WalletView::gotoReceiveCoinsPage()
 {
     setCurrentWidget(receiveCoinsPage);
 }
-/* remove to enable proposal tab 
+
 void WalletView::gotoProposalPage()
 {
-    setCurrentWidget(proposalListPage);
-} */
+    QSettings settings;
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        setCurrentWidget(proposalListPage);
+    }
+}
 
 
 void WalletView::gotoSendCoinsPage(QString addr)
