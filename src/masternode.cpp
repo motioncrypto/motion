@@ -123,7 +123,7 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
     }
 
     CAmount nCollateral = 2000 * COIN;
-    if (nBlockHeight - 1 < Params().GetConsensus().nInflationProtectionStart) {
+    if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
         nCollateral = 1000 * COIN; // Before inflation adjustements will keep 1000 XMN as collateral
     }
 
@@ -262,15 +262,8 @@ bool CMasternode::IsInputAssociatedWithPubkey()
     CTransaction tx;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, tx, Params().GetConsensus(), hash, true)) {
-        // Get current block height
-        int nBlockHeight = 0;
-        {
-            LOCK(cs_main);
-            nBlockHeight = (int)chainActive.Height();
-        }
-
         CAmount nCollateral = 2000 * COIN;
-        if (nBlockHeight - 1 < Params().GetConsensus().nInflationProtectionStart) {
+        if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
             nCollateral = 1000 * COIN; // Before inflation adjustements will keep 1000 XMN as collateral
         }
 
