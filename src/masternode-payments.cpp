@@ -11,6 +11,7 @@
 #include "netfulfilledman.h"
 #include "spork.h"
 #include "util.h"
+#include "init.h"
 
 #include <boost/lexical_cast.hpp>
 
@@ -267,6 +268,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
     txoutMasternodeRet = CTxOut();
 
     CScript payee;
+    masternode_info_t copymn;
 
     if(!mnpayments.GetBlockPayee(nBlockHeight, payee)) {
         // no masternode detected...
@@ -278,11 +280,27 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
             return;
         }
         // fill payee with locally calculated winner and hope for the best
+        copymn = mnInfo;
         payee = GetScriptForDestination(mnInfo.pubKeyCollateralAddress.GetID());
     }
 
     // GET MASTERNODE PAYMENT VARIABLES SETUP
-    CAmount masternodePayment = GetMasternodePayment(nBlockHeight, blockReward);
+    CAmount masternodePayment;
+    	// cycle thru mn map..
+    std::map<COutPoint, CMasternode> mapMasternodesZ = mnodeman.GetFullMasternodeMap();
+        for (auto& mnpairZ : mapMasternodesZ) {
+                CMasternode mn = mnpairZ.second;
+            if (CMotionAddress(copymn.pubKeyCollateralAddress.GetID()).ToString() == CMotionAddress(mn.pubKeyCollateralAddress.GetID()).ToString()){
+            if(mn.tier == 1) {
+                masternodePayment = GetMasternodePayment(nBlockHeight, blockReward, 1);
+                break;
+            }
+            else if (mn.tier == 2) {
+                masternodePayment = GetMasternodePayment(nBlockHeight, blockReward, 2);
+                break;
+            }
+        }
+    }
 
     // split reward between miner ...
     txNew.vout[0].nValue -= masternodePayment;
@@ -549,7 +567,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
     int nMaxSignatures = 0;
     std::string strPayeesPossible = "";
 
-    CAmount nMasternodePayment = GetMasternodePayment(nBlockHeight, txNew.GetValueOut());
+    CAmount nMasternodePayment = GetMasternodePayment(nBlockHeight, txNew.GetValueOut(), 1);
 
     //require at least MNPAYMENTS_SIGNATURES_REQUIRED signatures
 

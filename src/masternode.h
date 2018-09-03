@@ -110,6 +110,7 @@ struct masternode_info_t
     int nActiveState = 0;
     int nProtocolVersion = 0;
     int64_t sigTime = 0; //mnb message time
+    int tier = 1;
 
     CTxIn vin{};
     CService addr{};
@@ -128,6 +129,9 @@ struct masternode_info_t
 // The Masternode Class. For managing the Darksend process. It contains the input of the 1000DRK, signature to prove
 // it's the one who own that ip address and code for calculating the payment election.
 //
+// typedef std::map<int, int> intMap;
+// static std::map<int, int> masternodeTiers = map_list_of (1, 1000) (2, 2000); // 1k, 2k
+
 class CMasternode : public masternode_info_t
 {
 private:
@@ -270,6 +274,9 @@ public:
     int GetLastPaidTime() { return nTimeLastPaid; }
     int GetLastPaidBlock() { return nBlockLastPaid; }
     void UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScanBack);
+    void UpdateTier(int newTier) {
+	    tier = newTier;
+	}
 
     // KEEP TRACK OF EACH GOVERNANCE ITEM INCASE THIS NODE GOES OFFLINE, SO WE CAN RECALC THEIR STATUS
     void AddGovernanceVote(uint256 nGovernanceObjectHash);

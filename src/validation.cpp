@@ -1276,10 +1276,18 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
-CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
+CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int tier)
 {
     // Until tiers implementation, MN gets 60% from block reward
-    return blockValue * 0.6;
+    if (nHeight < Params().GetConsensus().nInflationProtectionStart) {
+        return blockValue * 0.6;
+    } else {
+        if (tier == 1) {
+            return 0;
+        } else {
+            return blockValue * 0.6;
+        }
+    }
 }
 
 bool IsInitialBlockDownload()
