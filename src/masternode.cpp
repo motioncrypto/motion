@@ -110,12 +110,6 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
 CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outpoint, int& nHeightRet)
 {
     AssertLockHeld(cs_main);
-    // Get current block height
-    int nBlockHeight = 0;
-    {
-        LOCK(cs_main);
-        nBlockHeight = (int)chainActive.Height();
-    }
 
     Coin coin;
     if(!GetUTXOCoin(outpoint, coin)) {
