@@ -1020,14 +1020,16 @@ void CMasternodeMan::CheckSameAddr()
                         pmn->UpdateTier(2);
                     }
                 }
-                std::vector<COutput> couldbe1k;
-                pwalletMain->AvailableCoins(couldbe1k, true, NULL, false, ONLY_1000);
-                //check all outputs for the txid hash
-                BOOST_FOREACH(COutput& out1k, couldbe1k) {
-                    std::string checkcol1k = out1k.tx->GetHash().ToString();
-                    std::string checkvin1k = pmn->vin.prevout.ToString();
-                    if (checkvin1k == checkcol1k) { // we have a match of a 1k node
-                        pmn->UpdateTier(1);
+                if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
+                    std::vector<COutput> couldbe1k;
+                    pwalletMain->AvailableCoins(couldbe1k, true, NULL, false, ONLY_1000);
+                    //check all outputs for the txid hash
+                    BOOST_FOREACH(COutput& out1k, couldbe1k) {
+                        std::string checkcol1k = out1k.tx->GetHash().ToString();
+                        std::string checkvin1k = pmn->vin.prevout.ToString();
+                        if (checkvin1k == checkcol1k) { // we have a match of a 1k node
+                            pmn->UpdateTier(1);
+                        }
                     }
                 }
             }
