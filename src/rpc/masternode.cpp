@@ -371,13 +371,17 @@ UniValue masternode(const UniValue& params, bool fHelp)
     if (strCommand == "outputs") {
         // Find possible candidates
         std::vector<COutput> vPossibleCoins;
-        pwalletMain->AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_1000);
-        pwalletMain->AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_2000);
-        // if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
-        // } else {
-        // }
+        std::vector<COutput> vPossibleCoinsv2;
+        if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
+            pwalletMain->AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_1000);
+        }
+        pwalletMain->AvailableCoins(vPossibleCoinsv2, true, NULL, false, ONLY_2000);
 
         UniValue obj(UniValue::VOBJ);
+        BOOST_FOREACH(COutput& out, vPossibleCoinsv2) {
+            obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
+        }
+        obj.push_back(Pair("Warning", strprintf("This outputs will be deprecated after block %d:", Params().GetConsensus().nInflationProtectionStart)));
         BOOST_FOREACH(COutput& out, vPossibleCoins) {
             obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
         }

@@ -1004,36 +1004,22 @@ void CMasternodeMan::CheckSameAddr()
         sort(vSortedByAddr.begin(), vSortedByAddr.end(), CompareByAddr());
 
         BOOST_FOREACH(CMasternode* pmn, vSortedByAddr) {
-            // check only (pre)enabled masternodes
-            if(!pmn->IsEnabled() && !pmn->IsPreEnabled()) continue;
-            // initial step
-            //DO TIERS HERE!
-            if (pmn != NULL) {
-                //do 2000 case
-                std::vector<COutput> couldbe2k;
-                pwalletMain->AvailableCoins(couldbe2k, true, NULL, false, ONLY_2000);
+            // Ban if is out of inflation control
+             if (pmn != NULL && chainActive.Height() >= Params().GetConsensus().nInflationProtectionStart) {
+                std::vector<COutput> found1kouts;
+                pwalletMain->AvailableCoins(found1kouts, true, NULL, false, ONLY_1000);
                 //check all outputs for the txid hash
-                BOOST_FOREACH(COutput& out2k, couldbe2k) {
-                    std::string checkcol2k = out2k.tx->GetHash().ToString();
-                    std::string checkvin2k = pmn->vin.prevout.ToString();
-                    if (checkvin2k == checkcol2k) { //we have a match of a 2k node
-                        pmn->UpdateTier(2);
-                    }
-                }
-                if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
-                    std::vector<COutput> couldbe1k;
-                    pwalletMain->AvailableCoins(couldbe1k, true, NULL, false, ONLY_1000);
-                    //check all outputs for the txid hash
-                    BOOST_FOREACH(COutput& out1k, couldbe1k) {
-                        std::string checkcol1k = out1k.tx->GetHash().ToString();
-                        std::string checkvin1k = pmn->vin.prevout.ToString();
-                        if (checkvin1k == checkcol1k) { // we have a match of a 1k node
-                            pmn->UpdateTier(1);
-                        }
+                std::string checkvin = pmn->vin.prevout.ToStringShort();
+                BOOST_FOREACH(COutput& out, found1kouts) {
+                    std::string checkcol = out.tx->GetHash().ToString();
+                    if (checkvin == checkcol) { //we have a match of a 1k node
+                        vBan.push_back(pmn);
                     }
                 }
             }
-
+            // check only (pre)enabled masternodes
+            if(!pmn->IsEnabled() && !pmn->IsPreEnabled()) continue;
+            // initial step
             if(!pprevMasternode) {
                 pprevMasternode = pmn;
                 pverifiedMasternode = pmn->IsPoSeVerified() ? pmn : NULL;
