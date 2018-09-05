@@ -381,8 +381,8 @@ UniValue masternode(const UniValue& params, bool fHelp)
         BOOST_FOREACH(COutput& out, vPossibleCoinsv2) {
             obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
         }
-        obj.push_back(Pair("Warning", strprintf("This outputs will be deprecated after block %d:", Params().GetConsensus().nInflationProtectionStart)));
         BOOST_FOREACH(COutput& out, vPossibleCoins) {
+            obj.push_back(Pair("Warning", strprintf("This output will be deprecated after block %d:", Params().GetConsensus().nInflationProtectionStart)));
             obj.push_back(Pair(out.tx->GetHash().ToString(), strprintf("%d", out.i)));
         }
 
