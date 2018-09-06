@@ -1337,7 +1337,7 @@
         <translation>Показывать дополнительную вкладку со списком своих мастернод&lt;br/&gt;в одной таблице и списком всех мастернод в другой.</translation>
     </message>
     <message>
-        <source>Show Masternodes Tab</source>
+        <source>Show Masternodes and Proposals Tabs</source>
         <translation>Показывать вкладку с мастернодами</translation>
     </message>
     <message>

@@ -36,6 +36,7 @@
 #include "util.h"
 #include "masternode-sync.h"
 #include "masternodelist.h"
+#include "proposallist.h"
 
 #include <iostream>
 
@@ -117,6 +118,7 @@ MotionGUI::MotionGUI(const PlatformStyle *platformStyle, const NetworkStyle *net
     openAction(0),
     showHelpMessageAction(0),
     showPrivateSendHelpAction(0),
+	proposalAction(0),
     trayIcon(0),
     trayIconMenu(0),
     dockIconMenu(0),
@@ -361,6 +363,11 @@ void MotionGUI::createActions()
         masternodeAction->setStatusTip(tr("Browse masternodes"));
         masternodeAction->setToolTip(masternodeAction->statusTip());
         masternodeAction->setCheckable(true);
+
+        proposalAction = new QAction(QIcon(":/icons/" + theme + "/proposal"), tr("&Proposals"), this);
+        proposalAction->setStatusTip(tr("Browse proposals"));
+        proposalAction->setToolTip(proposalAction->statusTip());
+        proposalAction->setCheckable(true);
 #ifdef Q_OS_MAC
         masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_6));
 #else
@@ -369,6 +376,10 @@ void MotionGUI::createActions()
         tabGroup->addAction(masternodeAction);
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
+
+        tabGroup->addAction(proposalAction);
+        connect(proposalAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+        connect(proposalAction, SIGNAL(triggered()), this, SLOT(gotoProposalPage()));
     }
 
     toolsAction = new QAction(QIcon(":/icons/" + theme + "/wrench"), "Tools", this);
@@ -415,7 +426,6 @@ void MotionGUI::createActions()
     connect(toolsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(toolsAction, SIGNAL(triggered()), this, SLOT(gotoToolsPage()));
 #endif // ENABLE_WALLET
-
     quitAction = new QAction(tr("E&xit"), this);
     quitAction->setStatusTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
@@ -560,6 +570,7 @@ void MotionGUI::createToolBars(QWidget* statusbar)
         if (settings.value("fShowMasternodesTab").toBool())
         {
             toolbar->addAction(masternodeAction);
+		    toolbar->addAction(proposalAction);
         }
         toolbar->addAction(toolsAction);
         toolbar->addAction(settingsAction);
@@ -710,6 +721,7 @@ void MotionGUI::setWalletActionsEnabled(bool enabled)
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool() && masternodeAction) {
         masternodeAction->setEnabled(enabled);
+	    proposalAction->setEnabled(enabled);
     }
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
@@ -904,6 +916,17 @@ void MotionGUI::gotoReceiveCoinsPage()
     receiveCoinsAction->setChecked(true);
     if (walletFrame) walletFrame->gotoReceiveCoinsPage();
 }
+
+
+void MotionGUI::gotoProposalPage()
+{
+    QSettings settings;
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        proposalAction->setChecked(true);
+        if (walletFrame) walletFrame->gotoProposalPage();
+    }
+}
+
 
 void MotionGUI::gotoSendCoinsPage(QString addr)
 {

@@ -1337,7 +1337,7 @@
         <translation>Ajouter un onglet montrant tous vos masternodes dans le premier sous-onglet&lt;br/&gt;et tous les masternodes du réseau dans le second.</translation>
     </message>
     <message>
-        <source>Show Masternodes Tab</source>
+        <source>Show Masternodes and Proposals Tabs</source>
         <translation>Afficher l'onglet Masternodes</translation>
     </message>
     <message>

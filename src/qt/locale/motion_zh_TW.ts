@@ -1329,7 +1329,7 @@
         <translation>顯示其他標籤，在第一個子標籤列出所有您的主節點&lt;br/&gt;在第二個子標籤列出所有網絡上的主節點。</translation>
     </message>
     <message>
-        <source>Show Masternodes Tab</source>
+        <source>Show Masternodes and Proposals Tabs</source>
         <translation>顯示主節點標籤頁</translation>
     </message>
     <message>

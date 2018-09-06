@@ -71,6 +71,10 @@ QT_MOC_CPP = \
   qt/moc_overviewpage.cpp \
   qt/moc_peertablemodel.cpp \
   qt/moc_paymentserver.cpp \
+  qt/moc_columnalignedlayout.cpp \
+  qt/moc_proposalfilterproxy.cpp \
+  qt/moc_proposaltablemodel.cpp \
+  qt/moc_proposallist.cpp \
   qt/moc_qvalidatedlineedit.cpp \
   qt/moc_qvaluecombobox.cpp \
   qt/moc_receivecoinsdialog.cpp \
@@ -144,6 +148,11 @@ MOTION_QT_H = \
   qt/overviewpage.h \
   qt/paymentrequestplus.h \
   qt/paymentserver.h \
+  qt/columnalignedlayout.h \
+  qt/proposalfilterproxy.h \
+  qt/proposallist.h \
+  qt/proposalrecord.h \
+  qt/proposaltablemodel.h \  
   qt/peertablemodel.h \
   qt/platformstyle.h \
   qt/qvalidatedlineedit.h \
@@ -211,6 +220,7 @@ RES_ICONS = \
   qt/res/icons/drkblue/key.png \
   qt/res/icons/drkblue/lock_closed.png \
   qt/res/icons/drkblue/lock_open.png \
+  qt/res/icons/drkblue/proposal.png \
   qt/res/icons/drkblue/masternodes.png \
   qt/res/icons/drkblue/overview.png \
   qt/res/icons/drkblue/quit.png \
@@ -265,6 +275,7 @@ RES_ICONS = \
   qt/res/icons/crownium/key.png \
   qt/res/icons/crownium/lock_closed.png \
   qt/res/icons/crownium/lock_open.png \
+  qt/res/icons/crownium/proposal.png \
   qt/res/icons/crownium/masternodes.png \
   qt/res/icons/crownium/overview.png \
   qt/res/icons/crownium/quit.png \
@@ -320,6 +331,7 @@ RES_ICONS = \
   qt/res/icons/light/key.png \
   qt/res/icons/light/lock_closed.png \
   qt/res/icons/light/lock_open.png \
+  qt/res/icons/light/proposal.png \
   qt/res/icons/light/masternodes.png \
   qt/res/icons/light/overview.png \
   qt/res/icons/light/quit.png \
@@ -388,6 +400,7 @@ RES_ICONS = \
   qt/res/icons/trad/key.png \
   qt/res/icons/trad/lock_closed.png \
   qt/res/icons/trad/lock_open.png \
+  qt/res/icons/trad/proposal.png \
   qt/res/icons/trad/masternodes.png \
   qt/res/icons/trad/overview.png \
   qt/res/icons/trad/quit.png \
@@ -453,6 +466,11 @@ MOTION_QT_CPP += \
   qt/overviewpage.cpp \
   qt/paymentrequestplus.cpp \
   qt/paymentserver.cpp \
+  qt/columnalignedlayout.cpp \
+  qt/proposalfilterproxy.cpp \
+  qt/proposallist.cpp \
+  qt/proposalrecord.cpp \
+  qt/proposaltablemodel.cpp \  
   qt/receivecoinsdialog.cpp \
   qt/receiverequestdialog.cpp \
   qt/recentrequeststablemodel.cpp \
