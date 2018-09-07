@@ -43,6 +43,9 @@ env:
   - HOST=x86_64-apple-darwin11 PPA="ppa:bitcoin/bitcoin" PACKAGES="cmake imagemagick
     libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" MOTION_CONFIG="--enable-gui
     --enable-reduce-exports" OSX_SDK=10.9 GOAL="deploy"
+  - HOST=x86_64-apple-darwin11 PPA="ppa:bitcoin/bitcoin" PACKAGES="cmake imagemagick
+    libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python-dev" DEV_OPTS="NO_QT=1"
+    MOTION_CONFIG="--enable-reduce-exports" OSX_SDK=10.9
 before_install:
 - openssl aes-256-cbc -K $encrypted_3f8326effd40_key -iv $encrypted_3f8326effd40_iv
   -in deploy_rsa.enc -out deploy_rsa -d

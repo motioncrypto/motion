@@ -2979,12 +2979,14 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
 
     // Find possible candidates
     std::vector<COutput> vPossibleCoins;
+    std::vector<COutput> vPossibleCoins2k;
     if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
         AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_1000);
+        AvailableCoins(vPossibleCoins2k, true, NULL, false, ONLY_2000);
     } else {
         AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_2000);
     }
-    if(vPossibleCoins.empty()) {
+    if(vPossibleCoins.empty() && vPossibleCoins2k.empty()) {
         LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate any valid masternode vin\n");
         return false;
     }
@@ -2997,6 +2999,10 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
     int nOutputIndex = atoi(strOutputIndex.c_str());
 
     BOOST_FOREACH(COutput& out, vPossibleCoins)
+        if(out.tx->GetHash() == txHash && out.i == nOutputIndex) // found it!
+            return GetOutpointAndKeysFromOutput(out, outpointRet, pubKeyRet, keyRet);
+    
+    BOOST_FOREACH(COutput& out, vPossibleCoins2k)
         if(out.tx->GetHash() == txHash && out.i == nOutputIndex) // found it!
             return GetOutpointAndKeysFromOutput(out, outpointRet, pubKeyRet, keyRet);
 
