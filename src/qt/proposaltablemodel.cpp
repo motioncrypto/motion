@@ -148,15 +148,15 @@ QVariant ProposalTableModel::data(const QModelIndex &index, int role) const
         case EndDate:
             return rec->end_epoch;
         case YesVotes:
-            return rec->yesVotes;
+            return qint64(rec->yesVotes);
         case NoVotes:
-            return rec->noVotes;
+            return qint64(rec->noVotes);
         case AbsoluteYesVotes:
-            return rec->absoluteYesVotes;
+            return qint64(rec->absoluteYesVotes);
         case Amount:
             return qint64(rec->amount);
         case Percentage:
-            return rec->percentage;
+            return qint64(rec->percentage);
         }
         break;
     case Qt::TextAlignmentRole:
@@ -175,19 +175,19 @@ QVariant ProposalTableModel::data(const QModelIndex &index, int role) const
     case ProposalRole:
         return rec->name;
     case AmountRole:
-        return rec->amount;
+        return qint64(rec->amount);
     case StartDateRole:
         return rec->start_epoch;
     case EndDateRole:
         return rec->end_epoch;
     case YesVotesRole:
-        return rec->yesVotes;
+        return qint64(rec->yesVotes);
     case NoVotesRole:
-        return rec->noVotes;
+        return qint64(rec->noVotes);
     case AbsoluteYesVotesRole:
-        return rec->absoluteYesVotes;
+        return qint64(rec->absoluteYesVotes);
     case PercentageRole:
-        return QVariant::fromValue(rec->percentage);
+        return qint64(rec->percentage);
     case ProposalUrlRole:
         return rec->url;
     case ProposalHashRole:
