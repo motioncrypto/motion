@@ -187,7 +187,7 @@ QVariant ProposalTableModel::data(const QModelIndex &index, int role) const
     case AbsoluteYesVotesRole:
         return rec->absoluteYesVotes;
     case PercentageRole:
-        return rec->percentage;
+        return QVariant::fromValue(rec->percentage);
     case ProposalUrlRole:
         return rec->url;
     case ProposalHashRole:
