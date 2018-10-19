@@ -6,7 +6,6 @@
 #include "base58.h"
 #include "init.h"
 #include "netbase.h"
-#include "chainparams.h"
 #include "masternode.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
@@ -19,6 +18,7 @@
 #endif // ENABLE_WALLET
 
 #include <boost/lexical_cast.hpp>
+
 
 CMasternode::CMasternode() :
     masternode_info_t{ MASTERNODE_ENABLED, PROTOCOL_VERSION, GetAdjustedTime()},
@@ -116,12 +116,7 @@ CMasternode::CollateralStatus CMasternode::CheckCollateral(const COutPoint& outp
         return COLLATERAL_UTXO_NOT_FOUND;
     }
 
-    CAmount nCollateral = 2000 * COIN;
-    if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
-        nCollateral = 1000 * COIN; // Before inflation adjustements will keep 1000 XMN as collateral
-    }
-
-    if(coin.out.nValue != nCollateral) {
+    if(coin.out.nValue != 1000 * COIN) {
         return COLLATERAL_INVALID_AMOUNT;
     }
 
@@ -256,13 +251,8 @@ bool CMasternode::IsInputAssociatedWithPubkey()
     CTransaction tx;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, tx, Params().GetConsensus(), hash, true)) {
-        CAmount nCollateral = 2000 * COIN;
-        if (chainActive.Height() < Params().GetConsensus().nInflationProtectionStart) {
-            nCollateral = 1000 * COIN; // Before inflation adjustements will keep 1000 XMN as collateral
-        }
-
         BOOST_FOREACH(CTxOut out, tx.vout)
-            if(out.nValue == nCollateral && out.scriptPubKey == payee) return true;
+            if(out.nValue == 1000*COIN && out.scriptPubKey == payee) return true;
     }
 
     return false;
@@ -570,7 +560,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
         }
 
         if (err == COLLATERAL_INVALID_AMOUNT) {
-            LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 2000 XMN, masternode=%s\n", vin.prevout.ToStringShort());
+            LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 1000 MOTION, masternode=%s\n", vin.prevout.ToStringShort());
             return false;
         }
 

@@ -93,10 +93,7 @@ WalletView::WalletView(const PlatformStyle *platformStyle, QWidget *parent):
     if (settings.value("fShowMasternodesTab").toBool()) {
         masternodeListPage = new MasternodeList(platformStyle);
         addWidget(masternodeListPage);
-
-        proposalListPage = new ProposalList(platformStyle);
-        addWidget(proposalListPage);
-    }	
+    }
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -259,15 +256,6 @@ void WalletView::gotoReceiveCoinsPage()
 {
     setCurrentWidget(receiveCoinsPage);
 }
-
-void WalletView::gotoProposalPage()
-{
-    QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        setCurrentWidget(proposalListPage);
-    }
-}
-
 
 void WalletView::gotoSendCoinsPage(QString addr)
 {

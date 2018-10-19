@@ -1690,8 +1690,8 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Show Masternodes and Proposals Tabs</source>
-        <translation>Show Masternodes and Proposals Tabs</translation>
+        <source>Show Masternodes Tab</source>
+        <translation>Show Masternodes Tab</translation>
     </message>
     <message>
         <location line="+7"/>

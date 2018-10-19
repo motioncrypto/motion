@@ -1256,10 +1256,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
 
     // LogPrintf("height %u diff %4.2f reward %d\n", nPrevHeight, dDiff, nSubsidyBase);
     // Block reward starts at 20 and declines 50% every 2 years, getting in 10 years ~21M XMN.
-    CAmount nSubsidy = 15 * COIN;
-    if (nPrevHeight < consensusParams.nInflationProtectionStart) {
-        nSubsidy = 20 * COIN; // Before inflation adjustements will keep receiving 20 XMN as reward
-    }
+    CAmount nSubsidy = 20 * COIN;
 
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
         nSubsidy = nSubsidy/2;
@@ -1270,16 +1267,15 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
         nSubsidy = 1.25 * COIN;
     }
 
-    // // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
-    // CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
-    CAmount nSuperblockPart = 0;
+    // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
+    CAmount nSuperblockPart = (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) ? nSubsidy/10 : 0;
 
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
-    // MN gets 60% from block reward
+    // Until tiers implementation, MN gets 60% from block reward
     return blockValue * 0.6;
 }
 

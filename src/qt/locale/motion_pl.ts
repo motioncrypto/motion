@@ -1333,7 +1333,7 @@
         <translation>Pokaż dodatkową zakładkę z listą Twoich wszystkich masternodów w pierwszej podzakładce &lt;br/&gt; oraz listą wszystkich masternodów sieci w drugiej podzakładce .</translation>
     </message>
     <message>
-        <source>Show Masternodes and Proposals Tabs</source>
+        <source>Show Masternodes Tab</source>
         <translation>Pokaż Zakładkę Mastenodów</translation>
     </message>
     <message>

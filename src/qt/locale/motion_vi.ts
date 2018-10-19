@@ -1337,7 +1337,7 @@
         <translation>Hiện thêm trang có danh sách tất cả các masternodes của bạn trong trang con thứ nhất &lt;br/&gt; và tất cả các masternode trên mạng trong trang con thứ hai.</translation>
     </message>
     <message>
-        <source>Show Masternodes and Proposals Tabs</source>
+        <source>Show Masternodes Tab</source>
         <translation>Hiển thị trang Masternodes</translation>
     </message>
     <message>

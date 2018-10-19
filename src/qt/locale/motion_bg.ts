@@ -1337,7 +1337,7 @@
         <translation>Показване на допълнителен раздел показваш всичките Ви masternodes  в първият подраздел&lt;br/&gt;и всички masternodes в мрежата във вторият подраздел.</translation>
     </message>
     <message>
-        <source>Show Masternodes and Proposals Tabs</source>
+        <source>Show Masternodes Tab</source>
         <translation>Показване на раздел Masternodes </translation>
     </message>
     <message>
